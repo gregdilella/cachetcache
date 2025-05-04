@@ -1,6 +1,10 @@
-import { drizzle } from 'drizzle-orm/neon-http';
-import { neon } from '@neondatabase/serverless';
+import { createClient } from '@supabase/supabase-js';
 import { env } from '$env/dynamic/private';
-if (!env.DATABASE_URL) throw new Error('DATABASE_URL is not set');
-const client = neon(env.DATABASE_URL);
-export const db = drizzle(client);
+
+if (!env.SUPABASEDatabaseURL) throw new Error('SUPABASEDatabaseURL is not set');
+if (!env.SUPABASE_SERVICE_ROLE_KEY) throw new Error('SUPABASE_SERVICE_ROLE_KEY is not set');
+
+export const supabase = createClient(
+  env.SUPABASEDatabaseURL,
+  env.SUPABASE_SERVICE_ROLE_KEY
+);

@@ -1,12 +1,10 @@
 <main class="">
 	<div class="text-center">
 		<div class="my-16">
-			<h1 class="text-4xl md:text-7xl font-black mb-4 animate-in fade-in slide-in-from-left-12 duration-700">
-				Contact
-			</h1>
-			<h4 class="md:text-2xl font-semibold italic animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200">
-				You Can Reach Me Here
-			</h4>
+			<h1 class="text-4xl md:text-7xl font-black mb-4 animate-in fade-in slide-in-from-left-12 duration-700">Contact</h1>
+			<h2 class="text-2xl md:text-3xl font-bold text-white mb-2">Address:</h2>
+			<p class="text-lg md:text-xl text-white mb-4">Clinique VIP, suite 400, 529 rue Jarry est, Montreal, Qc</p>
+			<p class="text-lg md:text-xl text-white">To book an appointment, please fill out the form below:</p>
 		</div>
 
 		<form method="POST" action="" class="space-y-4 max-w-md mx-auto mt-10 text-left">
@@ -18,6 +16,11 @@
 			<div>
 				<label for="email" class="block mb-1 font-semibold">Email</label>
 				<input id="email" name="email" type="email" class="w-full p-2 border rounded text-black" required />
+			</div>
+		
+			<div>
+				<label for="phone" class="block mb-1 font-semibold">Phone Number</label>
+				<input id="phone" name="phone" type="tel" class="w-full p-2 border rounded text-black" required />
 			</div>
 		
 			<div>
@@ -33,10 +36,6 @@
 		  </button>	
 		</form>
 		<br/>
-		<p>
-			Or On 
-			<a href="https://www.linkedin.com/in/gregdilella/" class="anchor" target="_blank">Linkedin.</a> 
-		</p>
 
 
 	</div>
