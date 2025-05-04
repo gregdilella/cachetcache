@@ -16,7 +16,8 @@
     "db:push": "drizzle-kit push",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "deploy": "npm run build && wrangler deploy"
   },
   "devDependencies": {
     "@eslint/compat": "^1.2.4",
@@ -60,6 +61,7 @@
     "vite": "^5.0.12",
     "vite-plugin-tailwind-purgecss": "0.2.0",
     "vitest": "^1.0.0",
+    "wrangler": "^4.14.1",
     "zod": "^3.24.1"
   },
   "type": "module",
