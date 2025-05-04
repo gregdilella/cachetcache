@@ -6,15 +6,16 @@
 		getDrawerStore,
 		type DrawerSettings
 	} from '@skeletonlabs/skeleton';
+	import { Syringe, Mail } from 'lucide-svelte';
 
 	let value: number = 0; // Activating the different elements in the Nav
 	$: if ($page.url.pathname === '/') {
 		value = 0;
-	} else if ($page.url.pathname === '/projects') {
+	} else if ($page.url.pathname === '/services') {
 		value = 1;
-	} else if ($page.url.pathname === '/contact') {
+	} else if ($page.url.pathname === '/about') {
 		value = 2;
-	} else if ($page.url.pathname === '/payment') {
+	} else if ($page.url.pathname === '/contact') {
 		value = 3;
 	}
 
@@ -46,34 +47,34 @@
 			<i class="fa-solid fa-house m-auto"></i>
 		</RadioItem>
 	</a>
-	<a href="/projects" class="flex justify-center">
+	<a href="/services" class="flex justify-center">
 		<RadioItem
 			bind:group={value}
-			name="projects"
+			name="services"
 			value={1}
 			class="my-auto flex aspect-square justify-center rounded-full text-xl"
 		>
-			<i class="fa-solid fa-suitcase m-auto"></i>
+			<Syringe class="m-auto w-6 h-6" />
 		</RadioItem>
 	</a>
-	<a href="/contact" class="flex justify-center">
+	<a href="/about" class="flex justify-center">
 		<RadioItem
 			bind:group={value}
-			name="contact"
+			name="about"
 			value={2}
 			class="my-auto flex aspect-square justify-center rounded-full text-xl"
 		>
 			<i class="fa-solid fa-address-book m-auto"></i>
 		</RadioItem>
 	</a>
-	<a href="/payment" class="flex justify-center">
+	<a href="/contact" class="flex justify-center">
 		<RadioItem
 			bind:group={value}
-			name="payment"
+			name="contact"
 			value={3}
 			class="my-auto flex aspect-square justify-center rounded-full text-xl"
 		>
-			<i class="fa-solid fa-circle-dollar-to-slot m-auto"></i>
+			<Mail class="m-auto w-6 h-6" />
 		</RadioItem>
 	</a>
 </RadioGroup>

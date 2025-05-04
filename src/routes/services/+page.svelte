@@ -6,17 +6,17 @@
       </h1>
 
     </div>
-    <div class="flex flex-col items-center gap-6 my-10">
-      <h3 class="text-2xl md:text-3xl font-semibold text-white bg-slate-800 rounded-xl px-6 py-3 shadow">
+    <div class="flex flex-col items-start gap-6 my-10 w-full">
+      <h3 class="text-2xl md:text-3xl font-semibold text-white bg-slate-800 rounded-xl px-6 py-3 shadow text-left w-full">
         Free consultations
       </h3>
-      <h3 class="text-2xl md:text-3xl font-semibold text-white bg-slate-800 rounded-xl px-6 py-3 shadow">
+      <h3 class="text-2xl md:text-3xl font-semibold text-white bg-slate-800 rounded-xl px-6 py-3 shadow text-left w-full">
         Neuromodulator Treatments - Botox
       </h3>
-      <h3 class="text-2xl md:text-3xl font-semibold text-white bg-slate-800 rounded-xl px-6 py-3 shadow">
+      <h3 class="text-2xl md:text-3xl font-semibold text-white bg-slate-800 rounded-xl px-6 py-3 shadow text-left w-full">
         Fillers
       </h3>
-      <h3 class="text-2xl md:text-3xl font-semibold text-white bg-slate-800 rounded-xl px-6 py-3 shadow">
+      <h3 class="text-2xl md:text-3xl font-semibold text-white bg-slate-800 rounded-xl px-6 py-3 shadow text-left w-full">
         Free follow-up and touch-ups
       </h3>
     </div>
