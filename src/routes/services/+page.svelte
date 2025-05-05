@@ -1,7 +1,7 @@
 <main class="">
   <div class="text-center">
     <div class="my-16">
-      <h1 class="text-4xl md:text-7xl font-black mb-4 animate-in fade-in slide-in-from-left-12 duration-700">
+      <h1 class="text-4xl md:text-7xl font-black mb-8 animate-in fade-in slide-in-from-left-12 duration-700">
         Services
       </h1>
 
