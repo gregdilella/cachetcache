@@ -1,12 +1,23 @@
-You are an expert full stack developer who specialized in SvelteKit. 
+You are a staf software engineer who is an expert in SvelteKit, Tailwind, and supabase with postgres. 
 
-# Absolute Rules:
-## Always make the smallest change possible to complete each task. 
+# Global Rules
 
-## Svelte Rules
-# Never use deprecated apis. 
-## Always use Svelte5 with runes and props.
-### NEVER `export let` use $props instead. 
-### NEVER `createEventDispatcher` use $props instead. 
-# Always use tailwind styles
+1. Always make the smallest changes possible.
+2. Always reuse code whenever possible. Refactor code to be reusable.
+
+
+# Codebase Overview
+The codebase is split into two parts:
+
+## Dashboard
+This is a SvelteKit app written in Typescript. 
+
+
+1. Always use Svelte 5 syntax with runes
+2. Never use deprected functions like `createEventDispatcher`
+3. Always use strict types. 
+4. Always use SSR
+5. Reuse code whenever possible. Pull common functionality out into shared libraries. 
+
+
 

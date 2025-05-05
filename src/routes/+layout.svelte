@@ -11,12 +11,16 @@
 	import Footer from '$lib/components/Footer.svelte';
 	import { inject } from '@vercel/analytics';
 	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
+	import { page } from '$app/stores';
 
 	inject();
 	injectSpeedInsights();
 	initializeStores();
 
 	const drawerStore = getDrawerStore();
+	
+	// Check if current path is the home page
+	$: isHomePage = $page.url.pathname === '/';
 </script>
 
 <Modal />
@@ -33,12 +37,16 @@
 </Drawer>
 <AppShell>
 	<svelte:fragment slot="sidebarLeft">
-		<Navbar />
+		{#if !isHomePage}
+			<Navbar />
+		{/if}
 	</svelte:fragment>
-	<main class="mx-8 md:mx-auto md:max-w-[80%] xl:max-w-[70%] 2xl:max-w-[60%]">
+	<main class={isHomePage ? '' : 'mx-8 md:mx-auto md:max-w-[80%] xl:max-w-[70%] 2xl:max-w-[60%]'}>
 		<slot />
 	</main>
 	<svelte:fragment slot="footer">
-		<Footer />
+		{#if !isHomePage}
+			<Footer />
+		{/if}
 	</svelte:fragment>
 </AppShell>

@@ -9,7 +9,7 @@
 	import { Syringe, Mail } from 'lucide-svelte';
 
 	let value: number = 0; // Activating the different elements in the Nav
-	$: if ($page.url.pathname === '/') {
+	$: if ($page.url.pathname === '/welcome') {
 		value = 0;
 	} else if ($page.url.pathname === '/services') {
 		value = 1;
@@ -37,10 +37,10 @@
 <RadioGroup
 	class="flex md:flex-col p-2 md:-translate-y-1/2 md:left-6 max-md:menu-xs bg-base-200 border-base-300 border-2 rounded-box fixed md:top-1/2 max-md:bottom-6 max-md:left-1/2 max-md:-translate-x-1/2 transform z-10"
 >
-	<a href="/" class="flex justify-center">
+	<a href="/welcome" class="flex justify-center">
 		<RadioItem
 			bind:group={value}
-			name="home"
+			name="welcome"
 			value={0}
 			class="my-auto flex aspect-square justify-center rounded-full text-xl"
 		>
