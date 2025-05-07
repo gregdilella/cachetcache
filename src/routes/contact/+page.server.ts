@@ -32,6 +32,6 @@ export const actions = {
     }
 
     // Optional redirect or success indicator
-    return { success: true };
+    throw redirect(303, '/welcome');
   }
 };

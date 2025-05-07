@@ -11,7 +11,7 @@
 		<p class="text-lg md:text-xl text-white">To book an appointment, please fill out the form below:</p>
 	  </div>
   
-	  <form method="POST" class="space-y-4 max-w-md mx-auto mt-10 text-left">
+	  <form method="POST" action="/contact" class="space-y-4 max-w-md mx-auto mt-10 text-left">
 		<div>
 		  <label for="name" class="block mb-1 font-semibold">Name</label>
 		  <input id="name" name="name" type="text" class="w-full p-2 border rounded text-black" required />
