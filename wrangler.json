@@ -2,5 +2,10 @@
   "name": "cachetcache",
   "compatibility_date": "2024-07-06",
   "compatibility_flags": ["nodejs_compat"],
-  "pages_build_output_dir": "./build"
+  "pages_build_output_dir": "./build",
+  "vars": {
+    "PUBLIC_SUPABASE_URL": "https://llduavoyutzcabybayru.supabase.co",
+    "PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxsZHVhdm95dXR6Y2FieWJheXJ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYzMTQzNjgsImV4cCI6MjA2MTg5MDM2OH0.XQHJONXfQzJ7GqHEvDI2IhtZ82IvdatrWmSMupzn8mM",
+    "NODE_VERSION": "18.20.5"
+  }
 } 
