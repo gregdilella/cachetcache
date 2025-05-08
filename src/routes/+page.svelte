@@ -9,16 +9,16 @@
 
 <svelte:head>
 	<title>Cachet Caché</title>
-	<meta name="description" content="The Homepage of Cachet Cachê" />
-	<meta property="og:title" content="Cachet Cachê" />
-	<meta property="og:image" content="CC.png" />
-	<meta property="og:description" content="Homepage of Cachet Cachê" />
+	<meta name="description" content="The Homepage of Cachet Cache" />
+	<meta property="og:title" content="Cachet Cache" />
+	<meta property="og:image" content="ccpink.png" />
+	<meta property="og:description" content="Homepage of Cachet Cache" />
 	<meta property="og:url" content="https://www.cachetcache.com" />
 </svelte:head>
 
 <style>
 	.slow-blur-in {
-		animation: blur-in 4s ease-out both;
+		animation: blur-in 2s ease-out both;
 	}
 </style>
 

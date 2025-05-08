@@ -25,10 +25,10 @@
 
 <svelte:head>
 	<title>Cachet Caché - Welcome</title>
-	<meta name="description" content="Welcome to Cachet Cachê" />
-	<meta property="og:title" content="Cachet Cachê" />
+	<meta name="description" content="Welcome to Cachet Caché" />
+	<meta property="og:title" content="Cachet Caché" />
 	<meta property="og:image" content="CC.png" />
-	<meta property="og:description" content="Welcome to Cachet Cachê" />
+	<meta property="og:description" content="Welcome to Cachet Caché" />
 	<meta property="og:url" content="https://www.cachetcache.com/welcome" />
 </svelte:head>
 
@@ -44,9 +44,9 @@
 			<span
 				class="font-extrabold text-pink-500 duration-200 ease-in-out hover:tracking-widest hover:text-pink-600"
 			>
-				Esthetics
+				Medical Aesthetics Clinic
 			</span>
-			Medicine
+			
 		</h3>
 	</div>
 </section>
