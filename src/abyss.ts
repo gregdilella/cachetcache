@@ -6,19 +6,19 @@ export const abyss: CustomThemeConfig = {
 		// =~= Theme Properties =~=
 		'--theme-font-family-base': `system-ui`,
 		'--theme-font-family-heading': `Geist`,
-		'--theme-font-color-base': '0 0 0',
-		'--theme-font-color-dark': '255 255 255',
+		'--theme-font-color-base': '255 255 255', // changed from '0 0 0' to '255 255 255'
+		'--theme-font-color-dark': '0 0 0', // changed from '255 255 255' to '0 0 0'
 		'--theme-rounded-base': '6px',
 		'--theme-rounded-container': '6px',
 		'--theme-border-base': '0px',
 		// =~= Theme On-X Colors =~=
-		'--on-primary': '0 0 0',
-		'--on-secondary': '0 0 0',
-		'--on-tertiary': '0 0 0',
-		'--on-success': '0 0 0',
-		'--on-warning': '0 0 0',
-		'--on-error': '0 0 0',
-		'--on-surface': '255 255 255',
+		'--on-primary': '255 255 255', // changed from '0 0 0' to '255 255 255'
+		'--on-secondary': '255 255 255', // changed from '0 0 0' to '255 255 255'
+		'--on-tertiary': '255 255 255', // changed from '0 0 0' to '255 255 255'
+		'--on-success': '255 255 255', // changed from '0 0 0' to '255 255 255'
+		'--on-warning': '255 255 255', // changed from '0 0 0' to '255 255 255'
+		'--on-error': '255 255 255', // changed from '0 0 0' to '255 255 255'
+		'--on-surface': '0 0 0', // changed from '255 255 255' to '0 0 0'
 		// =~= Theme Colors  =~=
 		// primary | #70C6EC
 		'--color-primary-50': '234 246 252', // #eaf6fc
@@ -87,15 +87,15 @@ export const abyss: CustomThemeConfig = {
 		'--color-error-800': '142 67 67', // #8e4343
 		'--color-error-900': '116 54 54', // #743636
 		// surface | #1E1E1E
-		'--color-surface-50': '221 221 221', // #dddddd
-		'--color-surface-100': '210 210 210', // #d2d2d2
-		'--color-surface-200': '199 199 199', // #c7c7c7
-		'--color-surface-300': '165 165 165', // #a5a5a5
-		'--color-surface-400': '98 98 98', // #626262
-		'--color-surface-500': '30 30 30', // #1E1E1E
-		'--color-surface-600': '27 27 27', // #1b1b1b
-		'--color-surface-700': '23 23 23', // #171717
-		'--color-surface-800': '18 18 18', // #121212
-		'--color-surface-900': '15 15 15' // #0f0f0f
+		'--color-surface-50': '234 234 234', // #eaeaea
+		'--color-surface-100': '221 221 221', // #dddddd
+		'--color-surface-200': '208 208 208', // #d0d0d0
+		'--color-surface-300': '195 195 195', // #c3c3c3
+		'--color-surface-400': '182 182 182', // #b6b6b6
+		'--color-surface-500': '169 169 169', // #a9a9a9
+		'--color-surface-600': '156 156 156', // #9c9c9c
+		'--color-surface-700': '143 143 143', // #8f8f8f
+		'--color-surface-800': '130 130 130', // #828282
+		'--color-surface-900': '117 117 117' // #757575
 	}
 };

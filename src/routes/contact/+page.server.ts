@@ -23,7 +23,7 @@ export const actions = {
     const message = form.get("message");
 
     const { error } = await supabase.from("contactform").insert([
-      { name, email, phonenumber, message }
+      { name: name as string, email: email as string, phonenumber: phonenumber as string, message: message as string }
     ]);
 
     if (error) {

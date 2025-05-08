@@ -17,6 +17,10 @@ export default {
 	],
 	theme: {
 		extend: {
+			fontFamily: {
+				girly: ['Poppins', 'sans-serif'],
+				heading: ['Sacramento', 'cursive']
+			},
 			keyframes: {
 				'blur-in': {
 					'0%': { filter: 'blur(12px)', opacity: '0' },

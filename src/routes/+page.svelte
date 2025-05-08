@@ -31,7 +31,7 @@
 		<img 
 			src={cachetCacheImage} 
 			alt="Cachet Caché logo" 
-			class="max-w-full md:max-w-2xl animate-in fade-in slow-blur-in duration-1000" 
+			class="max-w-full md:max-w-2xl animate-in fade-in slow-blur-in duration-500" 
 		/>
 	</button>
 </div> 

@@ -85,6 +85,7 @@
     "nodemailer": "^6.9.16",
     "stripe": "^18.0.0",
     "studio": "^0.13.5",
+    "supabase": "2.22.12",
     "superforms": "^0.0.1"
   }
 }
