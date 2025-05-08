@@ -9,10 +9,10 @@
 
 <svelte:head>
 	<title>Cachet Caché</title>
-	<meta name="description" content="The Homepage of Cachet Cache" />
-	<meta property="og:title" content="Cachet Cache" />
+	<meta name="description" content="The Homepage of Cachet Caché" />
+	<meta property="og:title" content="Cachet Caché" />
 	<meta property="og:image" content="ccpink.png" />
-	<meta property="og:description" content="Homepage of Cachet Cache" />
+	<meta property="og:description" content="Homepage of Cachet Caché" />
 	<meta property="og:url" content="https://www.cachetcache.com" />
 </svelte:head>
 

@@ -23,14 +23,6 @@
 	});
 </script>
 
-<svelte:head>
-	<title>Cachet Caché - Welcome</title>
-	<meta name="description" content="Welcome to Cachet Caché" />
-	<meta property="og:title" content="Cachet Caché" />
-	<meta property="og:image" content="CC.png" />
-	<meta property="og:description" content="Welcome to Cachet Caché" />
-	<meta property="og:url" content="https://www.cachetcache.com/welcome" />
-</svelte:head>
 
   
 <!-- Hero Section -->
