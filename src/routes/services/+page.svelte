@@ -20,20 +20,35 @@
     </div>
     
     <div class="flex flex-col items-start gap-6 my-10 w-full max-w-2xl mx-auto transition-all duration-1000 {visible ? 'opacity-100 blur-none' : 'opacity-0 blur-md'}">
-      <h3 class="text-2xl md:text-3xl font-semibold text-pink-700 border-2 border-pink-300 bg-gradient-to-r from-pink-50 to-purple-50 rounded-2xl px-6 py-3 shadow-sm text-left w-full hover:from-pink-100 hover:to-purple-100 transition-all">
-        Free consultations
-      </h3>
-      <h3 class="text-2xl md:text-3xl font-semibold text-pink-700 border-2 border-pink-300 bg-gradient-to-r from-pink-50 to-purple-50 rounded-2xl px-6 py-3 shadow-sm text-left w-full hover:from-pink-100 hover:to-purple-100 transition-all">
-        Neuromodulator Treatments - Botox
-      </h3>
-      <h3 class="text-2xl md:text-3xl font-semibold text-pink-700 border-2 border-pink-300 bg-gradient-to-r from-pink-50 to-purple-50 rounded-2xl px-6 py-3 shadow-sm text-left w-full hover:from-pink-100 hover:to-purple-100 transition-all">
-        Fillers
-      </h3>
-      <h3 class="text-2xl md:text-3xl font-semibold text-pink-700 border-2 border-pink-300 bg-gradient-to-r from-pink-50 to-purple-50 rounded-2xl px-6 py-3 shadow-sm text-left w-full hover:from-pink-100 hover:to-purple-100 transition-all">
-        Free follow-up and touch-ups
-      </h3>
+      <a href="https://cachetcache.janeapp.com/#/staff_member/1/treatment/1" target="_blank" rel="noopener noreferrer" class="w-full group">
+        <h3 class="text-2xl md:text-3xl font-semibold text-pink-700 border-2 border-pink-300 bg-gradient-to-r from-pink-50 to-purple-50 rounded-2xl px-6 py-3 shadow-sm text-left w-full hover:from-pink-100 hover:to-purple-100 transition-all flex justify-between items-center">
+          <span>Free consultations</span>
+          <span class="text-lg text-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300">Book now &rarr;</span>
+        </h3>
+      </a>
+      
+      <a href="https://cachetcache.janeapp.com/#/staff_member/1/treatment/2" target="_blank" rel="noopener noreferrer" class="w-full group">
+        <h3 class="text-2xl md:text-3xl font-semibold text-pink-700 border-2 border-pink-300 bg-gradient-to-r from-pink-50 to-purple-50 rounded-2xl px-6 py-3 shadow-sm text-left w-full hover:from-pink-100 hover:to-purple-100 transition-all flex justify-between items-center">
+          <span>Neuromodulator Treatments - Botox</span>
+          <span class="text-lg text-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300">Book now &rarr;</span>
+        </h3>
+      </a>
+      
+      <a href="https://cachetcache.janeapp.com/#/staff_member/1/treatment/3" target="_blank" rel="noopener noreferrer" class="w-full group">
+        <h3 class="text-2xl md:text-3xl font-semibold text-pink-700 border-2 border-pink-300 bg-gradient-to-r from-pink-50 to-purple-50 rounded-2xl px-6 py-3 shadow-sm text-left w-full hover:from-pink-100 hover:to-purple-100 transition-all flex justify-between items-center">
+          <span>Fillers</span>
+          <span class="text-lg text-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300">Book now &rarr;</span>
+        </h3>
+      </a>
+      
+      <a href="https://cachetcache.janeapp.com" target="_blank" rel="noopener noreferrer" class="w-full group">
+        <h3 class="text-2xl md:text-3xl font-semibold text-pink-700 border-2 border-pink-300 bg-gradient-to-r from-pink-50 to-purple-50 rounded-2xl px-6 py-3 shadow-sm text-left w-full hover:from-pink-100 hover:to-purple-100 transition-all flex justify-between items-center">
+          <span>Free follow-up and touch-ups</span>
+          <span class="text-lg text-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300">Book now &rarr;</span>
+        </h3>
+      </a>
     </div>
     
-    <p class="text-lg text-pink-600 mt-6 transition-all duration-1000 {visible ? 'opacity-100 blur-none' : 'opacity-0 blur-md'}">Check back soon for more details on my offerings!</p>
+
   </div>
 </main>
