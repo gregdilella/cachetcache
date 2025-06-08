@@ -1,7 +1,13 @@
-<script>
+<script lang="ts">
+  import { enhance } from '$app/forms';
   import { onMount } from 'svelte';
+  import type { PageData, ActionData } from './$types';
+
+  export let data: PageData;
+  export let form: ActionData;
   
   let visible = false;
+  let loading = false;
   
   onMount(() => {
     // Slight delay to trigger animation after page loads
@@ -9,6 +15,14 @@
       visible = true;
     }, 50);
   });
+
+  function handleSubmit() {
+    loading = true;
+  }
+
+  function handleResult() {
+    loading = false;
+  }
 </script>
   
 <main class="">
@@ -20,7 +34,24 @@
       <p class="text-lg md:text-xl text-pink-800 transition-all duration-1000 {visible ? 'opacity-100 blur-none' : 'opacity-0 blur-md'}">To book an appointment, please fill out the form below:</p>
     </div>
 
-    <form method="POST" action="/contact" class="space-y-4 max-w-md mx-auto mt-10 text-left transition-all duration-1000 {visible ? 'opacity-100 blur-none' : 'opacity-0 blur-md'}">
+    <form 
+      method="POST" 
+      action="/contact" 
+      use:enhance={() => {
+        handleSubmit();
+        return async ({ result, update }) => {
+          await update();
+          handleResult();
+        };
+      }}
+      class="space-y-4 max-w-md mx-auto mt-10 text-left transition-all duration-1000 {visible ? 'opacity-100 blur-none' : 'opacity-0 blur-md'}"
+    >
+      {#if form?.error}
+        <div class="mb-4 p-3 rounded-md bg-red-50 text-red-700">
+          {form.error}
+        </div>
+      {/if}
+
       <div>
         <label for="name" class="block mb-1 font-semibold text-pink-700">Name</label>
         <input id="name" name="name" type="text" class="w-full p-2 border border-pink-300 rounded text-black focus:border-pink-500 focus:ring focus:ring-pink-200 focus:ring-opacity-50" required />
@@ -33,7 +64,7 @@
 
       <div>
         <label for="phonenumber" class="block mb-1 font-semibold text-pink-700">Phone Number</label>
-        <input id="phonenumber" name="phonenumber" type="tel" class="w-full p-2 border border-pink-300 rounded text-black focus:border-pink-500 focus:ring focus:ring-pink-200 focus:ring-opacity-50" required />
+        <input id="phonenumber" name="phonenumber" type="tel" class="w-full p-2 border border-pink-300 rounded text-black focus:border-pink-500 focus:ring focus:ring-pink-200 focus:ring-opacity-50" />
       </div>
 
       <div>
@@ -43,9 +74,10 @@
 
       <button
         type="submit"
-        class="bg-gradient-to-r from-pink-400 to-purple-400 text-white font-bold text-lg py-2 px-4 rounded border border-pink-300 transition-all duration-300 hover:from-pink-500 hover:to-purple-500"
+        disabled={loading}
+        class="bg-gradient-to-r from-pink-400 to-purple-400 text-white font-bold text-lg py-2 px-4 rounded border border-pink-300 transition-all duration-300 hover:from-pink-500 hover:to-purple-500 disabled:opacity-50 disabled:cursor-not-allowed w-full"
       >
-        Send
+        {loading ? 'Sending...' : 'Send'}
       </button>	
     </form>
 

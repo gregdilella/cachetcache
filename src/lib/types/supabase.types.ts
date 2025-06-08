@@ -12,27 +12,63 @@ export type Database = {
       contactform: {
         Row: {
           created_at: string
-          email: string | null
-          id: number
-          message: string | null
+          email: string
+          id: string
+          message: string
           name: string
-          phonenumber: string | null
+          phone_number: string | null
         }
         Insert: {
           created_at?: string
-          email?: string | null
-          id?: number
-          message?: string | null
+          email: string
+          id?: string
+          message: string
           name: string
-          phonenumber?: string | null
+          phone_number?: string | null
         }
         Update: {
           created_at?: string
-          email?: string | null
-          id?: number
-          message?: string | null
+          email?: string
+          id?: string
+          message?: string
           name?: string
-          phonenumber?: string | null
+          phone_number?: string | null
+        }
+        Relationships: []
+      }
+      user_profile: {
+        Row: {
+          age: number | null
+          created_at: string | null
+          email: string | null
+          id: string
+          is_admin: boolean
+          name: string | null
+          phone_number: string | null
+          sex: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          age?: number | null
+          created_at?: string | null
+          email?: string | null
+          id: string
+          is_admin?: boolean
+          name?: string | null
+          phone_number?: string | null
+          sex?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          age?: number | null
+          created_at?: string | null
+          email?: string | null
+          id?: string
+          is_admin?: boolean
+          name?: string | null
+          phone_number?: string | null
+          sex?: string | null
+          updated_at?: string | null
         }
         Relationships: []
       }
@@ -44,7 +80,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      Sex: "Female" | "Male"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -159,6 +195,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      Sex: ["Female", "Male"],
+    },
   },
 } as const

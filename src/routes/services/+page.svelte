@@ -9,7 +9,12 @@
       visible = true;
     }, 50);
   });
+
+
+
 </script>
+
+
 
 <main class="">
   <div class="text-center">

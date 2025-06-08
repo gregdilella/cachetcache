@@ -1,28 +1,25 @@
-// See https://kit.svelte.dev/docs/types#app
+// See https://svelte.dev/docs/kit/types#app.d.ts
 // for information about these interfaces
-// and what to do when importing types
-declare namespace App {
-	// interface Locals {}
-	// interface PageData {}
-	// interface Error {}
-	// interface Platform {}
-}
+import type { SupabaseClient } from '@supabase/supabase-js';
+import type { Database } from '$lib/types/supabase.types';
 
+import type { Session, SupabaseClient, User } from '@supabase/supabase-js'
+import type { Database } from './database.types.ts' // import generated types
 declare global {
-	interface TProject {
-		name: string;
-		desc: string;
-		link: string | null;
-		gHlink: string | null;
-		tech: string[];
-	}
-
-	interface BadgeProps {
-		link: string;
-		title: string;
-		body: string;
-		icon: string;
-	}
+  namespace App {
+    // interface Error {}
+    interface Locals {
+      supabase: SupabaseClient<Database>
+      supabaseAdmin: SupabaseClient<Database>
+      safeGetSession: () => Promise<{ session: Session | null; user: User | null }>
+      session: Session | null
+      user: User | null
+    }
+    interface PageData {
+      session: Session | null
+    }
+    // interface PageState {}
+    // interface Platform {}
+  }
 }
-
-export {};
+export {}

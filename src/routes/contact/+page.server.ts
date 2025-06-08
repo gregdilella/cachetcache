@@ -1,5 +1,6 @@
 import { supabase } from "$lib/supabase";
 import { fail, redirect } from "@sveltejs/kit";
+import type { Actions } from './$types';
 
 export async function load() {
   const { data, error } = await supabase.from("contactform").select();
@@ -13,7 +14,7 @@ export async function load() {
   };
 }
 
-export const actions = {
+export const actions: Actions = {
   default: async ({ request }) => {
     const form = await request.formData();
 
@@ -22,8 +23,18 @@ export const actions = {
     const phonenumber = form.get("phonenumber");
     const message = form.get("message");
 
+    // Validate required fields
+    if (!name || !email || !message) {
+      return fail(400, { error: "Name, email, and message are required" });
+    }
+
     const { error } = await supabase.from("contactform").insert([
-      { name: name as string, email: email as string, phonenumber: phonenumber as string, message: message as string }
+      { 
+        name: name as string, 
+        email: email as string, 
+        phone_number: phonenumber as string, // Map phonenumber to phone_number for database
+        message: message as string 
+      }
     ]);
 
     if (error) {

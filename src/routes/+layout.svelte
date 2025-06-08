@@ -30,17 +30,7 @@
 </svelte:head>
 
 <Modal />
-<Drawer>
-	{#if $drawerStore.id === 'nav'}
-		<div class="flex justify-center gap-8 p-4 text-2xl">
-			<a on:click={() => drawerStore.close()} href="/"><i class="fa-solid fa-house"></i></a>
-			<a on:click={() => drawerStore.close()} href="/projects"><i class="fa-solid fa-suitcase"></i></a>
-			<a on:click={() => drawerStore.close()} href="/contact"
-				><i class="fa-solid fa-address-book"></i></a
-			>
-		</div>
-	{/if}
-</Drawer>
+
 <AppShell class={!isHomePage ? 'bg-white text-black' : ''}>
 	<svelte:fragment slot="sidebarLeft">
 		{#if !isHomePage}
@@ -56,6 +46,8 @@
 		{/if}
 	</svelte:fragment>
 </AppShell>
+
+
 
 <style>
 	:global(h1, h2, h3) {

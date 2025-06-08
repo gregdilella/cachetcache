@@ -6,7 +6,7 @@
 		getDrawerStore,
 		type DrawerSettings
 	} from '@skeletonlabs/skeleton';
-	import { Syringe, Mail } from 'lucide-svelte';
+	import { Syringe, Mail, User } from 'lucide-svelte';
 
 	let value: number = 0; // Activating the different elements in the Nav
 	$: if ($page.url.pathname === '/welcome') {
@@ -17,6 +17,10 @@
 		value = 2;
 	} else if ($page.url.pathname === '/contact') {
 		value = 3;
+	} else if ($page.url.pathname === '/signin') {
+		value = 4;
+	} else if ($page.url.pathname === '/signup') {
+		value = 4;
 	}
 
 	const drawerStore = getDrawerStore();
@@ -77,5 +81,19 @@
 			<Mail class="m-auto w-6 h-6" />
 		</RadioItem>
 	</a>
+
+	<a href="/signin" class="flex justify-center">
+		<RadioItem
+			bind:group={value}
+			name="signin"
+			value={4}
+			class="my-auto flex aspect-square justify-center rounded-full text-xl hover:bg-pink-200"
+		>
+			<User class="m-auto w-6 h-6" />
+		</RadioItem>
+	</a>
+
+
+
 </RadioGroup>
 

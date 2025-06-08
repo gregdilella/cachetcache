@@ -73,7 +73,7 @@
 </section>
 
 <!-- Cachet Cache Philosophy Section -->
-<section id="philosophy">
+<section id="philosophy" class="mt-16 md:mt-0">
   <div class="mx-auto max-w-6xl px-6 md:grid md:grid-cols-2 md:gap-8 items-center">
     <div class="border-2 border-pink-300 bg-gradient-to-br from-pink-50 to-purple-50 rounded-2xl shadow-sm p-8 md:col-span-1 w-full transition-all duration-1000 {visible ? 'opacity-100 blur-none' : 'opacity-0 blur-md'}">
       <p class="text-lg leading-relaxed text-balance pb-4 text-left text-pink-800">
