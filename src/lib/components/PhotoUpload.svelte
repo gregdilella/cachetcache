@@ -94,15 +94,18 @@
 		<div class="relative h-64 rounded-xl overflow-hidden bg-gray-100">
 			<!-- Main Photo Display -->
 			<div class="relative w-full h-full flex items-center justify-center">
-				<img
-					src={photos[currentIndex].url}
-					alt="Photo {currentIndex + 1}"
-					class="w-full h-full object-cover cursor-pointer hover:opacity-90 transition-opacity"
+				<button
+					type="button"
+					class="w-full h-full p-0 border-0 bg-transparent cursor-pointer"
 					on:click={() => openModal(photos[currentIndex].url)}
-					on:keydown={(e) => e.key === 'Enter' && openModal(photos[currentIndex].url)}
-					role="button"
-					tabindex="0"
-				/>
+					aria-label="View enlarged photo {currentIndex + 1}"
+				>
+					<img
+						src={photos[currentIndex].url}
+						alt="Photo {currentIndex + 1}"
+						class="w-full h-full object-cover hover:opacity-90 transition-opacity"
+					/>
+				</button>
 				
 				<!-- Upload Overlay -->
 				{#if photos[currentIndex].uploading}
@@ -163,11 +166,12 @@
 		
 		<!-- Doctor's Note for Current Photo -->
 		<div class="space-y-2">
-			<label class="flex items-center gap-2 text-sm font-medium text-pink-700">
+			<label for="doctor-note-{photos[currentIndex].id}" class="flex items-center gap-2 text-sm font-medium text-pink-700">
 				<FileText class="w-4 h-4" />
 				Doctor's Note {photos.length > 1 ? `(Photo ${currentIndex + 1})` : ''}
 			</label>
 			<textarea
+				id="doctor-note-{photos[currentIndex].id}"
 				bind:value={photos[currentIndex].doctorNote}
 				on:blur={() => updateDoctorNote(photos[currentIndex].id, photos[currentIndex].doctorNote || '')}
 				placeholder="Add notes about this visit..."
@@ -225,20 +229,24 @@
 
 <!-- Image Modal -->
 {#if showModal}
-	<div 
-		class="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4"
+	<button
+		type="button"
+		class="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 border-0"
 		on:click={handleModalClick}
 		on:keydown={(e) => e.key === 'Escape' && closeModal()}
 		role="dialog"
 		aria-modal="true"
+		aria-label="Image viewer - press escape to close"
 		tabindex="-1"
 	>
 		<div class="relative w-[95vw] h-[95vh] max-w-6xl max-h-6xl">
 			<img
 				src={modalImageUrl}
-				alt="Enlarged photo"
+				alt=""
+				aria-describedby="modal-description"
 				class="w-full h-full object-cover rounded-lg"
 			/>
+			<span id="modal-description" class="sr-only">Enlarged photo view</span>
 			<button
 				on:click={closeModal}
 				class="absolute top-4 right-4 w-10 h-10 bg-black/50 text-white rounded-full 
@@ -247,7 +255,7 @@
 				<X class="w-5 h-5" />
 			</button>
 		</div>
-	</div>
+	</button>
 {/if}
 
 <input

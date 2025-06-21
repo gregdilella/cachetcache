@@ -273,8 +273,9 @@
 									
 									<!-- Date Input -->
 									<div>
-										<label class="block text-xs font-medium text-pink-600 mb-1">Date</label>
+										<label for="initial-consult-date-{visit.id}" class="block text-xs font-medium text-pink-600 mb-1">Date</label>
 										<input
+											id="initial-consult-date-{visit.id}"
 											type="date"
 											bind:value={visit.initialConsultDate}
 											on:change={() => updateVisitDate(visit.id, 'initialConsultDate', visit.initialConsultDate || '')}
@@ -307,8 +308,9 @@
 									
 									<!-- Date Input -->
 									<div>
-										<label class="block text-xs font-medium text-pink-600 mb-1">Date</label>
+										<label for="follow-up-date-{visit.id}" class="block text-xs font-medium text-pink-600 mb-1">Date</label>
 										<input
+											id="follow-up-date-{visit.id}"
 											type="date"
 											bind:value={visit.followUpDate}
 											on:change={() => updateVisitDate(visit.id, 'followUpDate', visit.followUpDate || '')}
