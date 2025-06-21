@@ -36,6 +36,45 @@ export type Database = {
         }
         Relationships: []
       }
+      user_images: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          file_size: number
+          filename: string
+          id: string
+          mime_type: string
+          original_name: string
+          r2_key: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          file_size: number
+          filename: string
+          id?: string
+          mime_type: string
+          original_name: string
+          r2_key: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          file_size?: number
+          filename?: string
+          id?: string
+          mime_type?: string
+          original_name?: string
+          r2_key?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_profile: {
         Row: {
           age: number | null
@@ -69,6 +108,92 @@ export type Database = {
           phone_number?: string | null
           sex?: string | null
           updated_at?: string | null
+        }
+        Relationships: []
+      }
+      visit_photos: {
+        Row: {
+          created_at: string | null
+          doctor_note: string | null
+          file_size: number | null
+          filename: string
+          id: string
+          mime_type: string | null
+          original_name: string | null
+          photo_type: string
+          r2_key: string
+          updated_at: string | null
+          user_id: string
+          visit_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          doctor_note?: string | null
+          file_size?: number | null
+          filename: string
+          id?: string
+          mime_type?: string | null
+          original_name?: string | null
+          photo_type: string
+          r2_key: string
+          updated_at?: string | null
+          user_id: string
+          visit_id: string
+        }
+        Update: {
+          created_at?: string | null
+          doctor_note?: string | null
+          file_size?: number | null
+          filename?: string
+          id?: string
+          mime_type?: string | null
+          original_name?: string | null
+          photo_type?: string
+          r2_key?: string
+          updated_at?: string | null
+          user_id?: string
+          visit_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "visit_photos_visit_id_fkey"
+            columns: ["visit_id"]
+            isOneToOne: false
+            referencedRelation: "visits"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      visits: {
+        Row: {
+          created_at: string | null
+          expanded: boolean | null
+          follow_up_date: string | null
+          id: string
+          initial_consult_date: string | null
+          title: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          expanded?: boolean | null
+          follow_up_date?: string | null
+          id?: string
+          initial_consult_date?: string | null
+          title: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          expanded?: boolean | null
+          follow_up_date?: string | null
+          id?: string
+          initial_consult_date?: string | null
+          title?: string
+          updated_at?: string | null
+          user_id?: string
         }
         Relationships: []
       }
