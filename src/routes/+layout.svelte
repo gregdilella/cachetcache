@@ -7,8 +7,7 @@
 		getDrawerStore,
 		initializeStores
 	} from '@skeletonlabs/skeleton';
-	import Navbar from '$lib/components/Navbar.svelte';
-	import Footer from '$lib/components/Footer.svelte';
+	import InstagramNav from '$lib/components/InstagramNav.svelte';
 	import { inject } from '@vercel/analytics';
 	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
 	import { page } from '$app/stores';
@@ -31,30 +30,56 @@
 
 <Modal />
 
-<AppShell class={!isHomePage ? 'bg-white text-black' : ''}>
-	<svelte:fragment slot="sidebarLeft">
-		{#if !isHomePage}
-			<Navbar />
-		{/if}
-	</svelte:fragment>
-	<main class={isHomePage ? '' : 'mx-8 md:mx-auto md:max-w-[80%] xl:max-w-[70%] 2xl:max-w-[60%] font-girly'}>
+{#if isHomePage}
+	<!-- Home page with original design -->
+	<div class="w-full h-full">
 		<slot />
-	</main>
-	<svelte:fragment slot="footer">
-		{#if !isHomePage}
-			<Footer />
-		{/if}
-	</svelte:fragment>
-</AppShell>
-
-
+	</div>
+{:else}
+	<!-- Simplified layout for other pages -->
+	<div class="flex min-h-screen bg-gradient-to-br from-pink-50 to-purple-50">
+		<!-- Sidebar Navigation -->
+		<div class="hidden md:block w-64 bg-white border-r border-pink-200 shadow-sm">
+			<InstagramNav />
+		</div>
+		
+		<!-- Main Content Area -->
+		<div class="flex-1 overflow-y-auto">
+			<div class="max-w-2xl mx-auto px-4 py-6">
+				<slot />
+			</div>
+		</div>
+		
+		<!-- Mobile Bottom Navigation -->
+		<div class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-pink-200 shadow-lg">
+			<InstagramNav mobile={true} />
+		</div>
+	</div>
+{/if}
 
 <style>
 	:global(h1, h2, h3) {
 		font-family: 'Sacramento', cursive !important;
 	}
 	
-	:global(body:not(.homepage)) {
+	:global(body) {
 		font-family: 'Poppins', sans-serif;
+	}
+	
+	:global(.instagram-card) {
+		background: white;
+		border-radius: 16px;
+		border: 1px solid rgb(243 244 246);
+		box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+		margin-bottom: 1.5rem;
+		overflow: hidden;
+	}
+	
+	:global(.instagram-post) {
+		background: white;
+		border-radius: 12px;
+		border: 1px solid #e4e6ea;
+		margin-bottom: 2rem;
+		overflow: hidden;
 	}
 </style>

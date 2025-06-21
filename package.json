@@ -65,6 +65,8 @@
   },
   "type": "module",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.830.0",
+    "@aws-sdk/s3-request-presigner": "^3.830.0",
     "@emailjs/browser": "^3.12.1",
     "@floating-ui/dom": "1.5.3",
     "@melt-ui/svelte": "^0.86.2",
@@ -83,6 +85,7 @@
     "highlight.js": "11.9.0",
     "lucide": "^0.503.0",
     "lucide-svelte": "^0.510.0",
+    "nanoid": "^5.1.5",
     "nodemailer": "^6.9.16",
     "stripe": "^18.0.0",
     "studio": "^0.13.5",
