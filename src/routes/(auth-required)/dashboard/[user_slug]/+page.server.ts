@@ -234,6 +234,17 @@ export const actions: Actions = {
 			return fail(401, { error: 'Unauthorized' });
 		}
 
+		// Check if user is admin
+		const { data: userProfile } = await supabase
+			.from('user_profile')
+			.select('is_admin')
+			.eq('id', user.id)
+			.single();
+
+		if (!userProfile?.is_admin) {
+			return fail(403, { error: 'Admin privileges required' });
+		}
+
 		const formData = await request.formData();
 		const title = formData.get('title') as string;
 
@@ -264,6 +275,17 @@ export const actions: Actions = {
 
 		if (!session || !user) {
 			return fail(401, { error: 'Unauthorized' });
+		}
+
+		// Check if user is admin
+		const { data: userProfile } = await supabase
+			.from('user_profile')
+			.select('is_admin')
+			.eq('id', user.id)
+			.single();
+
+		if (!userProfile?.is_admin) {
+			return fail(403, { error: 'Admin privileges required' });
 		}
 
 		const formData = await request.formData();
@@ -301,6 +323,17 @@ export const actions: Actions = {
 			return fail(401, { error: 'Unauthorized' });
 		}
 
+		// Check if user is admin
+		const { data: userProfile } = await supabase
+			.from('user_profile')
+			.select('is_admin')
+			.eq('id', user.id)
+			.single();
+
+		if (!userProfile?.is_admin) {
+			return fail(403, { error: 'Admin privileges required' });
+		}
+
 		const formData = await request.formData();
 		const visitId = formData.get('visitId') as string;
 
@@ -328,6 +361,17 @@ export const actions: Actions = {
 
 		if (!session || !user) {
 			return fail(401, { error: 'Unauthorized' });
+		}
+
+		// Check if user is admin
+		const { data: userProfile } = await supabase
+			.from('user_profile')
+			.select('is_admin')
+			.eq('id', user.id)
+			.single();
+
+		if (!userProfile?.is_admin) {
+			return fail(403, { error: 'Admin privileges required' });
 		}
 
 		const formData = await request.formData();
@@ -408,6 +452,17 @@ export const actions: Actions = {
 			return fail(401, { error: 'Unauthorized' });
 		}
 
+		// Check if user is admin
+		const { data: userProfile } = await supabase
+			.from('user_profile')
+			.select('is_admin')
+			.eq('id', user.id)
+			.single();
+
+		if (!userProfile?.is_admin) {
+			return fail(403, { error: 'Admin privileges required' });
+		}
+
 		const formData = await request.formData();
 		const photo = formData.get('photo') as File;
 		const visitId = formData.get('visitId') as string;
@@ -471,6 +526,17 @@ export const actions: Actions = {
 
 		if (!session || !user) {
 			return fail(401, { error: 'Unauthorized' });
+		}
+
+		// Check if user is admin
+		const { data: userProfile } = await supabase
+			.from('user_profile')
+			.select('is_admin')
+			.eq('id', user.id)
+			.single();
+
+		if (!userProfile?.is_admin) {
+			return fail(403, { error: 'Admin privileges required' });
 		}
 
 		const formData = await request.formData();

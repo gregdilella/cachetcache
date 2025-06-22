@@ -1,34 +1,103 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { Home, Search, Heart, User, Syringe, Mail, MessageCircle, PlusSquare } from 'lucide-svelte';
+	import { goto, invalidateAll } from '$app/navigation';
+	import { Home, Search, Heart, User, Syringe, Mail, MessageCircle, PlusSquare, LogOut, Settings, Clock, Users, Languages } from 'lucide-svelte';
 	import cachetCacheImage from '$lib/assets/cachetcachewhite.png';
+	import type { Session, SupabaseClient } from '@supabase/supabase-js';
+	import { t, currentLanguage, switchLanguage } from '$lib/i18n/translations';
 	
 	export let mobile = false;
+	export let session: Session | null = null;
+	export let supabase: SupabaseClient | undefined = undefined;
+	export let user: any = null;
 	
 	$: currentPath = $page.url.pathname;
+	$: isAuthenticated = session !== null && session !== undefined;
 	
 	function isActive(path: string) {
 		return currentPath === path;
 	}
 	
-	const navItems = [
-		{ href: '/welcome', icon: Home, label: 'Home' },
-		{ href: '/services', icon: Syringe, label: 'Services' },
-		{ href: '/about', icon: Search, label: 'About' },
-		{ href: '/contact', icon: Mail, label: 'Contact' },
-		{ href: '/signin', icon: User, label: 'Profile' }
-	];
+	async function handleSignOut() {
+		if (!supabase) return;
+		const { error } = await supabase.auth.signOut();
+		if (!error) {
+			await invalidateAll();
+			goto('/welcome');
+		}
+	}
+	
+	function toggleLanguage() {
+		const newLanguage = $currentLanguage === 'en' ? 'fr' : 'en';
+		switchLanguage(newLanguage);
+	}
 </script>
 
 {#if mobile}
 	<!-- Mobile Bottom Navigation -->
 	<div class="flex justify-around items-center py-2 bg-white">
-		{#each navItems as item}
-			<a href={item.href} class="flex flex-col items-center p-2 {isActive(item.href) ? 'text-pink-600' : 'text-gray-600 hover:text-pink-500'}">
-				<svelte:component this={item.icon} class="w-6 h-6" />
-				<span class="text-xs mt-1">{item.label}</span>
+		{#if isAuthenticated}
+			<!-- Authenticated navigation -->
+			<a href="/user_profile" class="flex flex-col items-center p-2 {isActive('/user_profile') ? 'text-pink-600' : 'text-gray-600 hover:text-pink-500'}">
+				<Settings class="w-6 h-6" />
+				<span class="text-xs mt-1">{$t.profile}</span>
 			</a>
-		{/each}
+			<a href="/dashboard" class="flex flex-col items-center p-2 {isActive('/dashboard') ? 'text-pink-600' : 'text-gray-600 hover:text-pink-500'}">
+				<Clock class="w-6 h-6" />
+				<span class="text-xs mt-1">{$t.timeline}</span>
+			</a>
+			{#if user?.is_admin}
+				<a href="/admin/patient-search" class="flex flex-col items-center p-2 {isActive('/admin/patient-search') ? 'text-pink-600' : 'text-gray-600 hover:text-pink-500'}">
+					<Users class="w-6 h-6" />
+					<span class="text-xs mt-1">{$t.patients}</span>
+				</a>
+			{/if}
+			<!-- Language Toggle -->
+			<button 
+				on:click={toggleLanguage}
+				class="flex flex-col items-center p-2 text-blue-600 hover:text-blue-700"
+			>
+				<Languages class="w-6 h-6" />
+				<span class="text-xs mt-1">{$currentLanguage === 'en' ? $t.french : $t.english}</span>
+			</button>
+			<button 
+				on:click={handleSignOut}
+				class="flex flex-col items-center p-2 text-red-600 hover:text-red-700"
+			>
+				<LogOut class="w-6 h-6" />
+				<span class="text-xs mt-1">{$t.signOut}</span>
+			</button>
+		{:else}
+			<!-- Unauthenticated navigation -->
+			<a href="/welcome" class="flex flex-col items-center p-2 {isActive('/welcome') ? 'text-pink-600' : 'text-gray-600 hover:text-pink-500'}">
+				<Home class="w-6 h-6" />
+				<span class="text-xs mt-1">{$t.home}</span>
+			</a>
+			<a href="/services" class="flex flex-col items-center p-2 {isActive('/services') ? 'text-pink-600' : 'text-gray-600 hover:text-pink-500'}">
+				<Syringe class="w-6 h-6" />
+				<span class="text-xs mt-1">{$t.services}</span>
+			</a>
+			<a href="/about" class="flex flex-col items-center p-2 {isActive('/about') ? 'text-pink-600' : 'text-gray-600 hover:text-pink-500'}">
+				<Search class="w-6 h-6" />
+				<span class="text-xs mt-1">{$t.about}</span>
+			</a>
+			<a href="/contact" class="flex flex-col items-center p-2 {isActive('/contact') ? 'text-pink-600' : 'text-gray-600 hover:text-pink-500'}">
+				<Mail class="w-6 h-6" />
+				<span class="text-xs mt-1">{$t.contact}</span>
+			</a>
+			<!-- Language Toggle -->
+			<button 
+				on:click={toggleLanguage}
+				class="flex flex-col items-center p-2 text-blue-600 hover:text-blue-700"
+			>
+				<Languages class="w-6 h-6" />
+				<span class="text-xs mt-1">{$currentLanguage === 'en' ? $t.french : $t.english}</span>
+			</button>
+			<a href="/signin" class="flex flex-col items-center p-2 {isActive('/signin') ? 'text-pink-600' : 'text-gray-600 hover:text-pink-500'}">
+				<User class="w-6 h-6" />
+				<span class="text-xs mt-1">{$t.signin}</span>
+			</a>
+		{/if}
 	</div>
 {:else}
 	<!-- Desktop Sidebar Navigation -->
@@ -45,20 +114,141 @@
 		<!-- Navigation Items -->
 		<nav class="flex-1 p-4">
 			<ul class="space-y-2">
-				{#each navItems as item}
+				{#if isAuthenticated}
+					<!-- Authenticated navigation -->
 					<li>
 						<a 
-							href={item.href} 
+							href="/user_profile" 
 							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 
-								{isActive(item.href) 
+								{isActive('/user_profile') 
 									? 'bg-pink-100 text-pink-700 shadow-sm' 
 									: 'text-gray-700 hover:bg-pink-50 hover:text-pink-600'}"
 						>
-							<svelte:component this={item.icon} class="w-6 h-6" />
-							<span class="font-medium">{item.label}</span>
+							<Settings class="w-6 h-6" />
+							<span class="font-medium">{$t.profile}</span>
 						</a>
 					</li>
-				{/each}
+					<li>
+						<a 
+							href="/dashboard" 
+							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 
+								{isActive('/dashboard') 
+									? 'bg-pink-100 text-pink-700 shadow-sm' 
+									: 'text-gray-700 hover:bg-pink-50 hover:text-pink-600'}"
+						>
+							<Clock class="w-6 h-6" />
+							<span class="font-medium">{$t.timeline}</span>
+						</a>
+					</li>
+					{#if user?.is_admin}
+						<li>
+							<a 
+								href="/admin/patient-search" 
+								class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 
+									{isActive('/admin/patient-search') 
+										? 'bg-pink-100 text-pink-700 shadow-sm' 
+										: 'text-gray-700 hover:bg-pink-50 hover:text-pink-600'}"
+							>
+								<Users class="w-6 h-6" />
+								<span class="font-medium">{$t.patients}</span>
+							</a>
+						</li>
+					{/if}
+					<!-- Language Toggle -->
+					<li>
+						<button 
+							on:click={toggleLanguage}
+							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 
+								text-blue-600 hover:bg-blue-50 hover:text-blue-700 w-full text-left"
+						>
+							<Languages class="w-6 h-6" />
+							<span class="font-medium">{$currentLanguage === 'en' ? $t.french : $t.english}</span>
+						</button>
+					</li>
+					<li>
+						<button 
+							on:click={handleSignOut}
+							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 
+								text-red-600 hover:bg-red-50 hover:text-red-700 w-full text-left"
+						>
+							<LogOut class="w-6 h-6" />
+							<span class="font-medium">{$t.signOut}</span>
+						</button>
+					</li>
+				{:else}
+					<!-- Unauthenticated navigation -->
+					<li>
+						<a 
+							href="/welcome" 
+							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 
+								{isActive('/welcome') 
+									? 'bg-pink-100 text-pink-700 shadow-sm' 
+									: 'text-gray-700 hover:bg-pink-50 hover:text-pink-600'}"
+						>
+							<Home class="w-6 h-6" />
+							<span class="font-medium">{$t.home}</span>
+						</a>
+					</li>
+					<li>
+						<a 
+							href="/services" 
+							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 
+								{isActive('/services') 
+									? 'bg-pink-100 text-pink-700 shadow-sm' 
+									: 'text-gray-700 hover:bg-pink-50 hover:text-pink-600'}"
+						>
+							<Syringe class="w-6 h-6" />
+							<span class="font-medium">{$t.services}</span>
+						</a>
+					</li>
+					<li>
+						<a 
+							href="/about" 
+							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 
+								{isActive('/about') 
+									? 'bg-pink-100 text-pink-700 shadow-sm' 
+									: 'text-gray-700 hover:bg-pink-50 hover:text-pink-600'}"
+						>
+							<Search class="w-6 h-6" />
+							<span class="font-medium">{$t.about}</span>
+						</a>
+					</li>
+					<li>
+						<a 
+							href="/contact" 
+							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 
+								{isActive('/contact') 
+									? 'bg-pink-100 text-pink-700 shadow-sm' 
+									: 'text-gray-700 hover:bg-pink-50 hover:text-pink-600'}"
+						>
+							<Mail class="w-6 h-6" />
+							<span class="font-medium">{$t.contact}</span>
+						</a>
+					</li>
+					<!-- Language Toggle -->
+					<li>
+						<button 
+							on:click={toggleLanguage}
+							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 
+								text-blue-600 hover:bg-blue-50 hover:text-blue-700 w-full text-left"
+						>
+							<Languages class="w-6 h-6" />
+							<span class="font-medium">{$currentLanguage === 'en' ? $t.french : $t.english}</span>
+						</button>
+					</li>
+					<li>
+						<a 
+							href="/signin" 
+							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 
+								{isActive('/signin') 
+									? 'bg-pink-100 text-pink-700 shadow-sm' 
+									: 'text-gray-700 hover:bg-pink-50 hover:text-pink-600'}"
+						>
+							<User class="w-6 h-6" />
+							<span class="font-medium">{$t.signin}</span>
+						</a>
+					</li>
+				{/if}
 			</ul>
 		</nav>
 	</div>

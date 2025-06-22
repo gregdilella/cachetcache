@@ -1,16 +1,14 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
-	import type { PageData, ActionData } from './$types';
+	import type { PageData } from './$types';
 	import { invalidateAll } from '$app/navigation';
 	import VisitTimeline from '$lib/components/VisitTimeline.svelte';
-	import { User, Settings, Calendar } from 'lucide-svelte';
+	import { User, Calendar } from 'lucide-svelte';
+	import { t } from '$lib/i18n/translations/index.js';
 
 	export let data: PageData;
-	export let form: ActionData;
 
 	let loading = false;
-	let activeTab = 'visits'; // Set to 'visits' to see the timeline by default
 	
 	// Use visits data from the server
 	interface Visit {
@@ -257,7 +255,7 @@
 </script>
 
 <svelte:head>
-	<title>Dashboard | Cachet Caché</title>
+	<title>{$t.dashboard.title}</title>
 </svelte:head>
 
 <!-- Dashboard Header -->
@@ -276,173 +274,46 @@
 		</div>
 		<div class="flex-1 text-center sm:text-left">
 			<h1 class="text-2xl font-bold text-pink-800 mb-2">
-				{data.userProfile?.name || 'Welcome'}
+				{data.userProfile?.name || $t.dashboard.welcome}
 			</h1>
-			<p class="text-pink-600">{data.userProfile?.email || 'Complete your profile'}</p>
+			<p class="text-pink-600">{data.userProfile?.email || $t.dashboard.completeProfile}</p>
 			
 			<!-- Stats -->
 			<div class="flex justify-center sm:justify-start gap-6 mt-4">
 				<div class="text-center">
 					<span class="block font-bold text-pink-800">{visits.length || 0}</span>
-					<span class="text-sm text-pink-600">Visits</span>
+					<span class="text-sm text-pink-600">{$t.dashboard.visits}</span>
 				</div>
 				<div class="text-center">
-					<span class="block font-bold text-pink-800">Private</span>
-					<span class="text-sm text-pink-600">Account</span>
+					<span class="block font-bold text-pink-800">{$t.dashboard.privateAccount}</span>
+					<span class="text-sm text-pink-600">{$t.dashboard.account}</span>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
 
-<!-- Tab Navigation -->
-<div class="instagram-card p-0 mb-6">
-	<div class="flex border-b border-pink-200">
-		<button
-			class="flex-1 flex items-center justify-center gap-2 py-4 px-6 font-medium transition-colors
-				{activeTab === 'profile' 
-					? 'text-pink-700 border-b-2 border-pink-500 bg-pink-50' 
-					: 'text-pink-600 hover:text-pink-700 hover:bg-pink-25'}"
-			on:click={() => activeTab = 'profile'}
-		>
-			<Settings class="w-5 h-5" />
-			Profile Settings
-		</button>
-		<button
-			class="flex-1 flex items-center justify-center gap-2 py-4 px-6 font-medium transition-colors
-				{activeTab === 'visits' 
-					? 'text-pink-700 border-b-2 border-pink-500 bg-pink-50' 
-					: 'text-pink-600 hover:text-pink-700 hover:bg-pink-25'}"
-			on:click={() => activeTab = 'visits'}
-		>
-			<Calendar class="w-5 h-5" />
-			Visit Timeline
-		</button>
+<!-- Timeline Header -->
+<div class="instagram-card p-6 mb-6">
+	<div class="flex items-center gap-3">
+		<div class="w-10 h-10 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 flex items-center justify-center">
+			<Calendar class="w-5 h-5 text-white" />
+		</div>
+		<div>
+			<h2 class="font-semibold text-pink-800">{$t.dashboard.visitTimeline}</h2>
+			<p class="text-xs text-pink-600">{$t.dashboard.trackProgress}</p>
+		</div>
 	</div>
 </div>
 
-{#if activeTab === 'profile'}
-	<!-- Profile Settings Tab -->
-	<div class="instagram-card p-6">
-		<div class="flex items-center gap-3 mb-6">
-			<div class="w-10 h-10 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 flex items-center justify-center">
-				<Settings class="w-5 h-5 text-white" />
-			</div>
-			<div>
-				<h2 class="font-semibold text-pink-800">Profile Information</h2>
-				<p class="text-xs text-pink-600">Update your personal details</p>
-			</div>
-		</div>
-
-		{#if form?.error}
-			<div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl">
-				<p class="text-red-600 text-sm">{form.error}</p>
-			</div>
-		{/if}
-
-		{#if form?.success}
-			<div class="mb-6 p-4 bg-green-50 border border-green-200 rounded-xl">
-				<p class="text-green-600 text-sm">Profile updated successfully!</p>
-			</div>
-		{/if}
-
-		<form
-			method="POST"
-			action="?/updateProfile"
-			use:enhance={() => {
-				loading = true;
-				return async ({ update }) => {
-					loading = false;
-					await update();
-				};
-			}}
-		>
-			<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-				<div>
-					<label for="name" class="block text-sm font-medium text-pink-700 mb-2">
-						Full Name *
-					</label>
-					<input
-						type="text"
-						id="name"
-						name="name"
-						value={data.userProfile?.name || ''}
-						required
-						class="w-full p-3 border border-pink-200 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-transparent"
-						placeholder="Enter your full name"
-					/>
-				</div>
-
-				<div>
-					<label for="phone_number" class="block text-sm font-medium text-pink-700 mb-2">
-						Phone Number
-					</label>
-					<input
-						type="tel"
-						id="phone_number"
-						name="phone_number"
-						value={data.userProfile?.phone_number || ''}
-						class="w-full p-3 border border-pink-200 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-transparent"
-						placeholder="Enter your phone number"
-					/>
-				</div>
-
-				<div>
-					<label for="sex" class="block text-sm font-medium text-pink-700 mb-2">
-						Sex
-					</label>
-					<select
-						id="sex"
-						name="sex"
-						class="w-full p-3 border border-pink-200 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-transparent"
-					>
-						<option value="">Select...</option>
-						<option value="Male" selected={data.userProfile?.sex === 'Male'}>Male</option>
-						<option value="Female" selected={data.userProfile?.sex === 'Female'}>Female</option>
-						<option value="Other" selected={data.userProfile?.sex === 'Other'}>Other</option>
-					</select>
-				</div>
-
-				<div>
-					<label for="age" class="block text-sm font-medium text-pink-700 mb-2">
-						Age
-					</label>
-					<input
-						type="number"
-						id="age"
-						name="age"
-						value={data.userProfile?.age || ''}
-						min="0"
-						max="150"
-						class="w-full p-3 border border-pink-200 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-transparent"
-						placeholder="Enter your age"
-					/>
-				</div>
-			</div>
-
-			<div class="mt-8">
-				<button
-					type="submit"
-					disabled={loading}
-					class="w-full bg-gradient-to-r from-pink-500 to-purple-500 text-white py-3 px-6 rounded-xl font-medium 
-						hover:from-pink-600 hover:to-purple-600 disabled:opacity-50 disabled:cursor-not-allowed 
-						transition-all duration-200"
-				>
-					{loading ? 'Updating...' : 'Update Profile'}
-				</button>
-			</div>
-		</form>
-	</div>
-
-{:else if activeTab === 'visits'}
-	<!-- Visit Timeline Tab -->
-	<VisitTimeline 
-		bind:visits={visits}
-		on:visitAdded={handleVisitAdded}
-		on:visitDeleted={handleVisitDeleted}
-		on:photoUpload={handlePhotoUpload}
-		on:photoRemoved={handlePhotoRemoved}
-		on:noteUpdated={handleNoteUpdated}
-		on:dateUpdated={handleDateUpdated}
-	/>
-{/if}
+<!-- Visit Timeline -->
+<VisitTimeline 
+	bind:visits={visits}
+	userProfile={data.userProfile}
+	on:visitAdded={handleVisitAdded}
+	on:visitDeleted={handleVisitDeleted}
+	on:photoUpload={handlePhotoUpload}
+	on:photoRemoved={handlePhotoRemoved}
+	on:noteUpdated={handleNoteUpdated}
+	on:dateUpdated={handleDateUpdated}
+/>

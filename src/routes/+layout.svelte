@@ -11,6 +11,9 @@
 	import { inject } from '@vercel/analytics';
 	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
 	import { page } from '$app/stores';
+	import type { LayoutData } from './$types';
+
+	export let data: LayoutData;
 
 	inject();
 	injectSpeedInsights();
@@ -40,7 +43,7 @@
 	<div class="flex min-h-screen bg-gradient-to-br from-pink-50 to-purple-50">
 		<!-- Sidebar Navigation -->
 		<div class="hidden md:block w-64 bg-white border-r border-pink-200 shadow-sm">
-			<InstagramNav />
+			<InstagramNav session={data.session} supabase={data.supabase} user={data.userProfile} />
 		</div>
 		
 		<!-- Main Content Area -->
@@ -52,7 +55,7 @@
 		
 		<!-- Mobile Bottom Navigation -->
 		<div class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-pink-200 shadow-lg">
-			<InstagramNav mobile={true} />
+			<InstagramNav mobile={true} session={data.session} supabase={data.supabase} user={data.userProfile} />
 		</div>
 	</div>
 {/if}

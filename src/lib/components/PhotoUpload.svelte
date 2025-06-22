@@ -1,10 +1,13 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import { Upload, Image as ImageIcon, X, ChevronLeft, ChevronRight, FileText } from 'lucide-svelte';
+	import { t } from '$lib/i18n/translations/index.js';
 	
 	export let placeholder = 'Upload photos';
 	export let multiple = true;
 	export let photos: Array<{id: string, url: string, uploading?: boolean, doctorNote?: string}> = [];
+	export let userProfile: any = null; // User profile to check admin status
+	export let readonly = false; // Whether the component is in read-only mode
 	
 	const dispatch = createEventDispatcher();
 	
@@ -98,11 +101,11 @@
 					type="button"
 					class="w-full h-full p-0 border-0 bg-transparent cursor-pointer"
 					on:click={() => openModal(photos[currentIndex].url)}
-					aria-label="View enlarged photo {currentIndex + 1}"
+					aria-label="{$t.photoUpload.viewEnlargedPhoto} {currentIndex + 1}"
 				>
 					<img
 						src={photos[currentIndex].url}
-						alt="Photo {currentIndex + 1}"
+						alt="{$t.photoUpload.photo} {currentIndex + 1}"
 						class="w-full h-full object-cover hover:opacity-90 transition-opacity"
 					/>
 				</button>
@@ -110,11 +113,12 @@
 				<!-- Upload Overlay -->
 				{#if photos[currentIndex].uploading}
 					<div class="absolute inset-0 bg-black/50 flex items-center justify-center">
-						<div class="text-white text-sm">Uploading...</div>
+						<div class="text-white text-sm">{$t.photoUpload.uploading}</div>
 					</div>
 				{/if}
 				
-				<!-- Remove Photo Button -->
+				<!-- Remove Photo Button - Admin only -->
+				{#if userProfile?.is_admin && !readonly}
 				<button
 					on:click|stopPropagation={() => removePhoto(photos[currentIndex].id)}
 					class="absolute top-2 right-2 w-8 h-8 bg-red-500 text-white rounded-full 
@@ -122,6 +126,7 @@
 				>
 					<X class="w-4 h-4" />
 				</button>
+				{/if}
 				
 				<!-- Navigation Arrows (only show if multiple photos) -->
 				{#if photos.length > 1}
@@ -168,19 +173,21 @@
 		<div class="space-y-2">
 			<label for="doctor-note-{photos[currentIndex].id}" class="flex items-center gap-2 text-sm font-medium text-pink-700">
 				<FileText class="w-4 h-4" />
-				Doctor's Note {photos.length > 1 ? `(Photo ${currentIndex + 1})` : ''}
+				{$t.photoUpload.doctorNote} {photos.length > 1 ? `(${$t.photoUpload.photo} ${currentIndex + 1})` : ''}
 			</label>
 			<textarea
 				id="doctor-note-{photos[currentIndex].id}"
 				bind:value={photos[currentIndex].doctorNote}
 				on:blur={() => updateDoctorNote(photos[currentIndex].id, photos[currentIndex].doctorNote || '')}
-				placeholder="Add notes about this visit..."
-				class="w-full p-3 border border-pink-200 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-transparent resize-none text-sm"
+				placeholder={$t.photoUpload.addNotesPlaceholder}
+				class="w-full p-3 border border-pink-200 rounded-xl {userProfile?.is_admin && !readonly ? 'focus:ring-2 focus:ring-pink-500 focus:border-transparent' : 'bg-gray-50'} resize-none text-sm"
 				rows="3"
+				readonly={!userProfile?.is_admin || readonly}
 			></textarea>
 		</div>
 		
-		<!-- Add More Photos Button -->
+		<!-- Add More Photos Button - Admin only -->
+		{#if userProfile?.is_admin && !readonly}
 		<div
 			class="w-full p-3 border-2 border-dashed border-pink-200 rounded-xl text-pink-600 
 				hover:border-pink-300 hover:bg-pink-25 transition-colors cursor-pointer
@@ -193,14 +200,16 @@
 			role="button"
 			tabindex="0"
 		>
-			<div class="flex items-center justify-center gap-2">
-				<Upload class="w-4 h-4" />
-				{dragOver ? 'Drop photos here' : 'Add More Photos'}
-			</div>
+					<div class="flex items-center justify-center gap-2">
+			<Upload class="w-4 h-4" />
+			{dragOver ? $t.photoUpload.dropPhotosHere : $t.photoUpload.addMorePhotos}
 		</div>
+		</div>
+		{/if}
 	</div>
 {:else}
-	<!-- Initial Upload Area -->
+	<!-- Initial Upload Area - Admin only -->
+	{#if userProfile?.is_admin && !readonly}
 	<div
 		class="border-2 border-dashed rounded-xl p-6 text-center transition-all duration-200 cursor-pointer h-64 flex flex-col items-center justify-center
 			{dragOver 
@@ -216,37 +225,48 @@
 	>
 		<ImageIcon class="w-8 h-8 text-pink-400 mb-3" />
 		<p class="text-pink-700 font-medium mb-1">
-			{dragOver ? 'Drop your photos here' : placeholder}
+			{dragOver ? $t.photoUpload.dropYourPhotos : placeholder}
 		</p>
 		<p class="text-sm text-pink-500">
-			JPEG, PNG, WebP up to 10MB each
+			{$t.photoUpload.fileFormats}
 		</p>
 		<p class="text-xs text-pink-400 mt-1">
-			Select multiple files or drag & drop
+			{$t.photoUpload.selectMultiple}
 		</p>
 	</div>
+	{:else}
+	<div class="text-center py-8 text-pink-600">
+		<ImageIcon class="w-8 h-8 text-pink-300 mx-auto mb-2" />
+		<p class="text-sm">No photos available</p>
+	</div>
+	{/if}
 {/if}
 
 <!-- Image Modal -->
 {#if showModal}
-	<button
-		type="button"
-		class="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 border-0"
-		on:click={handleModalClick}
-		on:keydown={(e) => e.key === 'Escape' && closeModal()}
+	<div
+		class="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4"
 		role="dialog"
 		aria-modal="true"
-		aria-label="Image viewer - press escape to close"
-		tabindex="-1"
+		aria-label="{$t.photoUpload.closeImageViewer} - press escape to close"
 	>
-		<div class="relative w-[95vw] h-[95vh] max-w-6xl max-h-6xl">
+		<!-- Backdrop button to close modal -->
+		<button
+			type="button"
+			class="absolute inset-0 w-full h-full cursor-pointer bg-transparent border-0 p-0"
+			on:click={handleModalClick}
+			on:keydown={(e) => e.key === 'Escape' && closeModal()}
+			aria-label={$t.photoUpload.closeImageViewer}
+		></button>
+		
+		<div class="relative w-[95vw] h-[95vh] max-w-6xl max-h-6xl z-10">
 			<img
 				src={modalImageUrl}
 				alt=""
 				aria-describedby="modal-description"
 				class="w-full h-full object-cover rounded-lg"
 			/>
-			<span id="modal-description" class="sr-only">Enlarged photo view</span>
+			<span id="modal-description" class="sr-only">{$t.photoUpload.enlargedPhotoView}</span>
 			<button
 				on:click={closeModal}
 				class="absolute top-4 right-4 w-10 h-10 bg-black/50 text-white rounded-full 
@@ -255,7 +275,7 @@
 				<X class="w-5 h-5" />
 			</button>
 		</div>
-	</button>
+	</div>
 {/if}
 
 <input

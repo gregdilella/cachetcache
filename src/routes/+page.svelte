@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { t } from '$lib/i18n/translations';
 	import cachetCacheImage from '$lib/assets/cachetcache1.png';
 	
 	function navigateToWelcome() {
@@ -9,10 +10,10 @@
 
 <svelte:head>
 	<title>Cachet Caché</title>
-	<meta name="description" content="The Homepage of Cachet Caché" />
+	<meta name="description" content={$t.welcomePage.description} />
 	<meta property="og:title" content="Cachet Caché" />
 	<meta property="og:image" content="ccpink.png" />
-	<meta property="og:description" content="Homepage of Cachet Caché" />
+	<meta property="og:description" content={$t.welcomePage.description} />
 	<meta property="og:url" content="https://www.cachetcache.com" />
 </svelte:head>
 

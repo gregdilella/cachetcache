@@ -50,13 +50,11 @@ export const actions: Actions = {
 
 		// Check if email confirmation is required
 		if (!data.session) {
-			return {
-				success: true,
-				message: 'Please check your email to confirm your account before signing in.'
-			};
+			// Redirect to signin with success message
+			throw redirect(303, '/signin?message=Please check your email to confirm your account before signing in.');
 		}
 
-		// If no email confirmation is required, redirect to dashboard
-		throw redirect(303, '/dashboard');
+		// If no email confirmation is required, redirect to signin
+		throw redirect(303, '/signin?message=Account created successfully! Please sign in.');
 	}
 }; 
