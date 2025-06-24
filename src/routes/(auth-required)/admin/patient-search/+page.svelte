@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Search, User, Calendar, Phone, Users as UsersIcon } from 'lucide-svelte';
+	import { goto } from '$app/navigation';
 	import type { PageData } from './$types';
 	import { t } from '$lib/i18n/translations/index.js';
 
@@ -35,6 +36,10 @@
 			return calculatedAge;
 		}
 		return age || 'N/A';
+	}
+
+	function navigateToPatientTimeline(userId: string) {
+		goto(`/dashboard/${userId}`);
 	}
 </script>
 
@@ -91,7 +96,13 @@
 				</thead>
 				<tbody class="bg-white divide-y divide-gray-200">
 					{#each filteredUsers as user (user.id)}
-						<tr class="hover:bg-gray-50 cf-hover">
+						<tr 
+							class="hover:bg-gray-50 cf-hover cursor-pointer transition-colors" 
+							on:click={() => navigateToPatientTimeline(user.id)}
+							role="button"
+							tabindex="0"
+							on:keydown={(e) => e.key === 'Enter' && navigateToPatientTimeline(user.id)}
+						>
 							<td class="px-6 py-4 whitespace-nowrap">
 								<div class="flex items-center">
 									<div class="flex-shrink-0 h-10 w-10">

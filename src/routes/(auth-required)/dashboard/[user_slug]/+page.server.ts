@@ -1,6 +1,7 @@
 import { error, fail, redirect } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
 import { deleteFile, getSignedDownloadUrl, uploadFile } from '$lib/r2-storage';
+import { createSupabaseAdminClient } from '$lib/supabase.server';
 import type { Database } from '$lib/types/supabase.types';
 
 type Visit = Database['public']['Tables']['visits']['Row'];
@@ -13,41 +14,71 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase 
 		throw redirect(303, '/signin');
 	}
 
-	// Get the user profile from the database (using the authenticated user's ID, not the slug)
-	let { data: userProfile, error: profileError } = await supabase
+	// Validate that user_slug is a valid UUID format
+	const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+	if (!uuidRegex.test(params.user_slug)) {
+		throw error(404, 'Invalid user ID format');
+	}
+
+	// Check if current user is admin
+	const { data: currentUserProfile, error: currentUserError } = await supabase
 		.from('user_profile')
-		.select('*')
+		.select('is_admin')
 		.eq('id', user.id)
 		.single();
 
-	// If user profile doesn't exist, create it
+	if (currentUserError) {
+		console.error('Error loading current user profile:', currentUserError);
+		throw error(500, 'Failed to load user profile');
+	}
+
+	// Determine which user's data to load
+	const targetUserId = currentUserProfile?.is_admin ? params.user_slug : user.id;
+	const isViewingOtherUser = currentUserProfile?.is_admin && targetUserId !== user.id;
+
+	// Use admin client if viewing another user's data, otherwise use regular client
+	const clientToUse = isViewingOtherUser ? createSupabaseAdminClient() : supabase;
+
+	// Get the target user's profile
+	let { data: userProfile, error: profileError } = await clientToUse
+		.from('user_profile')
+		.select('*')
+		.eq('id', targetUserId)
+		.single();
+
+	// If user profile doesn't exist and we're viewing our own profile, create it
 	if (profileError && profileError.code === 'PGRST116') { // PGRST116 is "not found"
-		console.log('User profile not found, creating new profile for user:', user.id);
-		
-		const { data: newProfile, error: createError } = await supabase
-			.from('user_profile')
-			.insert({
-				id: user.id,
-				email: user.email,
-				created_at: new Date().toISOString(),
-				updated_at: new Date().toISOString()
-			})
-			.select()
-			.single();
+		if (targetUserId === user.id) {
+			console.log('User profile not found, creating new profile for user:', user.id);
+			
+			const { data: newProfile, error: createError } = await supabase
+				.from('user_profile')
+				.insert({
+					id: user.id,
+					email: user.email,
+					created_at: new Date().toISOString(),
+					updated_at: new Date().toISOString()
+				})
+				.select()
+				.single();
 
-		if (createError) {
-			console.error('Error creating user profile:', createError);
-			throw error(500, 'Failed to create user profile');
+			if (createError) {
+				console.error('Error creating user profile:', createError);
+				throw error(500, 'Failed to create user profile');
+			}
+
+			userProfile = newProfile;
+		} else {
+			// Viewing another user's profile that doesn't exist
+			throw error(404, 'User not found');
 		}
-
-		userProfile = newProfile;
 	} else if (profileError) {
 		console.error('Error loading user profile:', profileError);
 		throw error(500, 'Failed to load user profile');
 	}
 
-	// Make sure email is up to date if it's missing
-	if (userProfile && !userProfile.email && user.email) {
+	// Make sure email is up to date if it's missing (only for own profile)
+	if (userProfile && !userProfile.email && user.email && targetUserId === user.id) {
 		const { error: updateError } = await supabase
 			.from('user_profile')
 			.update({ email: user.email, updated_at: new Date().toISOString() })
@@ -59,10 +90,10 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase 
 	}
 
 	// Load user's images with RLS
-	const { data: userImages, error: imagesError } = await supabase
+	const { data: userImages, error: imagesError } = await clientToUse
 		.from('user_images')
 		.select('*')
-		.eq('user_id', user.id)
+		.eq('user_id', targetUserId)
 		.order('created_at', { ascending: false });
 
 	if (imagesError) {
@@ -71,13 +102,13 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase 
 	}
 
 	// Load user's visits with photos
-	const { data: visits, error: visitsError } = await supabase
+	const { data: visits, error: visitsError } = await clientToUse
 		.from('visits')
 		.select(`
 			*,
 			visit_photos (*)
 		`)
-		.eq('user_id', user.id)
+		.eq('user_id', targetUserId)
 		.order('created_at', { ascending: false });
 
 	if (visitsError) {
@@ -155,7 +186,12 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase 
 		userProfile: userProfile || null,
 		userImages: imagesWithUrls || [],
 		visits: visitsWithPhotos || [],
-		user_slug: params.user_slug
+		user_slug: params.user_slug,
+		isViewingOtherUser,
+		currentUser: {
+			id: user.id,
+			is_admin: currentUserProfile?.is_admin || false
+		}
 	};
 };
 
@@ -227,7 +263,7 @@ export const actions: Actions = {
 		return { success: true };
 	},
 
-	createVisit: async ({ request, locals: { safeGetSession, supabase } }) => {
+	createVisit: async ({ request, locals: { safeGetSession, supabase }, params }) => {
 		const { session, user } = await safeGetSession();
 
 		if (!session || !user) {
@@ -252,10 +288,17 @@ export const actions: Actions = {
 			return fail(400, { error: 'Visit title is required' });
 		}
 
-		const { data: visit, error: insertError } = await supabase
+		// Determine target user ID (admin can create visits for other users)
+		const targetUserId = params.user_slug;
+		const isCreatingForOtherUser = targetUserId !== user.id;
+
+		// Use admin client if creating for another user to bypass RLS
+		const clientToUse = isCreatingForOtherUser ? createSupabaseAdminClient() : supabase;
+
+		const { data: visit, error: insertError } = await clientToUse
 			.from('visits')
 			.insert({
-				user_id: user.id,
+				user_id: targetUserId,
 				title: title.trim(),
 				expanded: true
 			})
@@ -270,7 +313,7 @@ export const actions: Actions = {
 		return { success: true, visit };
 	},
 
-	updateVisit: async ({ request, locals: { safeGetSession, supabase } }) => {
+	updateVisit: async ({ request, locals: { safeGetSession, supabase }, params }) => {
 		const { session, user } = await safeGetSession();
 
 		if (!session || !user) {
@@ -302,11 +345,18 @@ export const actions: Actions = {
 		if (initialConsultDate) updateData.initial_consult_date = initialConsultDate;
 		if (followUpDate) updateData.follow_up_date = followUpDate;
 
-		const { error: updateError } = await supabase
+		// Determine target user ID (admin can update visits for other users)
+		const targetUserId = params.user_slug;
+		const isUpdatingForOtherUser = targetUserId !== user.id;
+
+		// Use admin client if updating for another user to bypass RLS
+		const clientToUse = isUpdatingForOtherUser ? createSupabaseAdminClient() : supabase;
+
+		const { error: updateError } = await clientToUse
 			.from('visits')
 			.update(updateData)
 			.eq('id', visitId)
-			.eq('user_id', user.id);
+			.eq('user_id', targetUserId);
 
 		if (updateError) {
 			console.error('Error updating visit:', updateError);
@@ -316,7 +366,7 @@ export const actions: Actions = {
 		return { success: true };
 	},
 
-	deleteVisit: async ({ request, locals: { safeGetSession, supabase } }) => {
+	deleteVisit: async ({ request, locals: { safeGetSession, supabase }, params }) => {
 		const { session, user } = await safeGetSession();
 
 		if (!session || !user) {
@@ -341,12 +391,19 @@ export const actions: Actions = {
 			return fail(400, { error: 'Visit ID is required' });
 		}
 
+		// Determine target user ID (admin can delete visits for other users)
+		const targetUserId = params.user_slug;
+		const isDeletingForOtherUser = targetUserId !== user.id;
+
+		// Use admin client if deleting for another user to bypass RLS
+		const clientToUse = isDeletingForOtherUser ? createSupabaseAdminClient() : supabase;
+
 		// Delete visit (photos will be deleted via CASCADE)
-		const { error: deleteError } = await supabase
+		const { error: deleteError } = await clientToUse
 			.from('visits')
 			.delete()
 			.eq('id', visitId)
-			.eq('user_id', user.id);
+			.eq('user_id', targetUserId);
 
 		if (deleteError) {
 			console.error('Error deleting visit:', deleteError);
@@ -356,7 +413,7 @@ export const actions: Actions = {
 		return { success: true };
 	},
 
-	updatePhotoNote: async ({ request, locals: { safeGetSession, supabase } }) => {
+	updatePhotoNote: async ({ request, locals: { safeGetSession, supabase }, params }) => {
 		const { session, user } = await safeGetSession();
 
 		if (!session || !user) {
@@ -382,11 +439,18 @@ export const actions: Actions = {
 			return fail(400, { error: 'Photo ID is required' });
 		}
 
-		const { error: updateError } = await supabase
+		// Determine target user ID (admin can update photo notes for other users)
+		const targetUserId = params.user_slug;
+		const isUpdatingForOtherUser = targetUserId !== user.id;
+
+		// Use admin client if updating for another user to bypass RLS
+		const clientToUse = isUpdatingForOtherUser ? createSupabaseAdminClient() : supabase;
+
+		const { error: updateError } = await clientToUse
 			.from('visit_photos')
 			.update({ doctor_note: note || null })
 			.eq('id', photoId)
-			.eq('user_id', user.id);
+			.eq('user_id', targetUserId);
 
 		if (updateError) {
 			console.error('Error updating photo note:', updateError);
@@ -445,7 +509,7 @@ export const actions: Actions = {
 		}
 	},
 
-	uploadPhoto: async ({ request, locals: { safeGetSession, supabase } }) => {
+	uploadPhoto: async ({ request, locals: { safeGetSession, supabase }, params }) => {
 		const { session, user } = await safeGetSession();
 
 		if (!session || !user) {
@@ -480,6 +544,13 @@ export const actions: Actions = {
 			return fail(400, { error: 'Invalid photo type' });
 		}
 
+		// Determine target user ID (admin can upload photos for other users)
+		const targetUserId = params.user_slug;
+		const isUploadingForOtherUser = targetUserId !== user.id;
+
+		// Use admin client if uploading for another user to bypass RLS
+		const clientToUse = isUploadingForOtherUser ? createSupabaseAdminClient() : supabase;
+
 		try {
 			// Generate unique filename
 			const fileExtension = photo.name.split('.').pop() || 'jpg';
@@ -493,10 +564,10 @@ export const actions: Actions = {
 			await uploadFile(uniqueKey, buffer, photo.type);
 
 			// Save photo details to database
-			const { data: photoData, error: insertError } = await supabase
+			const { data: photoData, error: insertError } = await clientToUse
 				.from('visit_photos')
 				.insert({
-					user_id: user.id,
+					user_id: targetUserId,
 					visit_id: visitId,
 					r2_key: uniqueKey,
 					filename: uniqueKey,
@@ -521,7 +592,7 @@ export const actions: Actions = {
 		}
 	},
 
-	deletePhoto: async ({ request, locals: { safeGetSession, supabase } }) => {
+	deletePhoto: async ({ request, locals: { safeGetSession, supabase }, params }) => {
 		const { session, user } = await safeGetSession();
 
 		if (!session || !user) {
@@ -546,12 +617,19 @@ export const actions: Actions = {
 			return fail(400, { error: 'Photo ID is required' });
 		}
 
-		// Get photo details first (RLS will ensure user can only access their own photos)
-		const { data: photo, error: fetchError } = await supabase
+		// Determine target user ID (admin can delete photos for other users)
+		const targetUserId = params.user_slug;
+		const isDeletingForOtherUser = targetUserId !== user.id;
+
+		// Use admin client if deleting for another user to bypass RLS
+		const clientToUse = isDeletingForOtherUser ? createSupabaseAdminClient() : supabase;
+
+		// Get photo details first
+		const { data: photo, error: fetchError } = await clientToUse
 			.from('visit_photos')
 			.select('*')
 			.eq('id', photoId)
-			.eq('user_id', user.id)
+			.eq('user_id', targetUserId)
 			.single();
 
 		if (fetchError || !photo) {
@@ -562,12 +640,12 @@ export const actions: Actions = {
 			// Delete from R2
 			await deleteFile(photo.r2_key);
 
-			// Delete from database (RLS will ensure user can only delete their own photos)
-			const { error: deleteError } = await supabase
+			// Delete from database
+			const { error: deleteError } = await clientToUse
 				.from('visit_photos')
 				.delete()
 				.eq('id', photoId)
-				.eq('user_id', user.id);
+				.eq('user_id', targetUserId);
 
 			if (deleteError) {
 				console.error('Error deleting photo from database:', deleteError);

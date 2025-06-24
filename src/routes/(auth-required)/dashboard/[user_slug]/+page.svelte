@@ -298,7 +298,7 @@
 <!-- Visit Timeline -->
 <VisitTimeline 
 	bind:visits={visits}
-	userProfile={data.userProfile}
+	userProfile={data.currentUser}
 	on:visitAdded={handleVisitAdded}
 	on:visitDeleted={handleVisitDeleted}
 	on:photoUpload={handlePhotoUpload}
