@@ -38,16 +38,16 @@
 	<div class="flex justify-around items-center py-2 bg-white">
 		{#if isAuthenticated}
 			<!-- Authenticated navigation -->
-			<a href="/user_profile" class="flex flex-col items-center p-2 {isActive('/user_profile') ? 'text-pink-600' : 'text-gray-600 hover:text-pink-500'}">
+			<a href="/user_profile" class="flex flex-col items-center p-2 {isActive('/user_profile') ? 'text-pink-600' : 'cf-text hover:text-pink-500'}">
 				<Settings class="w-6 h-6" />
 				<span class="text-xs mt-1">{$t.profile}</span>
 			</a>
-			<a href="/dashboard" class="flex flex-col items-center p-2 {isActive('/dashboard') ? 'text-pink-600' : 'text-gray-600 hover:text-pink-500'}">
+			<a href="/dashboard" class="flex flex-col items-center p-2 {isActive('/dashboard') ? 'text-pink-600' : 'cf-text hover:text-pink-500'}">
 				<Clock class="w-6 h-6" />
 				<span class="text-xs mt-1">{$t.timeline}</span>
 			</a>
 			{#if user?.is_admin}
-				<a href="/admin/patient-search" class="flex flex-col items-center p-2 {isActive('/admin/patient-search') ? 'text-pink-600' : 'text-gray-600 hover:text-pink-500'}">
+				<a href="/admin/patient-search" class="flex flex-col items-center p-2 {isActive('/admin/patient-search') ? 'text-pink-600' : 'cf-text hover:text-pink-500'}">
 					<Users class="w-6 h-6" />
 					<span class="text-xs mt-1">{$t.patients}</span>
 				</a>
@@ -69,19 +69,19 @@
 			</button>
 		{:else}
 			<!-- Unauthenticated navigation -->
-			<a href="/welcome" class="flex flex-col items-center p-2 {isActive('/welcome') ? 'text-pink-600' : 'text-gray-600 hover:text-pink-500'}">
+			<a href="/welcome" class="flex flex-col items-center p-2 {isActive('/welcome') ? 'text-pink-600' : 'cf-text hover:text-pink-500'}">
 				<Home class="w-6 h-6" />
 				<span class="text-xs mt-1">{$t.home}</span>
 			</a>
-			<a href="/services" class="flex flex-col items-center p-2 {isActive('/services') ? 'text-pink-600' : 'text-gray-600 hover:text-pink-500'}">
+			<a href="/services" class="flex flex-col items-center p-2 {isActive('/services') ? 'text-pink-600' : 'cf-text hover:text-pink-500'}">
 				<Syringe class="w-6 h-6" />
 				<span class="text-xs mt-1">{$t.services}</span>
 			</a>
-			<a href="/about" class="flex flex-col items-center p-2 {isActive('/about') ? 'text-pink-600' : 'text-gray-600 hover:text-pink-500'}">
+			<a href="/about" class="flex flex-col items-center p-2 {isActive('/about') ? 'text-pink-600' : 'cf-text hover:text-pink-500'}">
 				<Search class="w-6 h-6" />
 				<span class="text-xs mt-1">{$t.about}</span>
 			</a>
-			<a href="/contact" class="flex flex-col items-center p-2 {isActive('/contact') ? 'text-pink-600' : 'text-gray-600 hover:text-pink-500'}">
+			<a href="/contact" class="flex flex-col items-center p-2 {isActive('/contact') ? 'text-pink-600' : 'cf-text hover:text-pink-500'}">
 				<Mail class="w-6 h-6" />
 				<span class="text-xs mt-1">{$t.contact}</span>
 			</a>
@@ -93,7 +93,7 @@
 				<Languages class="w-6 h-6" />
 				<span class="text-xs mt-1">{$currentLanguage === 'en' ? $t.french : $t.english}</span>
 			</button>
-			<a href="/signin" class="flex flex-col items-center p-2 {isActive('/signin') ? 'text-pink-600' : 'text-gray-600 hover:text-pink-500'}">
+			<a href="/signin" class="flex flex-col items-center p-2 {isActive('/signin') ? 'text-pink-600' : 'cf-text hover:text-pink-500'}">
 				<User class="w-6 h-6" />
 				<span class="text-xs mt-1">{$t.signin}</span>
 			</a>
@@ -103,7 +103,7 @@
 	<!-- Desktop Sidebar Navigation -->
 	<div class="flex flex-col h-full">
 		<!-- Logo/Brand -->
-		<div class="p-6 border-b border-pink-200 flex justify-center">
+		<div class="p-6 pink-gradient-border flex justify-center">
 			<img 
 				src={cachetCacheImage} 
 				alt="Cachet Caché" 
@@ -119,10 +119,10 @@
 					<li>
 						<a 
 							href="/user_profile" 
-							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 
+							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-hover
 								{isActive('/user_profile') 
-									? 'bg-pink-100 text-pink-700 shadow-sm' 
-									: 'text-gray-700 hover:bg-pink-50 hover:text-pink-600'}"
+									? 'pink-gradient-border text-pink-700 shadow-sm' 
+									: 'cf-text hover:bg-pink-50 hover:text-pink-600'}"
 						>
 							<Settings class="w-6 h-6" />
 							<span class="font-medium">{$t.profile}</span>
@@ -131,10 +131,10 @@
 					<li>
 						<a 
 							href="/dashboard" 
-							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 
+							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-hover
 								{isActive('/dashboard') 
-									? 'bg-pink-100 text-pink-700 shadow-sm' 
-									: 'text-gray-700 hover:bg-pink-50 hover:text-pink-600'}"
+									? 'pink-gradient-border text-pink-700 shadow-sm' 
+									: 'cf-text hover:bg-pink-50 hover:text-pink-600'}"
 						>
 							<Clock class="w-6 h-6" />
 							<span class="font-medium">{$t.timeline}</span>
@@ -144,10 +144,10 @@
 						<li>
 							<a 
 								href="/admin/patient-search" 
-								class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 
+								class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-hover
 									{isActive('/admin/patient-search') 
-										? 'bg-pink-100 text-pink-700 shadow-sm' 
-										: 'text-gray-700 hover:bg-pink-50 hover:text-pink-600'}"
+										? 'pink-gradient-border text-pink-700 shadow-sm' 
+										: 'cf-text hover:bg-pink-50 hover:text-pink-600'}"
 							>
 								<Users class="w-6 h-6" />
 								<span class="font-medium">{$t.patients}</span>
@@ -158,7 +158,7 @@
 					<li>
 						<button 
 							on:click={toggleLanguage}
-							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 
+							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-hover
 								text-blue-600 hover:bg-blue-50 hover:text-blue-700 w-full text-left"
 						>
 							<Languages class="w-6 h-6" />
@@ -168,7 +168,7 @@
 					<li>
 						<button 
 							on:click={handleSignOut}
-							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 
+							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-hover
 								text-red-600 hover:bg-red-50 hover:text-red-700 w-full text-left"
 						>
 							<LogOut class="w-6 h-6" />
@@ -180,10 +180,10 @@
 					<li>
 						<a 
 							href="/welcome" 
-							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 
+							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-hover
 								{isActive('/welcome') 
-									? 'bg-pink-100 text-pink-700 shadow-sm' 
-									: 'text-gray-700 hover:bg-pink-50 hover:text-pink-600'}"
+									? 'pink-gradient-border text-pink-700 shadow-sm' 
+									: 'cf-text hover:bg-pink-50 hover:text-pink-600'}"
 						>
 							<Home class="w-6 h-6" />
 							<span class="font-medium">{$t.home}</span>
@@ -192,10 +192,10 @@
 					<li>
 						<a 
 							href="/services" 
-							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 
+							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-hover
 								{isActive('/services') 
-									? 'bg-pink-100 text-pink-700 shadow-sm' 
-									: 'text-gray-700 hover:bg-pink-50 hover:text-pink-600'}"
+									? 'pink-gradient-border text-pink-700 shadow-sm' 
+									: 'cf-text hover:bg-pink-50 hover:text-pink-600'}"
 						>
 							<Syringe class="w-6 h-6" />
 							<span class="font-medium">{$t.services}</span>
@@ -204,10 +204,10 @@
 					<li>
 						<a 
 							href="/about" 
-							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 
+							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-hover
 								{isActive('/about') 
-									? 'bg-pink-100 text-pink-700 shadow-sm' 
-									: 'text-gray-700 hover:bg-pink-50 hover:text-pink-600'}"
+									? 'pink-gradient-border text-pink-700 shadow-sm' 
+									: 'cf-text hover:bg-pink-50 hover:text-pink-600'}"
 						>
 							<Search class="w-6 h-6" />
 							<span class="font-medium">{$t.about}</span>
@@ -216,10 +216,10 @@
 					<li>
 						<a 
 							href="/contact" 
-							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 
+							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-hover
 								{isActive('/contact') 
-									? 'bg-pink-100 text-pink-700 shadow-sm' 
-									: 'text-gray-700 hover:bg-pink-50 hover:text-pink-600'}"
+									? 'pink-gradient-border text-pink-700 shadow-sm' 
+									: 'cf-text hover:bg-pink-50 hover:text-pink-600'}"
 						>
 							<Mail class="w-6 h-6" />
 							<span class="font-medium">{$t.contact}</span>
@@ -229,7 +229,7 @@
 					<li>
 						<button 
 							on:click={toggleLanguage}
-							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 
+							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-hover
 								text-blue-600 hover:bg-blue-50 hover:text-blue-700 w-full text-left"
 						>
 							<Languages class="w-6 h-6" />
@@ -239,10 +239,10 @@
 					<li>
 						<a 
 							href="/signin" 
-							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 
+							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-hover
 								{isActive('/signin') 
-									? 'bg-pink-100 text-pink-700 shadow-sm' 
-									: 'text-gray-700 hover:bg-pink-50 hover:text-pink-600'}"
+									? 'pink-gradient-border text-pink-700 shadow-sm' 
+									: 'cf-text hover:bg-pink-50 hover:text-pink-600'}"
 						>
 							<User class="w-6 h-6" />
 							<span class="font-medium">{$t.signin}</span>

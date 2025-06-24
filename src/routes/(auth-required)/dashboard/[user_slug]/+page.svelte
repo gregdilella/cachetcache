@@ -259,49 +259,38 @@
 </svelte:head>
 
 <!-- Dashboard Header -->
-<div class="instagram-card p-6 mb-6">
-	<div class="flex flex-col sm:flex-row items-center gap-6">
-		<div class="w-20 h-20 rounded-full overflow-hidden bg-gradient-to-r from-pink-500 to-purple-500 flex items-center justify-center">
-			{#if mostRecentPhoto}
-				<img 
-					src={mostRecentPhoto.url} 
-					alt="Profile" 
-					class="w-full h-full object-cover"
-				/>
-			{:else}
-				<User class="w-10 h-10 text-white" />
-			{/if}
-		</div>
-		<div class="flex-1 text-center sm:text-left">
-			<h1 class="text-2xl font-bold text-pink-800 mb-2">
-				{data.userProfile?.name || $t.dashboard.welcome}
-			</h1>
-			<p class="text-pink-600">{data.userProfile?.email || $t.dashboard.completeProfile}</p>
-			
-			<!-- Stats -->
-			<div class="flex justify-center sm:justify-start gap-6 mt-4">
-				<div class="text-center">
-					<span class="block font-bold text-pink-800">{visits.length || 0}</span>
-					<span class="text-sm text-pink-600">{$t.dashboard.visits}</span>
-				</div>
-				<div class="text-center">
-					<span class="block font-bold text-pink-800">{$t.dashboard.privateAccount}</span>
-					<span class="text-sm text-pink-600">{$t.dashboard.account}</span>
+<div class="gradient-border-card mb-8">
+	<div class="p-12">
+		<div class="flex flex-col sm:flex-row items-center gap-8">
+			<div class="w-24 h-24 rounded-full overflow-hidden bg-gradient-to-r from-pink-500 to-purple-500 flex items-center justify-center">
+				{#if mostRecentPhoto}
+					<img 
+						src={mostRecentPhoto.url} 
+						alt="Profile" 
+						class="w-full h-full object-cover"
+					/>
+				{:else}
+					<User class="w-12 h-12 text-white" />
+				{/if}
+			</div>
+			<div class="flex-1 text-center sm:text-left">
+				<h1 class="text-3xl font-bold cf-text mb-3">
+					{data.userProfile?.name || $t.dashboard.welcome}
+				</h1>
+				<p class="cf-text-muted text-lg">{data.userProfile?.email || $t.dashboard.completeProfile}</p>
+				
+				<!-- Stats -->
+				<div class="flex justify-center sm:justify-start gap-8 mt-6">
+					<div class="text-center">
+						<span class="block font-bold cf-text text-xl">{visits.length || 0}</span>
+						<span class="text-base cf-text-muted">{$t.dashboard.visits}</span>
+					</div>
+					<div class="text-center">
+						<span class="block font-bold cf-text text-xl">{$t.dashboard.privateAccount}</span>
+						<span class="text-base cf-text-muted">{$t.dashboard.account}</span>
+					</div>
 				</div>
 			</div>
-		</div>
-	</div>
-</div>
-
-<!-- Timeline Header -->
-<div class="instagram-card p-6 mb-6">
-	<div class="flex items-center gap-3">
-		<div class="w-10 h-10 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 flex items-center justify-center">
-			<Calendar class="w-5 h-5 text-white" />
-		</div>
-		<div>
-			<h2 class="font-semibold text-pink-800">{$t.dashboard.visitTimeline}</h2>
-			<p class="text-xs text-pink-600">{$t.dashboard.trackProgress}</p>
 		</div>
 	</div>
 </div>
@@ -317,3 +306,4 @@
 	on:noteUpdated={handleNoteUpdated}
 	on:dateUpdated={handleDateUpdated}
 />
+

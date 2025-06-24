@@ -14,23 +14,175 @@
 	--theme-font-family-heading: 'Geist', sans-serif;
 }
 
+/* Cloudflare-inspired gradient animations */
+@keyframes gradient-shift {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+@keyframes gradient-border {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
 html {
 	@apply scroll-smooth;
 }
 
+/* Modern card with animated gradient border */
+.gradient-border-card {
+	position: relative;
+	background: white;
+	border-radius: 16px;
+	padding: 3px;
+	background: linear-gradient(
+		45deg,
+		#facc15,
+		#f97316,
+		#ec4899,
+		#f97316,
+		#facc15
+	);
+	background-size: 300% 300%;
+	animation: gradient-border 4s ease infinite;
+}
+
+.gradient-border-card::before {
+	content: '';
+	position: absolute;
+	inset: 3px;
+	background: white;
+	border-radius: 13px;
+	z-index: 1;
+}
+
+.gradient-border-card > * {
+	position: relative;
+	z-index: 2;
+}
+
+/* Subtle gradient border variation */
+.pink-gradient-border {
+	position: relative;
+	background: white;
+	border-radius: 12px;
+	padding: 2px;
+	background: linear-gradient(
+		135deg,
+		#facc15,
+		#f97316,
+		#ec4899,
+		#f97316,
+		#facc15
+	);
+	background-size: 200% 200%;
+	animation: gradient-shift 3s ease infinite;
+}
+
+.pink-gradient-border::before {
+	content: '';
+	position: absolute;
+	inset: 2px;
+	background: white;
+	border-radius: 10px;
+	z-index: 1;
+}
+
+.pink-gradient-border > * {
+	position: relative;
+	z-index: 2;
+}
+
+/* Cloudflare-style hover effects */
+.cf-hover {
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cf-hover:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+/* Text improvements - black text instead of pink */
+.cf-text {
+	@apply text-gray-900;
+}
+
+.cf-text-muted {
+	@apply text-gray-600;
+}
+
+.cf-text-light {
+	@apply text-gray-500;
+}
+
+/* Modern button with gradient border */
+.cf-button {
+	position: relative;
+	background: white;
+	border-radius: 8px;
+	padding: 1px;
+	background: linear-gradient(135deg, #facc15, #f97316, #ec4899);
+	background-size: 200% 200%;
+	animation: gradient-shift 2s ease infinite;
+	transition: all 0.3s ease;
+}
+
+.cf-button::before {
+	content: '';
+	position: absolute;
+	inset: 1px;
+	background: white;
+	border-radius: 7px;
+	z-index: 1;
+}
+
+.cf-button > * {
+	position: relative;
+	z-index: 2;
+}
+
+.cf-button:hover {
+	transform: scale(1.02);
+}
+
+/* Legacy classes updated */
 .bento-box {
-	@apply card variant-ghost-surface p-8 text-center transition-all duration-200 rounded-container-token hover:shadow-lg;
+	@apply cf-hover pink-gradient-border p-8 text-center transition-all duration-200;
 }
 
 .bento-heading {
-	@apply mb-4 font-black font-heading-token;
+	@apply mb-4 font-black font-heading-token cf-text;
 }
 
 .disc-list {
-	@apply list-inside list-disc;
+	@apply list-inside list-disc cf-text;
 }
 
 .link-icon {
-	@apply variant-ghost-surface btn chip aspect-square;
+	@apply cf-button aspect-square inline-flex items-center justify-center;
+}
+
+/* Instagram-style cards with new design */
+.instagram-card {
+	@apply pink-gradient-border cf-hover mb-6;
+}
+
+.instagram-post {
+	@apply gradient-border-card cf-hover mb-8;
 }
 
