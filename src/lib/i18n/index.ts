@@ -121,6 +121,7 @@ export type Translations = {
 		address: string;
 		addressValue: string;
 		bookingInstructions: string;
+		getInTouch: string;
 		or: string;
 		bookAtJaneApp: string;
 	};

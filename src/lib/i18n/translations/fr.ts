@@ -85,7 +85,7 @@ export const fr: Translations = {
 		description: 'À propos de Dr. Lisa Henriques et Cachet Caché',
 		heroTitle: 'À propos',
 		doctorName: 'Dr. Lisa Henriques',
-		meetDrLisa: 'Rencontrez Dr. Lisa',
+		meetDrLisa: 'Rencontrez Dr. Lisa Henriques',
 		aboutParagraph1: 'Dr. Lisa Henriques est une médecin de famille dévouée qui a élargi sa pratique pour inclure la médecine esthétique.',
 		aboutParagraph2: 'Depuis 2017, elle fournit des soins de santé complets tout en maintenant les plus hauts standards de soins aux patients et de confidentialité.',
 		aboutParagraph3: 'Son approche combine l\'expertise médicale avec un œil artistique pour des résultats d\'apparence naturelle.',
@@ -115,6 +115,7 @@ export const fr: Translations = {
 		address: 'Adresse:',
 		addressValue: 'Clinique VIP, suite 400, 529 rue Jarry est, Montréal, Qc',
 		bookingInstructions: 'Pour prendre rendez-vous, veuillez remplir le formulaire ci-dessous:',
+		getInTouch: 'Nous contacter',
 		or: 'Ou',
 		bookAtJaneApp: 'Réserver sur Jane App'
 	},

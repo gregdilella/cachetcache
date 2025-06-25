@@ -113,16 +113,13 @@
 		
 		<!-- Navigation Items -->
 		<nav class="flex-1 p-4">
-			<ul class="space-y-2">
+			<ul class="space-y-2 sidebar-nav">
 				{#if isAuthenticated}
 					<!-- Authenticated navigation -->
 					<li>
 						<a 
 							href="/user_profile" 
-							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-hover
-								{isActive('/user_profile') 
-									? 'pink-gradient-border text-pink-700 shadow-sm' 
-									: 'cf-text hover:bg-pink-50 hover:text-pink-600'}"
+							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-text hover:bg-pink-50 hover:text-pink-600"
 						>
 							<Settings class="w-6 h-6" />
 							<span class="font-medium">{$t.profile}</span>
@@ -131,10 +128,7 @@
 					<li>
 						<a 
 							href="/dashboard" 
-							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-hover
-								{isActive('/dashboard') 
-									? 'pink-gradient-border text-pink-700 shadow-sm' 
-									: 'cf-text hover:bg-pink-50 hover:text-pink-600'}"
+							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-text hover:bg-pink-50 hover:text-pink-600"
 						>
 							<Clock class="w-6 h-6" />
 							<span class="font-medium">{$t.timeline}</span>
@@ -144,10 +138,7 @@
 						<li>
 							<a 
 								href="/admin/patient-search" 
-								class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-hover
-									{isActive('/admin/patient-search') 
-										? 'pink-gradient-border text-pink-700 shadow-sm' 
-										: 'cf-text hover:bg-pink-50 hover:text-pink-600'}"
+								class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-text hover:bg-pink-50 hover:text-pink-600"
 							>
 								<Users class="w-6 h-6" />
 								<span class="font-medium">{$t.patients}</span>
@@ -180,10 +171,7 @@
 					<li>
 						<a 
 							href="/welcome" 
-							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-hover
-								{isActive('/welcome') 
-									? 'pink-gradient-border text-pink-700 shadow-sm' 
-									: 'cf-text hover:bg-pink-50 hover:text-pink-600'}"
+							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-text hover:bg-pink-50 hover:text-pink-600"
 						>
 							<Home class="w-6 h-6" />
 							<span class="font-medium">{$t.home}</span>

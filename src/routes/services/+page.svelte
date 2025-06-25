@@ -25,34 +25,36 @@
       </h1>
     </div>
     
-    <div class="flex flex-col items-start gap-6 my-10 w-full max-w-2xl mx-auto transition-all duration-1000 {visible ? 'opacity-100 blur-none' : 'opacity-0 blur-md'}">
-      <a href="https://cachetcache.janeapp.com/#/staff_member/1/treatment/1" target="_blank" rel="noopener noreferrer" class="w-full group">
-        <h3 class="text-2xl md:text-3xl font-semibold text-pink-700 border-2 border-pink-300 bg-gradient-to-r from-pink-50 to-purple-50 rounded-2xl px-6 py-3 shadow-sm text-left w-full hover:from-pink-100 hover:to-purple-100 transition-all flex justify-between items-center">
-          <span>{$t.servicesPage.freeConsultations}</span>
-          <span class="text-lg text-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300">{$t.servicesPage.bookNow} &rarr;</span>
-        </h3>
-      </a>
-      
-      <a href="https://cachetcache.janeapp.com/#/staff_member/1/treatment/2" target="_blank" rel="noopener noreferrer" class="w-full group">
-        <h3 class="text-2xl md:text-3xl font-semibold text-pink-700 border-2 border-pink-300 bg-gradient-to-r from-pink-50 to-purple-50 rounded-2xl px-6 py-3 shadow-sm text-left w-full hover:from-pink-100 hover:to-purple-100 transition-all flex justify-between items-center">
-          <span>{$t.servicesPage.neuromodulatorTreatments}</span>
-          <span class="text-lg text-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300">{$t.servicesPage.bookNow} &rarr;</span>
-        </h3>
-      </a>
-      
-      <a href="https://cachetcache.janeapp.com/#/staff_member/1/treatment/3" target="_blank" rel="noopener noreferrer" class="w-full group">
-        <h3 class="text-2xl md:text-3xl font-semibold text-pink-700 border-2 border-pink-300 bg-gradient-to-r from-pink-50 to-purple-50 rounded-2xl px-6 py-3 shadow-sm text-left w-full hover:from-pink-100 hover:to-purple-100 transition-all flex justify-between items-center">
-          <span>{$t.servicesPage.fillers}</span>
-          <span class="text-lg text-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300">{$t.servicesPage.bookNow} &rarr;</span>
-        </h3>
-      </a>
-      
-      <a href="https://cachetcache.janeapp.com" target="_blank" rel="noopener noreferrer" class="w-full group">
-        <h3 class="text-2xl md:text-3xl font-semibold text-pink-700 border-2 border-pink-300 bg-gradient-to-r from-pink-50 to-purple-50 rounded-2xl px-6 py-3 shadow-sm text-left w-full hover:from-pink-100 hover:to-purple-100 transition-all flex justify-between items-center">
-          <span>{$t.servicesPage.freeFollowUp}</span>
-          <span class="text-lg text-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300">{$t.servicesPage.bookNow} &rarr;</span>
-        </h3>
-      </a>
+    <div class="gradient-border-card cf-hover my-10 w-full max-w-2xl mx-auto transition-all duration-1000 {visible ? 'opacity-100 blur-none' : 'opacity-0 blur-md'}">
+      <div class="p-8 space-y-6">
+        <a href="https://cachetcache.janeapp.com/#/staff_member/1/treatment/1" target="_blank" rel="noopener noreferrer" class="block group">
+          <div class="text-xl md:text-2xl font-semibold text-gray-800 hover:text-pink-600 transition-all flex justify-between items-center py-3 border-b border-gray-200 last:border-b-0">
+            <span class="non-cursive">{$t.servicesPage.freeConsultations}</span>
+            <span class="text-lg text-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300">{$t.servicesPage.bookNow} &rarr;</span>
+          </div>
+        </a>
+        
+        <a href="https://cachetcache.janeapp.com/#/staff_member/1/treatment/2" target="_blank" rel="noopener noreferrer" class="block group">
+          <div class="text-xl md:text-2xl font-semibold text-gray-800 hover:text-pink-600 transition-all flex justify-between items-center py-3 border-b border-gray-200 last:border-b-0">
+            <span class="non-cursive">{$t.servicesPage.neuromodulatorTreatments}</span>
+            <span class="text-lg text-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300">{$t.servicesPage.bookNow} &rarr;</span>
+          </div>
+        </a>
+        
+        <a href="https://cachetcache.janeapp.com/#/staff_member/1/treatment/3" target="_blank" rel="noopener noreferrer" class="block group">
+          <div class="text-xl md:text-2xl font-semibold text-gray-800 hover:text-pink-600 transition-all flex justify-between items-center py-3 border-b border-gray-200 last:border-b-0">
+            <span class="non-cursive">{$t.servicesPage.fillers}</span>
+            <span class="text-lg text-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300">{$t.servicesPage.bookNow} &rarr;</span>
+          </div>
+        </a>
+        
+        <a href="https://cachetcache.janeapp.com" target="_blank" rel="noopener noreferrer" class="block group">
+          <div class="text-xl md:text-2xl font-semibold text-gray-800 hover:text-pink-600 transition-all flex justify-between items-center py-3">
+            <span class="non-cursive">{$t.servicesPage.freeFollowUp}</span>
+            <span class="text-lg text-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300">{$t.servicesPage.bookNow} &rarr;</span>
+          </div>
+        </a>
+      </div>
     </div>
   </div>
 </main>
