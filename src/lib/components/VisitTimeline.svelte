@@ -183,205 +183,161 @@
 <div class="space-y-6">
 	<!-- Add New Visit - Only show for admin users -->
 	{#if userProfile?.is_admin}
-	<div class="gradient-border-card">
-		<div class="p-8">
-			<div class="flex items-center gap-4 mb-6">
+	<div class="gradient-border-card cf-hover">
+		<div class="p-4 sm:p-8">
+			<div class="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
 				<div class="w-3 h-3 rounded-full bg-pink-500"></div>
 				<div>
-					<h3 class="font-bold cf-text text-xl timeline-heading">{$t.visitTimeline.addNewVisit}</h3>
-					<p class="text-base cf-text-muted mt-1">{$t.visitTimeline.createNewRecord}</p>
+					<h3 class="font-bold cf-text text-lg sm:text-xl timeline-heading">{$t.visitTimeline.addNewVisit}</h3>
+					<p class="text-sm sm:text-base cf-text-muted mt-1">{$t.visitTimeline.createNewRecord}</p>
 				</div>
 			</div>
 			
-			<div class="flex gap-4">
+			<div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
 				<div class="flex-1 pink-gradient-border">
 					<input
 						type="text"
 						bind:value={newVisitTitle}
 						placeholder={$t.visitTimeline.visitTitlePlaceholder}
-						class="w-full p-3 border-0 rounded-lg focus:ring-2 focus:ring-pink-500 focus:outline-none cf-text text-sm"
+						class="w-full px-4 py-3 sm:py-2 rounded-lg border-0 focus:ring-2 focus:ring-pink-500 cf-text text-base sm:text-sm"
+						on:keydown={(e) => e.key === 'Enter' && addNewVisit()}
 					/>
 				</div>
-				<div class="cf-button">
-					<button
-						on:click={addNewVisit}
-						disabled={!newVisitTitle.trim()}
-						class="bg-gradient-to-r from-pink-500 to-purple-500 text-white py-3 px-6 rounded-lg font-medium 
-							hover:from-pink-600 hover:to-purple-600 disabled:opacity-50 disabled:cursor-not-allowed 
-							transition-all duration-200 flex items-center gap-2 text-sm"
-					>
-						<Plus class="w-4 h-4" />
+				<button
+					on:click={addNewVisit}
+					disabled={!newVisitTitle.trim()}
+					class="cf-button px-6 py-3 sm:py-2 text-base sm:text-sm font-medium text-pink-700 
+						hover:text-pink-800 disabled:opacity-50 disabled:cursor-not-allowed 
+						transition-all duration-200 cf-hover touch-manipulation"
+				>
+					<span class="flex items-center gap-2">
+						<Plus class="w-5 h-5 sm:w-4 sm:h-4" />
 						{$t.visitTimeline.addVisit}
-					</button>
-				</div>
+					</span>
+				</button>
 			</div>
 		</div>
 	</div>
 	{/if}
 	
 	<!-- Visit Timeline -->
-	{#if visits.length === 0}
-		<div class="pink-gradient-border p-8 text-center cf-hover">
-			<Calendar class="w-12 h-12 text-pink-300 mx-auto mb-4" />
-			<h3 class="text-lg font-semibold cf-text mb-2">{$t.visitTimeline.noVisitsYet}</h3>
-			<p class="cf-text-muted">{$t.visitTimeline.addFirstVisit}</p>
-		</div>
-	{:else}
-		<div class="space-y-6">
-			{#each visits as visit (visit.id)}
-				<div class="gradient-border-card overflow-hidden cf-hover">
-					<!-- Visit Header -->
+	{#each visits as visit (visit.id)}
+		<div class="gradient-border-card cf-hover">
+			<div class="p-4 sm:p-8">
+				<!-- Visit Header -->
+				<div class="flex items-start justify-between mb-4 sm:mb-6">
 					<button
-						class="w-full p-8 flex items-center justify-between hover:bg-gray-50 transition-colors"
 						on:click={() => toggleVisit(visit.id)}
+						class="flex items-center gap-3 sm:gap-4 flex-1 text-left cf-hover transition-all duration-200 touch-manipulation"
+						aria-expanded={visit.expanded}
 					>
-						<div class="flex items-center gap-4">
-							<div class="w-3 h-3 rounded-full bg-pink-500"></div>
-							<div class="text-left">
-								<h3 class="font-bold cf-text text-xl visit-title">
-									{visit.title}
-									{#if formatDateToMonthYear(visit.initialConsultDate)}
-										<span class="cf-text-muted font-medium text-lg">
-											- {formatDateToMonthYear(visit.initialConsultDate)}
-										</span>
-									{/if}
-								</h3>
-								<p class="text-base cf-text-muted mt-1">
-									{getPhotosSummary(visit)}
-								</p>
-							</div>
+						<div class="w-3 h-3 rounded-full bg-pink-500 flex-shrink-0"></div>
+						<div class="min-w-0">
+							<h3 class="font-bold cf-text text-lg sm:text-xl visit-title">{visit.title}</h3>
+							<p class="text-sm sm:text-base cf-text-muted mt-1">{getPhotosSummary(visit)}</p>
 						</div>
-						<div class="flex items-center gap-2">
-							{#if userProfile?.is_admin}
-							<button
-								on:click|stopPropagation={() => deleteVisit(visit.id)}
-								class="p-2 text-pink-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-							>
-								<X class="w-4 h-4" />
-							</button>
-							{/if}
+						<div class="ml-auto flex-shrink-0">
 							{#if visit.expanded}
-								<ChevronDown class="w-5 h-5 text-pink-500" />
+								<ChevronDown class="w-5 h-5 text-pink-600" />
 							{:else}
-								<ChevronRight class="w-5 h-5 text-pink-500" />
+								<ChevronRight class="w-5 h-5 text-pink-600" />
 							{/if}
 						</div>
 					</button>
-					
-					<!-- Visit Content -->
-					{#if visit.expanded}
-						<div class="px-8 pb-8 border-t border-gray-100 visit-content">
-							<div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
-								<!-- Initial Consult -->
-								<div class="space-y-4">
-									<div class="flex items-center justify-between">
-										<h4 class="font-semibold cf-text text-lg flex items-center gap-2 timeline-heading">
-											<div class="w-2 h-2 rounded-full bg-blue-400"></div>
-											{$t.visitTimeline.initialConsult}
-											{#if visit.initialConsultPhotos && visit.initialConsultPhotos.length > 0}
-												<span class="text-xs bg-blue-100 text-blue-600 px-2 py-1 rounded-full">
-													{visit.initialConsultPhotos.length}
-												</span>
-											{/if}
-										</h4>
-									</div>
-									
-									<!-- Date Input - Admin only -->
-									{#if userProfile?.is_admin}
-										<div>
-											<label for="initial-consult-date-{visit.id}" class="block text-xs font-medium cf-text-muted mb-2">{$t.visitTimeline.date}</label>
-											<div class="pink-gradient-border">
-												<input
-													id="initial-consult-date-{visit.id}"
-													type="date"
-													bind:value={visit.initialConsultDate}
-													on:change={() => updateVisitDate(visit.id, 'initialConsultDate', visit.initialConsultDate || '')}
-													class="w-full p-3 text-sm border-0 rounded-lg focus:ring-2 focus:ring-pink-500 focus:outline-none cf-text"
-												/>
-											</div>
-										</div>
-									{:else if visit.initialConsultDate}
-										<div class="text-base cf-text font-semibold">
-											{$t.visitTimeline.date}: {new Date(visit.initialConsultDate).toLocaleDateString()}
-										</div>
-									{/if}
-									
-									{#if userProfile?.is_admin}
-										<PhotoUpload
-											photos={visit.initialConsultPhotos || []}
-											on:upload={(e) => handlePhotoUpload(visit.id, 'initialConsult', e)}
-											on:remove={(e) => handlePhotoRemove(visit.id, 'initialConsult', e.detail)}
-											on:noteUpdate={(e) => handleNoteUpdate(visit.id, 'initialConsult', e)}
-											placeholder={$t.visitTimeline.uploadInitialPhotos}
-											userProfile={userProfile}
-										/>
-									{:else if visit.initialConsultPhotos && visit.initialConsultPhotos.length > 0}
-										<PhotoUpload
-											photos={visit.initialConsultPhotos || []}
-											readonly={true}
-											userProfile={userProfile}
-										/>
-									{/if}
-								</div>
-								
-								<!-- Follow Up -->
-								<div class="space-y-4">
-									<div class="flex items-center justify-between">
-										<h4 class="font-semibold cf-text text-lg flex items-center gap-2 timeline-heading">
-											<div class="w-2 h-2 rounded-full bg-green-400"></div>
-											{$t.visitTimeline.followUp}
-											{#if visit.followUpPhotos && visit.followUpPhotos.length > 0}
-												<span class="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full">
-													{visit.followUpPhotos.length}
-												</span>
-											{/if}
-										</h4>
-									</div>
-									
-									<!-- Date Input - Admin only -->
-									{#if userProfile?.is_admin}
-										<div>
-											<label for="follow-up-date-{visit.id}" class="block text-xs font-medium cf-text-muted mb-2">{$t.visitTimeline.date}</label>
-											<div class="pink-gradient-border">
-												<input
-													id="follow-up-date-{visit.id}"
-													type="date"
-													bind:value={visit.followUpDate}
-													on:change={() => updateVisitDate(visit.id, 'followUpDate', visit.followUpDate || '')}
-													class="w-full p-3 text-sm border-0 rounded-lg focus:ring-2 focus:ring-pink-500 focus:outline-none cf-text"
-												/>
-											</div>
-										</div>
-									{:else if visit.followUpDate}
-										<div class="text-base cf-text font-semibold">
-											{$t.visitTimeline.date}: {new Date(visit.followUpDate).toLocaleDateString()}
-										</div>
-									{/if}
-									
-									{#if userProfile?.is_admin}
-										<PhotoUpload
-											photos={visit.followUpPhotos || []}
-											on:upload={(e) => handlePhotoUpload(visit.id, 'followUp', e)}
-											on:remove={(e) => handlePhotoRemove(visit.id, 'followUp', e.detail)}
-											on:noteUpdate={(e) => handleNoteUpdate(visit.id, 'followUp', e)}
-											placeholder={$t.visitTimeline.uploadFollowUpPhotos}
-											userProfile={userProfile}
-										/>
-									{:else if visit.followUpPhotos && visit.followUpPhotos.length > 0}
-										<PhotoUpload
-											photos={visit.followUpPhotos || []}
-											readonly={true}
-											userProfile={userProfile}
-										/>
-									{/if}
-								</div>
-							</div>
-						</div>
+
+					<!-- Delete Button - Admin only -->
+					{#if userProfile?.is_admin}
+					<button
+						on:click|stopPropagation={() => deleteVisit(visit.id)}
+						class="ml-3 sm:ml-4 p-2 text-red-600 hover:text-red-700 transition-colors 
+							cf-hover rounded-lg touch-manipulation"
+						aria-label="Delete visit {visit.title}"
+					>
+						<X class="w-5 h-5" />
+					</button>
 					{/if}
 				</div>
-			{/each}
+
+				<!-- Expanded Content -->
+				{#if visit.expanded}
+					<div class="space-y-6 sm:space-y-8 ml-7 sm:ml-7">
+						<!-- Initial Consultation -->
+						<div class="space-y-3 sm:space-y-4">
+							<div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+								<h4 class="font-semibold cf-text text-base sm:text-lg visit-content">
+									{$t.visitTimeline.initialConsult}
+								</h4>
+								{#if userProfile?.is_admin}
+								<input
+									type="date"
+									bind:value={visit.initialConsultDate}
+									on:change={() => updateVisitDate(visit.id, 'initialConsultDate', visit.initialConsultDate || '')}
+									class="text-sm sm:text-base cf-text border border-pink-200 rounded-lg px-3 py-2 
+										focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+								/>
+								{:else if visit.initialConsultDate}
+								<span class="text-sm sm:text-base cf-text-muted">
+									{formatDateToMonthYear(visit.initialConsultDate)}
+								</span>
+								{/if}
+							</div>
+							
+							<PhotoUpload
+								placeholder={$t.visitTimeline.uploadInitialPhotos}
+								photos={visit.initialConsultPhotos || []}
+								{userProfile}
+								readonly={!userProfile?.is_admin}
+								on:upload={(event) => handlePhotoUpload(visit.id, 'initialConsult', event)}
+								on:remove={(event) => handlePhotoRemove(visit.id, 'initialConsult', event.detail)}
+								on:noteUpdate={(event) => handleNoteUpdate(visit.id, 'initialConsult', event)}
+							/>
+						</div>
+
+						<!-- Follow-up -->
+						<div class="space-y-3 sm:space-y-4">
+							<div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+								<h4 class="font-semibold cf-text text-base sm:text-lg visit-content">
+									{$t.visitTimeline.followUp}
+								</h4>
+								{#if userProfile?.is_admin}
+								<input
+									type="date"
+									bind:value={visit.followUpDate}
+									on:change={() => updateVisitDate(visit.id, 'followUpDate', visit.followUpDate || '')}
+									class="text-sm sm:text-base cf-text border border-pink-200 rounded-lg px-3 py-2 
+										focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+								/>
+								{:else if visit.followUpDate}
+								<span class="text-sm sm:text-base cf-text-muted">
+									{formatDateToMonthYear(visit.followUpDate)}
+								</span>
+								{/if}
+							</div>
+							
+							<PhotoUpload
+								placeholder={$t.visitTimeline.uploadFollowUpPhotos}
+								photos={visit.followUpPhotos || []}
+								{userProfile}
+								readonly={!userProfile?.is_admin}
+								on:upload={(event) => handlePhotoUpload(visit.id, 'followUp', event)}
+								on:remove={(event) => handlePhotoRemove(visit.id, 'followUp', event.detail)}
+								on:noteUpdate={(event) => handleNoteUpdate(visit.id, 'followUp', event)}
+							/>
+						</div>
+					</div>
+				{/if}
+			</div>
 		</div>
-	{/if}
+	{:else}
+		<!-- Empty State -->
+		<div class="text-center py-12 sm:py-16">
+			<Calendar class="mx-auto h-12 w-12 text-gray-400 mb-4" />
+			<h3 class="text-lg sm:text-xl font-medium cf-text mb-2">{$t.visitTimeline.noVisitsYet}</h3>
+			<p class="text-sm sm:text-base cf-text-muted max-w-md mx-auto px-4">
+				{userProfile?.is_admin ? $t.visitTimeline.addFirstVisit : $t.visitTimeline.addFirstVisit}
+			</p>
+		</div>
+	{/each}
 </div>
 
 <!-- Photo Upload Component --> 

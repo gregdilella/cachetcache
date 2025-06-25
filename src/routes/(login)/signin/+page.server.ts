@@ -41,7 +41,7 @@ export const actions: Actions = {
 		}
 
 		console.log('Signin successful for user:', data.user.id);
-		// Redirect to dashboard (which will redirect to the user's profile)
-		throw redirect(303, '/dashboard');
+		// Redirect directly to user's timeline
+		throw redirect(303, `/dashboard/${data.user.id}`);
 	}
 }; 

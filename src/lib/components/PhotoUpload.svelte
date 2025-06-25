@@ -17,6 +17,11 @@
 	let showModal = false;
 	let modalImageUrl = '';
 	
+	// Reset currentIndex when photos change
+	$: if (photos.length > 0 && currentIndex >= photos.length) {
+		currentIndex = Math.max(0, photos.length - 1);
+	}
+	
 	function handleFileSelect(event: Event) {
 		const target = event.target as HTMLInputElement;
 		if (target.files) {
@@ -50,6 +55,7 @@
 	
 	function removePhoto(photoId: string) {
 		dispatch('remove', photoId);
+		// Adjust currentIndex if needed
 		if (currentIndex >= photos.length - 1) {
 			currentIndex = Math.max(0, photos.length - 2);
 		}
@@ -84,17 +90,28 @@
 	}
 	
 	function handleModalClick(event: MouseEvent) {
-		// Close modal if clicking the backdrop (not the image)
-		if (event.target === event.currentTarget) {
+		// Close modal if clicking the backdrop (not the image or its container)
+		const target = event.target as HTMLElement;
+		if (target.classList.contains('modal-backdrop')) {
 			closeModal();
 		}
+	}
+	
+	// Action to portal an element to document.body so it's not confined by ancestor transforms
+	function appendToBody(node: HTMLElement) {
+		document.body.appendChild(node);
+		return {
+			destroy() {
+				node.remove();
+			}
+		};
 	}
 </script>
 
 {#if photos.length > 0}
 	<!-- Photo Carousel -->
 	<div class="space-y-3">
-		<div class="relative h-64 rounded-xl overflow-hidden bg-gray-100">
+		<div class="relative h-48 sm:h-64 rounded-xl overflow-hidden bg-gray-100">
 			<!-- Main Photo Display -->
 			<div class="relative w-full h-full flex items-center justify-center">
 				<button
@@ -121,10 +138,10 @@
 				{#if userProfile?.is_admin && !readonly}
 				<button
 					on:click|stopPropagation={() => removePhoto(photos[currentIndex].id)}
-					class="absolute top-2 right-2 w-8 h-8 bg-red-500 text-white rounded-full 
-						hover:bg-red-600 transition-colors flex items-center justify-center z-10"
+					class="absolute top-2 right-2 w-10 h-10 sm:w-8 sm:h-8 bg-red-500 text-white rounded-full 
+						hover:bg-red-600 transition-colors flex items-center justify-center z-10 touch-manipulation"
 				>
-					<X class="w-4 h-4" />
+					<X class="w-5 h-5 sm:w-4 sm:h-4" />
 				</button>
 				{/if}
 				
@@ -132,36 +149,36 @@
 				{#if photos.length > 1}
 					<button
 						on:click|stopPropagation={prevPhoto}
-						class="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/50 text-white rounded-full 
-							hover:bg-black/70 transition-colors flex items-center justify-center z-10"
+						class="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-8 sm:h-8 bg-black/50 text-white rounded-full 
+							hover:bg-black/70 transition-colors flex items-center justify-center z-10 touch-manipulation"
 					>
-						<ChevronLeft class="w-4 h-4" />
+						<ChevronLeft class="w-5 h-5 sm:w-4 sm:h-4" />
 					</button>
 					
 					<button
 						on:click|stopPropagation={nextPhoto}
-						class="absolute right-10 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/50 text-white rounded-full 
-							hover:bg-black/70 transition-colors flex items-center justify-center z-10"
+						class="absolute right-12 sm:right-10 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-8 sm:h-8 bg-black/50 text-white rounded-full 
+							hover:bg-black/70 transition-colors flex items-center justify-center z-10 touch-manipulation"
 					>
-						<ChevronRight class="w-4 h-4" />
+						<ChevronRight class="w-5 h-5 sm:w-4 sm:h-4" />
 					</button>
 				{/if}
 			</div>
 			
-			<!-- Photo Indicators/Dots -->
+			<!-- Photo Indicators/Dots (only show if multiple photos) -->
 			{#if photos.length > 1}
-				<div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1">
+				<div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5 sm:gap-1">
 					{#each photos as _, index}
 						<button
 							on:click={() => goToPhoto(index)}
-							class="w-2 h-2 rounded-full transition-colors
+							class="w-3 h-3 sm:w-2 sm:h-2 rounded-full transition-colors touch-manipulation
 								{index === currentIndex ? 'bg-white' : 'bg-white/50'}"
 						/>
 					{/each}
 				</div>
 			{/if}
 			
-			<!-- Photo Counter -->
+			<!-- Photo Counter (only show if multiple photos) -->
 			{#if photos.length > 1}
 				<div class="absolute top-2 left-2 bg-black/50 text-white text-xs px-2 py-1 rounded">
 					{currentIndex + 1} / {photos.length}
@@ -180,7 +197,7 @@
 				bind:value={photos[currentIndex].doctorNote}
 				on:blur={() => updateDoctorNote(photos[currentIndex].id, photos[currentIndex].doctorNote || '')}
 				placeholder={$t.photoUpload.addNotesPlaceholder}
-				class="w-full p-3 border border-pink-200 rounded-xl {userProfile?.is_admin && !readonly ? 'focus:ring-2 focus:ring-pink-500 focus:border-transparent' : 'bg-gray-50'} resize-none text-sm"
+				class="w-full p-3 border border-pink-200 rounded-xl {userProfile?.is_admin && !readonly ? 'focus:ring-2 focus:ring-pink-500 focus:border-transparent' : 'bg-gray-50'} resize-none text-sm sm:text-base"
 				rows="3"
 				readonly={!userProfile?.is_admin || readonly}
 			></textarea>
@@ -189,8 +206,8 @@
 		<!-- Add More Photos Button - Admin only -->
 		{#if userProfile?.is_admin && !readonly}
 		<div
-			class="w-full p-3 border-2 border-dashed border-pink-200 rounded-xl text-pink-600 
-				hover:border-pink-300 hover:bg-pink-25 transition-colors cursor-pointer
+			class="w-full p-4 sm:p-3 border-2 border-dashed border-pink-200 rounded-xl text-pink-600 
+				hover:border-pink-300 hover:bg-pink-25 transition-colors cursor-pointer touch-manipulation
 				{dragOver ? 'border-pink-400 bg-pink-50' : ''}"
 			on:drop={handleDrop}
 			on:dragover={handleDragOver}
@@ -200,21 +217,20 @@
 			role="button"
 			tabindex="0"
 		>
-					<div class="flex items-center justify-center gap-2">
-			<Upload class="w-4 h-4" />
-			{dragOver ? $t.photoUpload.dropPhotosHere : $t.photoUpload.addMorePhotos}
-		</div>
+			<div class="flex items-center justify-center gap-2">
+				<Upload class="w-5 h-5" />
+				<span class="text-sm sm:text-base">{$t.photoUpload.addMorePhotos}</span>
+			</div>
 		</div>
 		{/if}
 	</div>
 {:else}
-	<!-- Initial Upload Area - Admin only -->
+	<!-- Empty State - Upload Zone -->
 	{#if userProfile?.is_admin && !readonly}
 	<div
-		class="border-2 border-dashed rounded-xl p-6 text-center transition-all duration-200 cursor-pointer h-64 flex flex-col items-center justify-center
-			{dragOver 
-				? 'border-pink-400 bg-pink-50' 
-				: 'border-pink-200 hover:border-pink-300 hover:bg-pink-25'}"
+		class="w-full h-48 sm:h-64 border-2 border-dashed border-pink-200 rounded-xl 
+			hover:border-pink-300 hover:bg-pink-25 transition-colors cursor-pointer touch-manipulation
+			{dragOver ? 'border-pink-400 bg-pink-50' : ''}"
 		on:drop={handleDrop}
 		on:dragover={handleDragOver}
 		on:dragleave={handleDragLeave}
@@ -223,66 +239,72 @@
 		role="button"
 		tabindex="0"
 	>
-		<ImageIcon class="w-8 h-8 text-pink-400 mb-3" />
-		<p class="text-pink-700 font-medium mb-1">
-			{dragOver ? $t.photoUpload.dropYourPhotos : placeholder}
-		</p>
-		<p class="text-sm text-pink-500">
-			{$t.photoUpload.fileFormats}
-		</p>
-		<p class="text-xs text-pink-400 mt-1">
-			{$t.photoUpload.selectMultiple}
-		</p>
+		<div class="flex flex-col items-center justify-center h-full text-pink-600 p-4">
+			<ImageIcon class="w-12 h-12 mb-4" />
+			<h3 class="text-base sm:text-lg font-medium mb-2 non-cursive">{placeholder}</h3>
+			<p class="text-sm text-center">{$t.photoUpload.dropYourPhotos}</p>
+			<p class="text-xs text-pink-500 mt-2">{$t.photoUpload.fileFormats}</p>
+		</div>
 	</div>
 	{:else}
-	<div class="text-center py-8 text-pink-600">
-		<ImageIcon class="w-8 h-8 text-pink-300 mx-auto mb-2" />
-		<p class="text-sm">No photos available</p>
+	<div class="w-full h-48 sm:h-64 border-2 border-gray-200 rounded-xl bg-gray-50 flex items-center justify-center">
+		<div class="text-center text-gray-500 p-4">
+			<ImageIcon class="w-12 h-12 mx-auto mb-4" />
+			<p class="text-sm sm:text-base">No photos uploaded</p>
+		</div>
 	</div>
 	{/if}
 {/if}
 
-<!-- Image Modal -->
-{#if showModal}
-	<div
-		class="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4"
-		role="dialog"
-		aria-modal="true"
-		aria-label="{$t.photoUpload.closeImageViewer} - press escape to close"
-	>
-		<!-- Backdrop button to close modal -->
-		<button
-			type="button"
-			class="absolute inset-0 w-full h-full cursor-pointer bg-transparent border-0 p-0"
-			on:click={handleModalClick}
-			on:keydown={(e) => e.key === 'Escape' && closeModal()}
-			aria-label={$t.photoUpload.closeImageViewer}
-		></button>
-		
-		<div class="relative w-[95vw] h-[95vh] max-w-6xl max-h-6xl z-10">
-			<img
-				src={modalImageUrl}
-				alt=""
-				aria-describedby="modal-description"
-				class="w-full h-full object-cover rounded-lg"
-			/>
-			<span id="modal-description" class="sr-only">{$t.photoUpload.enlargedPhotoView}</span>
-			<button
-				on:click={closeModal}
-				class="absolute top-4 right-4 w-10 h-10 bg-black/50 text-white rounded-full 
-					hover:bg-black/70 transition-colors flex items-center justify-center"
-			>
-				<X class="w-5 h-5" />
-			</button>
-		</div>
-	</div>
-{/if}
-
+<!-- Hidden File Input -->
 <input
 	bind:this={fileInput}
 	type="file"
-	accept="image/jpeg,image/jpg,image/png,image/webp"
+	accept="image/*"
 	{multiple}
-	on:change={handleFileSelect}
 	class="hidden"
-/> 
+	on:change={handleFileSelect}
+/>
+
+<!-- Modal for full-screen image view -->
+{#if showModal}
+<div 
+	use:appendToBody
+	class="fixed inset-0 w-screen h-screen bg-black/95 z-50 flex items-center justify-center modal-backdrop"
+	on:click={handleModalClick}
+	on:keydown={(e) => e.key === 'Escape' && closeModal()}
+	role="dialog"
+	aria-modal="true"
+	tabindex="-1"
+>
+	<!-- Modal Content Container -->
+	<div class="relative w-full h-full flex items-center justify-center p-4 sm:p-8">
+		<!-- Image Container -->
+		<div class="relative flex items-center justify-center max-w-[90vw] max-h-[90vh]">
+			<img
+				src={modalImageUrl}
+				alt={$t.photoUpload.enlargedPhotoView}
+				class="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
+				style="min-width: 200px; min-height: 150px; max-width: 90vw; max-height: 90vh;"
+			/>
+		</div>
+		
+		<!-- Close Button - Enhanced visibility -->
+		<button
+			on:click={closeModal}
+			class="absolute top-4 right-4 sm:top-6 sm:right-6 w-14 h-14 sm:w-16 sm:h-16 
+				bg-white/90 text-gray-900 rounded-full hover:bg-white transition-all duration-200 
+				flex items-center justify-center touch-manipulation shadow-2xl border-2 border-gray-200
+				hover:scale-110 z-10"
+			aria-label="Close full-screen view"
+		>
+			<X class="w-7 h-7 sm:w-8 sm:h-8 stroke-2" />
+		</button>
+		
+		<!-- Instructions Text -->
+		<div class="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/90 text-sm text-center bg-black/50 px-4 py-2 rounded-lg backdrop-blur-sm">
+			<p>Click outside image or press ESC to close</p>
+		</div>
+	</div>
+</div>
+{/if} 

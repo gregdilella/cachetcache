@@ -1,16 +1,14 @@
 <script lang="ts">
 	import '../app.postcss';
 	import {
-		AppShell,
-		Drawer,
 		Modal,
-		getDrawerStore,
 		initializeStores
 	} from '@skeletonlabs/skeleton';
 	import InstagramNav from '$lib/components/InstagramNav.svelte';
 	import { inject } from '@vercel/analytics';
 	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
 	import { page } from '$app/stores';
+	import { Menu, X } from 'lucide-svelte';
 	import type { LayoutData } from './$types';
 
 	export let data: LayoutData;
@@ -18,11 +16,27 @@
 	inject();
 	injectSpeedInsights();
 	initializeStores();
-
-	const drawerStore = getDrawerStore();
 	
 	// Check if current path is the home page
 	$: isHomePage = $page.url.pathname === '/';
+	
+	// Mobile sidebar state
+	let showMobileSidebar = false;
+	
+	function toggleMobileSidebar() {
+		showMobileSidebar = !showMobileSidebar;
+		// Prevent body scroll when sidebar is open
+		if (showMobileSidebar) {
+			document.body.style.overflow = 'hidden';
+		} else {
+			document.body.style.overflow = 'auto';
+		}
+	}
+	
+	function closeMobileSidebar() {
+		showMobileSidebar = false;
+		document.body.style.overflow = 'auto';
+	}
 </script>
 
 <svelte:head>
@@ -41,21 +55,69 @@
 {:else}
 	<!-- Simplified layout for other pages -->
 	<div class="flex min-h-screen bg-gradient-to-br from-gray-50 to-slate-100">
-		<!-- Sidebar Navigation -->
-		<div class="hidden md:block w-64 bg-white shadow-sm pink-gradient-border">
+		<!-- Desktop Sidebar Navigation (fixed) -->
+		<div class="hidden lg:block fixed left-0 top-0 h-screen w-64 bg-white shadow-sm pink-gradient-border z-30">
 			<InstagramNav session={data.session} supabase={data.supabase} user={data.userProfile} />
 		</div>
 		
-		<!-- Main Content Area -->
-		<div class="flex-1 overflow-y-auto">
-			<div class="max-w-2xl mx-auto px-4 py-6">
-				<slot />
-			</div>
+		<!-- Mobile Hamburger Menu -->
+		<div class="lg:hidden fixed top-4 left-4 z-50">
+			<button
+				on:click={toggleMobileSidebar}
+				class="w-12 h-12 bg-white rounded-xl shadow-lg border border-pink-200 flex items-center justify-center
+					text-pink-700 hover:bg-pink-50 transition-colors touch-manipulation"
+				aria-label="Toggle menu"
+			>
+				<Menu class="w-6 h-6" />
+			</button>
 		</div>
 		
-		<!-- Mobile Bottom Navigation -->
-		<div class="md:hidden fixed bottom-0 left-0 right-0 bg-white shadow-lg pink-gradient-border">
-			<InstagramNav mobile={true} session={data.session} supabase={data.supabase} user={data.userProfile} />
+		<!-- Mobile Sidebar Modal -->
+		{#if showMobileSidebar}
+			<div class="lg:hidden fixed inset-0 z-40">
+				<!-- Backdrop -->
+				<div 
+					class="absolute inset-0 bg-black/50"
+					on:click={closeMobileSidebar}
+					on:keydown={(e) => e.key === 'Escape' && closeMobileSidebar()}
+					role="button"
+					tabindex="-1"
+					aria-label="Close menu"
+				></div>
+				
+				<!-- Sidebar -->
+				<div class="absolute left-0 top-0 h-full w-80 max-w-[85vw] bg-white shadow-xl pink-gradient-border">
+					<!-- Close Button -->
+					<div class="absolute top-4 right-4 z-10">
+						<button
+							on:click={closeMobileSidebar}
+							class="w-10 h-10 bg-pink-100 rounded-full flex items-center justify-center
+								text-pink-700 hover:bg-pink-200 transition-colors touch-manipulation"
+							aria-label="Close menu"
+						>
+							<X class="w-5 h-5" />
+						</button>
+					</div>
+					
+					<!-- Navigation Content -->
+					<div 
+						class="h-full overflow-y-auto" 
+						on:click={closeMobileSidebar}
+						on:keydown={(e) => e.key === 'Enter' && closeMobileSidebar()}
+						role="navigation"
+						aria-label="Mobile navigation"
+					>
+						<InstagramNav mobile={false} session={data.session} supabase={data.supabase} user={data.userProfile} />
+					</div>
+				</div>
+			</div>
+		{/if}
+		
+		<!-- Main Content Area -->
+		<div class="flex-1 overflow-y-auto lg:ml-64">
+			<div class="max-w-2xl mx-auto px-4 py-6 md:pt-6 pt-20">
+				<slot />
+			</div>
 		</div>
 	</div>
 {/if}
@@ -103,7 +165,8 @@
 	:global(.visit-title),
 	:global(.timeline-heading),
 	:global(.visit-content h3),
-	:global(.visit-content h4) {
+	:global(.visit-content h4),
+	:global(.non-cursive) {
 		font-family: 'Poppins', sans-serif !important;
 	}
 	

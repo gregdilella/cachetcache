@@ -47,18 +47,18 @@
 	<title>{$t.patientSearch.title}</title>
 </svelte:head>
 
-<div class="max-w-7xl mx-auto p-6">
-	<div class="mb-8">
+<div class="max-w-7xl mx-auto p-4 sm:p-6">
+	<div class="mb-6 sm:mb-8">
 		<div class="flex items-center gap-3 mb-2">
-			<UsersIcon class="w-8 h-8 text-pink-600" />
-			<h1 class="text-3xl font-bold cf-text">{$t.patientSearch.heading}</h1>
+			<UsersIcon class="w-6 h-6 sm:w-8 sm:h-8 text-pink-600" />
+			<h1 class="text-2xl sm:text-3xl font-bold cf-text">{$t.patientSearch.heading}</h1>
 		</div>
-		<p class="cf-text-muted">{$t.patientSearch.subtitle}</p>
+		<p class="cf-text-muted text-sm sm:text-base">{$t.patientSearch.subtitle}</p>
 	</div>
 
 	<!-- Search Box -->
 	<div class="mb-6">
-		<div class="relative max-w-md pink-gradient-border">
+		<div class="relative w-full sm:max-w-md pink-gradient-border">
 			<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
 				<Search class="h-5 w-5 text-gray-400" />
 			</div>
@@ -66,7 +66,7 @@
 				type="text"
 				bind:value={searchTerm}
 				placeholder={$t.patientSearch.searchPlaceholder}
-				class="block w-full pl-10 pr-3 py-2 border-0 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-pink-500 cf-text"
+				class="block w-full pl-10 pr-3 py-3 sm:py-2 border-0 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-pink-500 cf-text text-base sm:text-sm"
 			/>
 		</div>
 		<p class="mt-2 text-sm cf-text-light">
@@ -74,8 +74,8 @@
 		</p>
 	</div>
 
-	<!-- Users Table -->
-	<div class="gradient-border-card shadow-lg overflow-hidden">
+	<!-- Users Table - Desktop -->
+	<div class="hidden sm:block gradient-border-card shadow-lg overflow-hidden">
 		<div class="overflow-x-auto">
 			<table class="min-w-full divide-y divide-gray-200">
 				<thead class="bg-gray-50">
@@ -173,8 +173,72 @@
 		</div>
 	</div>
 
+	<!-- Users Cards - Mobile -->
+	<div class="sm:hidden space-y-4">
+		{#each filteredUsers as user (user.id)}
+			<div 
+				class="gradient-border-card cf-hover cursor-pointer p-4"
+				on:click={() => navigateToPatientTimeline(user.id)}
+				role="button"
+				tabindex="0"
+				on:keydown={(e) => e.key === 'Enter' && navigateToPatientTimeline(user.id)}
+			>
+				<div class="flex items-start gap-3">
+					<div class="flex-shrink-0 h-12 w-12">
+						<div class="h-12 w-12 rounded-full bg-pink-100 flex items-center justify-center">
+							<User class="h-6 w-6 text-pink-600" />
+						</div>
+					</div>
+					<div class="flex-1 min-w-0">
+						<div class="flex items-center justify-between">
+							<h3 class="text-lg font-medium cf-text truncate">
+								{user.name || $t.patientSearch.noName}
+							</h3>
+							<div class="flex-shrink-0">
+								<span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+									{user.sex || 'N/A'}
+								</span>
+							</div>
+						</div>
+						<p class="text-sm cf-text-muted">ID: {user.id}</p>
+						
+						<div class="mt-2 space-y-1">
+							<div class="text-sm cf-text flex items-center gap-2">
+								<Phone class="h-4 w-4 text-gray-400 flex-shrink-0" />
+								<span class="truncate">{user.phone_number || $t.patientSearch.noPhone}</span>
+							</div>
+							
+							<div class="text-sm cf-text-muted">
+								{$t.patientSearch.age}: {calculateAge(user.birthdate, user.age)}
+							</div>
+							
+							{#if user.birthdate}
+								<div class="text-xs cf-text-light flex items-center gap-1">
+									<Calendar class="h-3 w-3 flex-shrink-0" />
+									<span>{$t.patientSearch.born}: {formatDate(user.birthdate)}</span>
+								</div>
+							{/if}
+							
+							<div class="text-xs cf-text-light">
+								{$t.patientSearch.registered}: {formatDate(user.created_at)}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		{:else}
+			<div class="text-center py-12">
+				<UsersIcon class="mx-auto h-12 w-12 text-gray-400 mb-4" />
+				<h3 class="text-lg font-medium cf-text mb-2">{$t.patientSearch.noPatientsFound}</h3>
+				<p class="text-sm cf-text-muted">
+					{searchTerm ? $t.patientSearch.tryAdjusting : $t.patientSearch.noRegistrations}
+				</p>
+			</div>
+		{/each}
+	</div>
+
 	<!-- Summary Stats -->
-	<div class="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+	<div class="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">
 		<div class="pink-gradient-border overflow-hidden cf-hover">
 			<div class="p-5">
 				<div class="flex items-center">
