@@ -123,9 +123,15 @@
 {/if}
 
 <style>
-	:global(h1, h2, h3) {
+	:global(h1:not(.font-normal), h2:not(.font-normal), h3:not(.font-normal)) {
 		font-family: 'Sacramento', cursive !important;
 		color: #111827 !important; /* Black text for headings */
+	}
+	
+	/* Ensure font-normal class can override cursive styling */
+	:global(.font-normal) {
+		font-family: 'Poppins', sans-serif !important;
+		font-style: normal !important;
 	}
 	
 	:global(body) {

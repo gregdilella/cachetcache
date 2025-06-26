@@ -87,21 +87,25 @@ export const actions: Actions = {
 			}
 		}
 
-		// Save profile information to user_profile table
+		// Update profile information (the trigger already created a basic profile)
+		// Wait a moment for the trigger to complete
+		await new Promise(resolve => setTimeout(resolve, 100));
+		
 		const { error: profileError } = await supabase
 			.from('user_profile')
-			.insert({
-				id: data.user.id,
+			.update({
 				name: name.trim(),
 				phone_number: phone ? phone.trim() : null,
 				birthdate: birthdate || null,
 				age: age,
 				sex: sex || null,
-				is_admin: false
-			});
+				is_admin: false,
+				updated_at: new Date().toISOString()
+			})
+			.eq('id', data.user.id);
 
 		if (profileError) {
-			console.error('Error creating user profile:', profileError);
+			console.error('Error updating user profile:', profileError);
 			// Note: User is already created in auth, but profile failed
 			// We could either try to clean up or let them complete profile later
 			return fail(500, { 

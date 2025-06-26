@@ -10,6 +10,8 @@ CREATE TABLE public.user_profile (
     phone_number TEXT,
     sex TEXT CHECK (sex IN ('Male', 'Female', 'Other')),
     age INTEGER CHECK (age >= 0 AND age <= 150),
+    birthdate DATE,
+    is_admin BOOLEAN DEFAULT FALSE NOT NULL,
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );

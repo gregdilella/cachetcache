@@ -332,10 +332,7 @@
 		<!-- Empty State -->
 		<div class="text-center py-12 sm:py-16">
 			<Calendar class="mx-auto h-12 w-12 text-gray-400 mb-4" />
-			<h3 class="text-lg sm:text-xl font-medium cf-text mb-2">{$t.visitTimeline.noVisitsYet}</h3>
-			<p class="text-sm sm:text-base cf-text-muted max-w-md mx-auto px-4">
-				{userProfile?.is_admin ? $t.visitTimeline.addFirstVisit : $t.visitTimeline.addFirstVisit}
-			</p>
+			<h3 class="text-lg sm:text-xl font-medium font-normal cf-text mb-2">{$t.visitTimeline.noVisitsYet}</h3>
 		</div>
 	{/each}
 </div>
