@@ -6,7 +6,7 @@
   "vars": {
     "PUBLIC_SUPABASE_URL": "https://jdpseiwgyppmyhkxesyc.supabase.co",
     "PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpkcHNlaXdneXBwbXloa3hlc3ljIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDkzMzY0NDcsImV4cCI6MjA2NDkxMjQ0N30.qJjTZ82LDipCKs12HYT6PO7HsbxIkUoceakN1sc7_GM",
-    "NODE_VERSION": "18.20.5",
+    "NODE_VERSION": "20.18.0",
     "CLOUDFLARE_R2_BUCKET_NAME": "cachetcache",
     "CLOUDFLARE_R2_ENDPOINT": "https://3c687933a8de78d69da8abaa15b32629.r2.cloudflarestorage.com",
     "CLOUDFLARE_R2_REGION": "auto",

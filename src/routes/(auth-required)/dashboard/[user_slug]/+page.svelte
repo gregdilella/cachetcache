@@ -37,7 +37,6 @@
 	// Update local visits when server data changes (e.g., after successful upload)
 	$: {
 		if (data.visits) {
-			console.log('Server data updated, visits count:', data.visits.length);
 			// Update visits with fresh server data
 			visits = data.visits;
 		}
@@ -46,7 +45,6 @@
 	// Visit timeline handlers
 	async function handleVisitAdded(event: CustomEvent) {
 		const visit = event.detail;
-		console.log('Visit added:', visit);
 		
 		// Use fetch to submit without page reload
 		try {
@@ -59,7 +57,6 @@
 			});
 			
 			if (response.ok) {
-				console.log('Visit created successfully');
 				// Refresh server data to get the new visit with correct ID
 				await invalidateAll();
 			}
@@ -70,7 +67,6 @@
 	
 	async function handleVisitDeleted(event: CustomEvent) {
 		const { visitId } = event.detail;
-		console.log('Visit deleted:', visitId);
 		
 		// Use fetch to submit without page reload
 		try {
@@ -83,7 +79,6 @@
 			});
 			
 			if (response.ok) {
-				console.log('Visit deleted successfully');
 				// Refresh server data without full page reload
 				await invalidateAll();
 			}
