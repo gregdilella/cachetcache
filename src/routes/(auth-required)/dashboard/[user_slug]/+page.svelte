@@ -33,6 +33,15 @@
 	
 	// Initialize visits from server data
 	let visits: Visit[] = data.visits || [];
+	
+	// Update local visits when server data changes (e.g., after successful upload)
+	$: {
+		if (data.visits) {
+			console.log('Server data updated, visits count:', data.visits.length);
+			// Update visits with fresh server data
+			visits = data.visits;
+		}
+	}
 
 	// Visit timeline handlers
 	async function handleVisitAdded(event: CustomEvent) {
@@ -50,8 +59,9 @@
 			});
 			
 			if (response.ok) {
-				// Optionally refresh data or handle success
 				console.log('Visit created successfully');
+				// Refresh server data to get the new visit with correct ID
+				await invalidateAll();
 			}
 		} catch (error) {
 			console.error('Error creating visit:', error);
@@ -74,6 +84,8 @@
 			
 			if (response.ok) {
 				console.log('Visit deleted successfully');
+				// Refresh server data without full page reload
+				await invalidateAll();
 			}
 		} catch (error) {
 			console.error('Error deleting visit:', error);
@@ -82,7 +94,7 @@
 	
 	function handlePhotoUpload(event: CustomEvent) {
 		const { visitId, type, file, photoId } = event.detail;
-		console.log('Photo upload:', { visitId, type, file, photoId });
+		console.log('Photo upload started:', { visitId, type, file: file.name, photoId });
 		
 		// Upload to server
 		const uploadPhoto = async () => {
@@ -92,17 +104,22 @@
 				formData.append('visitId', visitId);
 				formData.append('photoType', type === 'initialConsult' ? 'initial_consult' : 'follow_up');
 				
+				console.log('Sending upload request...');
 				const response = await fetch('?/uploadPhoto', {
 					method: 'POST',
 					body: formData
 				});
 				
+				const result = await response.json();
+				console.log('Upload response:', { ok: response.ok, result });
+				
 				if (response.ok) {
-					console.log('Photo uploaded successfully');
-					// Refresh the page data to show the uploaded photo
-					window.location.reload();
+					console.log('Photo uploaded successfully, refreshing data...');
+					// Refresh server data to get the uploaded photo
+					await invalidateAll();
+					console.log('Data refreshed after upload');
 				} else {
-					console.error('Failed to upload photo');
+					console.error('Failed to upload photo:', result);
 					// Remove the photo from local state on failure
 					visits = visits.map(visit => {
 						if (visit.id === visitId) {
@@ -151,8 +168,8 @@
 			
 			if (response.ok) {
 				console.log('Photo deleted successfully');
-				// Refresh the page data to reflect the deletion
-				window.location.reload();
+				// Refresh server data without full page reload
+				await invalidateAll();
 			} else {
 				console.error('Failed to delete photo');
 			}

@@ -39,7 +39,7 @@
 					src={me}
 					alt="Dr. Lisa Henriques"
 					loading="lazy"
-					class="max-w-xs md:max-w-sm rounded-2xl mx-auto mb-6"
+					class="w-full max-w-xs md:max-w-sm rounded-2xl mx-auto mb-6"
 				/>
 				<div class="text-left max-w-3xl mx-auto">
 					<p class="text-lg leading-relaxed text-balance pb-4 text-gray-700">
@@ -72,7 +72,7 @@
 					src={lisashot}
 					alt="Dr. Lisa Henriques"
 					loading="lazy"
-					class="w-32 h-32 md:w-40 md:h-40 object-cover rounded-xl mt-6 md:mt-0 mx-auto md:mx-0 flex-shrink-0"
+					class="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 object-cover rounded-xl mt-6 md:mt-0 mx-auto md:mx-0 flex-shrink-0"
 				/>
 			</div>
 		</div>

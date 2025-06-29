@@ -123,12 +123,13 @@
 {/if}
 
 <style>
-	:global(h1:not(.font-normal), h2:not(.font-normal), h3:not(.font-normal)) {
-		font-family: 'Sacramento', cursive !important;
+	/* Default font for all elements is non-cursive */
+	:global(h1, h2, h3, h4, h5, h6) {
+		font-family: 'Poppins', sans-serif !important;
 		color: #111827 !important; /* Black text for headings */
 	}
 	
-	/* Ensure font-normal class can override cursive styling */
+	/* Keep the font-normal class for explicit override if needed */
 	:global(.font-normal) {
 		font-family: 'Poppins', sans-serif !important;
 		font-style: normal !important;
@@ -167,7 +168,7 @@
 		color: #111827 !important;
 	}
 	
-	/* Ensure timeline elements are not cursive */
+	/* Ensure timeline elements and other specific elements are not cursive */
 	:global(.visit-title),
 	:global(.timeline-heading),
 	:global(.visit-content h3),
