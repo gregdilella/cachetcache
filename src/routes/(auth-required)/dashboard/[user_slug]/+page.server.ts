@@ -583,15 +583,16 @@ export const actions: Actions = {
 			
 			console.log('🔑 Generated unique key:', uniqueKey);
 			
-			// Convert File to Buffer
+			// Convert File to Uint8Array (Cloudflare Workers compatible)
+			console.log('🔄 Converting file to Uint8Array for Cloudflare Workers...');
 			const arrayBuffer = await photo.arrayBuffer();
-			const buffer = Buffer.from(arrayBuffer);
+			const uint8Array = new Uint8Array(arrayBuffer);
 
-			console.log('🔄 Converting file to buffer completed, size:', buffer.length);
+			console.log('🔄 Converting file to buffer completed, size:', uint8Array.length);
 
 			// Upload photo to R2 storage
 			console.log('☁️ Uploading to R2 storage...');
-			await uploadFile(uniqueKey, buffer, photo.type);
+			await uploadFile(uniqueKey, uint8Array, photo.type);
 			console.log('✅ R2 upload successful');
 
 			// Save photo details to database

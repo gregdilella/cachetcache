@@ -55,15 +55,16 @@ export const POST: RequestHandler = async ({ request, locals: { safeGetSession, 
 
     console.log('🔑 Generated filename:', fileName);
 
-    // Convert file to buffer
+    // Convert file to Uint8Array (Cloudflare Workers compatible)
+    console.log('🔄 Converting file to Uint8Array for Cloudflare Workers...')
     const arrayBuffer = await file.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
+    const uint8Array = new Uint8Array(arrayBuffer);
 
-    console.log('🔄 File converted to buffer, size:', buffer.length);
+    console.log('🔄 File converted to buffer, size:', uint8Array.length);
 
     // Upload to R2
     console.log('☁️ Uploading to R2 storage...');
-    await uploadFile(fileName, buffer, file.type);
+    await uploadFile(fileName, uint8Array, file.type);
     console.log('✅ R2 upload successful');
 
     // Save image metadata to database with RLS

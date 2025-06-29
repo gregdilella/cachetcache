@@ -1,4 +1,8 @@
 // src/lib/r2-storage.ts
+// Buffer polyfill for Cloudflare Workers - AWS SDK needs this
+import { Buffer } from 'buffer';
+if (!(globalThis as any).Buffer) (globalThis as any).Buffer = Buffer;
+
 import { S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { 

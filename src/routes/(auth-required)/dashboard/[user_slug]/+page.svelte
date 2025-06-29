@@ -123,7 +123,7 @@
 				const result = await response.json();
 				console.log('📋 Response data:', result);
 				
-				if (response.ok) {
+				if (response.ok && result.type === 'success') {
 					console.log('✅ Photo upload successful!');
 					// Refresh server data to get the uploaded photo
 					await invalidateAll();
@@ -132,7 +132,8 @@
 					console.error('❌ Photo upload failed - Server returned error:', {
 						status: response.status,
 						statusText: response.statusText,
-						error: result.error || result.message || 'Unknown server error'
+						type: result.type,
+						error: result.data || result.error || result.message || 'Unknown server error'
 					});
 					// Remove the photo from local state on failure
 					visits = visits.map(visit => {
