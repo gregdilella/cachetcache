@@ -94,7 +94,17 @@
 	
 	function handlePhotoUpload(event: CustomEvent) {
 		const { visitId, type, file, photoId } = event.detail;
-		console.log('Photo upload started:', { visitId, type, file: file.name, photoId });
+		console.log('🔍 Photo upload started:', { 
+			visitId, 
+			type, 
+			fileName: file.name, 
+			fileSize: file.size,
+			photoId,
+			currentUserId: data.currentUser?.id,
+			targetUserId: data.user_slug,
+			isViewingOtherUser: data.isViewingOtherUser,
+			currentUserIsAdmin: data.currentUser?.is_admin
+		});
 		
 		// Upload to server
 		const uploadPhoto = async () => {
@@ -104,22 +114,47 @@
 				formData.append('visitId', visitId);
 				formData.append('photoType', type === 'initialConsult' ? 'initial_consult' : 'follow_up');
 				
-				console.log('Sending upload request...');
+				console.log('📤 Sending upload request to server...');
 				const response = await fetch('?/uploadPhoto', {
 					method: 'POST',
 					body: formData
 				});
 				
 				const result = await response.json();
-				console.log('Upload response:', { ok: response.ok, result });
+				console.log('📥 Upload response:', { 
+					ok: response.ok, 
+					status: response.status,
+					result 
+				});
 				
 				if (response.ok) {
-					console.log('Photo uploaded successfully, refreshing data...');
+					console.log('✅ Photo uploaded successfully, refreshing data...');
+					
+					// Log current visits count before refresh
+					console.log('📊 Before refresh - visits count:', visits.length);
+					const visitWithPhoto = visits.find(v => v.id === visitId);
+					if (visitWithPhoto) {
+						const photosKey = `${type}Photos` as keyof Visit;
+						const currentPhotos = visitWithPhoto[photosKey] as Array<any> || [];
+						console.log(`📸 Before refresh - ${type} photos count:`, currentPhotos.length);
+					}
+					
 					// Refresh server data to get the uploaded photo
 					await invalidateAll();
-					console.log('Data refreshed after upload');
+					
+					// Log after refresh
+					console.log('📊 After refresh - visits count:', visits.length);
+					const refreshedVisit = visits.find(v => v.id === visitId);
+					if (refreshedVisit) {
+						const photosKey = `${type}Photos` as keyof Visit;
+						const refreshedPhotos = refreshedVisit[photosKey] as Array<any> || [];
+						console.log(`📸 After refresh - ${type} photos count:`, refreshedPhotos.length);
+						console.log(`📸 Photo URLs:`, refreshedPhotos.map(p => ({ id: p.id, url: p.url?.substring(0, 50) + '...' })));
+					}
+					
+					console.log('🔄 Data refresh completed');
 				} else {
-					console.error('Failed to upload photo:', result);
+					console.error('❌ Failed to upload photo:', result);
 					// Remove the photo from local state on failure
 					visits = visits.map(visit => {
 						if (visit.id === visitId) {
@@ -134,7 +169,7 @@
 					});
 				}
 			} catch (error) {
-				console.error('Error uploading photo:', error);
+				console.error('💥 Error uploading photo:', error);
 				// Remove the photo from local state on error
 				visits = visits.map(visit => {
 					if (visit.id === visitId) {
