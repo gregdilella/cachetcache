@@ -510,11 +510,16 @@ export const actions: Actions = {
 	},
 
 	uploadPhoto: async ({ request, locals: { safeGetSession, supabase }, params }) => {
+		console.log('🎯 Server uploadPhoto action called');
+		
 		const { session, user } = await safeGetSession();
 
 		if (!session || !user) {
+			console.error('❌ Upload failed: User not authenticated');
 			return fail(401, { error: 'Unauthorized' });
 		}
+
+		console.log('👤 User authenticated:', { userId: user.id, email: user.email });
 
 		// Check if user is admin
 		const { data: userProfile } = await supabase
@@ -524,29 +529,49 @@ export const actions: Actions = {
 			.single();
 
 		if (!userProfile?.is_admin) {
+			console.error('❌ Upload failed: User is not admin');
 			return fail(403, { error: 'Admin privileges required' });
 		}
+
+		console.log('👨‍💼 Admin privileges confirmed');
 
 		const formData = await request.formData();
 		const photo = formData.get('photo') as File;
 		const visitId = formData.get('visitId') as string;
 		const photoType = formData.get('photoType') as string;
 
+		console.log('📋 Form data received:', {
+			photoName: photo?.name,
+			photoSize: photo?.size,
+			photoMimeType: photo?.type,
+			visitId,
+			photoType: photoType
+		});
+
 		if (!photo) {
+			console.error('❌ Upload failed: No photo file provided');
 			return fail(400, { error: 'Photo is required' });
 		}
 
 		if (!visitId) {
+			console.error('❌ Upload failed: No visit ID provided');
 			return fail(400, { error: 'Visit ID is required' });
 		}
 
 		if (!photoType || !['initial_consult', 'follow_up'].includes(photoType)) {
+			console.error('❌ Upload failed: Invalid photo type:', photoType);
 			return fail(400, { error: 'Invalid photo type' });
 		}
 
 		// Determine target user ID (admin can upload photos for other users)
 		const targetUserId = params.user_slug;
 		const isUploadingForOtherUser = targetUserId !== user.id;
+
+		console.log('🎯 Target user info:', {
+			targetUserId,
+			isUploadingForOtherUser,
+			currentUserId: user.id
+		});
 
 		// Use admin client if uploading for another user to bypass RLS
 		const clientToUse = isUploadingForOtherUser ? createSupabaseAdminClient() : supabase;
@@ -556,14 +581,21 @@ export const actions: Actions = {
 			const fileExtension = photo.name.split('.').pop() || 'jpg';
 			const uniqueKey = `visits/${visitId}/${photoType}/${crypto.randomUUID()}.${fileExtension}`;
 			
+			console.log('🔑 Generated unique key:', uniqueKey);
+			
 			// Convert File to Buffer
 			const arrayBuffer = await photo.arrayBuffer();
 			const buffer = Buffer.from(arrayBuffer);
 
+			console.log('🔄 Converting file to buffer completed, size:', buffer.length);
+
 			// Upload photo to R2 storage
+			console.log('☁️ Uploading to R2 storage...');
 			await uploadFile(uniqueKey, buffer, photo.type);
+			console.log('✅ R2 upload successful');
 
 			// Save photo details to database
+			console.log('💾 Saving photo metadata to database...');
 			const { data: photoData, error: insertError } = await clientToUse
 				.from('visit_photos')
 				.insert({
@@ -581,13 +613,23 @@ export const actions: Actions = {
 				.single();
 
 			if (insertError) {
-				console.error('Error saving photo to database:', insertError);
+				console.error('❌ Database save failed:', {
+					error: insertError.message,
+					code: insertError.code,
+					details: insertError.details,
+					hint: insertError.hint
+				});
 				return fail(500, { error: 'Failed to save photo to database' });
 			}
 
+			console.log('✅ Photo upload completed successfully!', {
+				photoId: photoData.id,
+				filename: uniqueKey
+			});
+
 			return { success: true, photo: photoData };
 		} catch (err) {
-			console.error('=== PHOTO UPLOAD ERROR DETAILS ===');
+			console.error('💥 PHOTO UPLOAD ERROR - FULL DETAILS:');
 			console.error('Error type:', typeof err);
 			console.error('Error message:', err instanceof Error ? err.message : String(err));
 			console.error('Error stack:', err instanceof Error ? err.stack : 'No stack trace');
@@ -596,8 +638,20 @@ export const actions: Actions = {
 				size: photo.size,
 				type: photo.type
 			});
-			console.error('=== END ERROR DETAILS ===');
-			return fail(500, { error: 'Failed to upload photo' });
+			console.error('Upload context:', {
+				visitId,
+				photoType,
+				targetUserId,
+				uniqueKey: `visits/${visitId}/${photoType}/${crypto.randomUUID()}.${photo.name.split('.').pop()}`
+			});
+			
+			// Check if it's an R2 storage error
+			if (err instanceof Error && err.message.includes('R2 storage is not configured')) {
+				console.error('❌ R2 CONFIGURATION ERROR: Missing environment variables');
+				return fail(500, { error: 'R2 storage is not configured. Please set CLOUDFLARE_R2_ACCESS_KEY_ID and CLOUDFLARE_R2_SECRET_ACCESS_KEY environment variables.' });
+			}
+			
+			return fail(500, { error: 'Failed to upload photo: ' + (err instanceof Error ? err.message : String(err)) });
 		}
 	},
 

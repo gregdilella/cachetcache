@@ -5,16 +5,18 @@
 		initializeStores
 	} from '@skeletonlabs/skeleton';
 	import InstagramNav from '$lib/components/InstagramNav.svelte';
-	import { inject } from '@vercel/analytics';
-	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
+	// import { inject } from '@vercel/analytics';
+	// import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
 	import { page } from '$app/stores';
 	import { Menu, X } from 'lucide-svelte';
 	import type { LayoutData } from './$types';
 
 	export let data: LayoutData;
 
-	inject();
-	injectSpeedInsights();
+	// Vercel Analytics - Only works when deployed on Vercel
+	// Since you're on Cloudflare Pages, commenting these out to prevent 404 errors
+	// inject();
+	// injectSpeedInsights();
 	initializeStores();
 	
 	// Check if current path is the home page

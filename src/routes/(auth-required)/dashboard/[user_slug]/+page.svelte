@@ -90,6 +90,15 @@
 	function handlePhotoUpload(event: CustomEvent) {
 		const { visitId, type, file, photoId } = event.detail;
 		
+		console.log('🚀 Photo upload started:', {
+			visitId,
+			type,
+			fileName: file.name,
+			fileSize: file.size,
+			fileType: file.type,
+			photoId
+		});
+		
 		// Upload to server
 		const uploadPhoto = async () => {
 			try {
@@ -98,18 +107,33 @@
 				formData.append('visitId', visitId);
 				formData.append('photoType', type === 'initialConsult' ? 'initial_consult' : 'follow_up');
 				
+				console.log('📤 Sending upload request to server...');
+				
 				const response = await fetch('?/uploadPhoto', {
 					method: 'POST',
 					body: formData
 				});
 				
+				console.log('📥 Server response received:', {
+					status: response.status,
+					statusText: response.statusText,
+					ok: response.ok
+				});
+				
 				const result = await response.json();
+				console.log('📋 Response data:', result);
 				
 				if (response.ok) {
+					console.log('✅ Photo upload successful!');
 					// Refresh server data to get the uploaded photo
 					await invalidateAll();
+					console.log('🔄 Page data refreshed');
 				} else {
-					console.error('Failed to upload photo:', result);
+					console.error('❌ Photo upload failed - Server returned error:', {
+						status: response.status,
+						statusText: response.statusText,
+						error: result.error || result.message || 'Unknown server error'
+					});
 					// Remove the photo from local state on failure
 					visits = visits.map(visit => {
 						if (visit.id === visitId) {
@@ -124,7 +148,11 @@
 					});
 				}
 			} catch (error) {
-				console.error('Error uploading photo:', error);
+				console.error('💥 Photo upload error - Network or client error:', {
+					error: error instanceof Error ? error.message : String(error),
+					stack: error instanceof Error ? error.stack : undefined,
+					type: typeof error
+				});
 				// Remove the photo from local state on error
 				visits = visits.map(visit => {
 					if (visit.id === visitId) {
