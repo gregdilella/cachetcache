@@ -141,19 +141,14 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase 
 	// Process visits data and generate signed URLs for photos
 	let visitsWithPhotos: Array<any> = [];
 	if (visits && visits.length > 0) {
-		console.log('🔍 SERVER: Processing visits for user:', targetUserId, 'Total visits:', visits.length);
-		
 		visitsWithPhotos = await Promise.all(
 			visits.map(async (visit: Visit & { visit_photos: VisitPhoto[] }) => {
-				console.log('🔍 SERVER: Processing visit:', visit.id, 'Photos:', visit.visit_photos?.length || 0);
-				
 				// Group photos by type
 				const initialConsultPhotos = [];
 				const followUpPhotos = [];
 
 				if (visit.visit_photos && visit.visit_photos.length > 0) {
 					for (const photo of visit.visit_photos) {
-						console.log('🔍 SERVER: Processing photo:', photo.id, 'Type:', photo.photo_type, 'R2 key:', photo.r2_key);
 						try {
 							const signedUrl = await getSignedDownloadUrl(photo.r2_key, 3600);
 							const photoWithUrl = {
@@ -165,18 +160,16 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase 
 
 							if (photo.photo_type === 'initial_consult') {
 								initialConsultPhotos.push(photoWithUrl);
-								console.log('📸 SERVER: Added initial consult photo:', photo.id);
 							} else if (photo.photo_type === 'follow_up') {
 								followUpPhotos.push(photoWithUrl);
-								console.log('📸 SERVER: Added follow-up photo:', photo.id);
 							}
 						} catch (err) {
-							console.error('❌ SERVER: Error generating signed URL for photo:', photo.id, err);
+							console.error('Error generating signed URL for photo:', photo.id, err);
 						}
 					}
 				}
 
-				const processedVisit = {
+				return {
 					id: visit.id,
 					title: visit.title,
 					expanded: visit.expanded || false,
@@ -185,15 +178,9 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase 
 					initialConsultPhotos,
 					followUpPhotos
 				};
-				
-				console.log('✅ SERVER: Processed visit:', visit.id, 'Initial photos:', initialConsultPhotos.length, 'Follow-up photos:', followUpPhotos.length);
-				
-				return processedVisit;
 			})
 		);
 	}
-	
-	console.log('🔍 SERVER: Final visits with photos count:', visitsWithPhotos.length);
 
 	return {
 		userProfile: userProfile || null,
@@ -525,35 +512,18 @@ export const actions: Actions = {
 	uploadPhoto: async ({ request, locals: { safeGetSession, supabase }, params }) => {
 		const { session, user } = await safeGetSession();
 
-		console.log('🔍 SERVER: Photo upload request received', {
-			userId: user?.id,
-			userSlug: params.user_slug,
-			sessionExists: !!session
-		});
-
 		if (!session || !user) {
-			console.log('❌ SERVER: Unauthorized - no session or user');
 			return fail(401, { error: 'Unauthorized' });
 		}
 
 		// Check if user is admin
 		const { data: userProfile } = await supabase
 			.from('user_profile')
-			.select('is_admin, name, email')
+			.select('is_admin')
 			.eq('id', user.id)
 			.single();
 
-		console.log('🔍 SERVER: User profile check', {
-			userId: user.id,
-			userProfile: userProfile ? {
-				name: userProfile.name,
-				email: userProfile.email,
-				is_admin: userProfile.is_admin
-			} : null
-		});
-
 		if (!userProfile?.is_admin) {
-			console.log('❌ SERVER: Access denied - user is not admin');
 			return fail(403, { error: 'Admin privileges required' });
 		}
 
@@ -561,13 +531,6 @@ export const actions: Actions = {
 		const photo = formData.get('photo') as File;
 		const visitId = formData.get('visitId') as string;
 		const photoType = formData.get('photoType') as string;
-
-		console.log('🔍 SERVER: Form data parsed', {
-			photoName: photo?.name,
-			photoSize: photo?.size,
-			visitId,
-			photoType
-		});
 
 		if (!photo) {
 			return fail(400, { error: 'Photo is required' });
@@ -585,12 +548,6 @@ export const actions: Actions = {
 		const targetUserId = params.user_slug;
 		const isUploadingForOtherUser = targetUserId !== user.id;
 
-		console.log('🔍 SERVER: Target user determination', {
-			currentUserId: user.id,
-			targetUserId,
-			isUploadingForOtherUser
-		});
-
 		// Use admin client if uploading for another user to bypass RLS
 		const clientToUse = isUploadingForOtherUser ? createSupabaseAdminClient() : supabase;
 
@@ -599,25 +556,14 @@ export const actions: Actions = {
 			const fileExtension = photo.name.split('.').pop() || 'jpg';
 			const uniqueKey = `visits/${visitId}/${photoType}/${crypto.randomUUID()}.${fileExtension}`;
 			
-			console.log('📤 SERVER: Uploading to R2 storage', { uniqueKey });
-			
 			// Convert File to Buffer
 			const arrayBuffer = await photo.arrayBuffer();
 			const buffer = Buffer.from(arrayBuffer);
 
 			// Upload photo to R2 storage
 			await uploadFile(uniqueKey, buffer, photo.type);
-			
-			console.log('✅ SERVER: R2 upload successful');
 
 			// Save photo details to database
-			console.log('💾 SERVER: Saving to database', {
-				client: isUploadingForOtherUser ? 'admin' : 'regular',
-				targetUserId,
-				visitId,
-				photoType
-			});
-
 			const { data: photoData, error: insertError } = await clientToUse
 				.from('visit_photos')
 				.insert({
@@ -635,19 +581,22 @@ export const actions: Actions = {
 				.single();
 
 			if (insertError) {
-				console.error('❌ SERVER: Error saving photo to database:', insertError);
+				console.error('Error saving photo to database:', insertError);
 				return fail(500, { error: 'Failed to save photo to database' });
 			}
 
-			console.log('✅ SERVER: Photo saved to database successfully', {
-				photoId: photoData.id,
-				userId: photoData.user_id,
-				visitId: photoData.visit_id
-			});
-
 			return { success: true, photo: photoData };
 		} catch (err) {
-			console.error('💥 SERVER: Error uploading photo:', err);
+			console.error('=== PHOTO UPLOAD ERROR DETAILS ===');
+			console.error('Error type:', typeof err);
+			console.error('Error message:', err instanceof Error ? err.message : String(err));
+			console.error('Error stack:', err instanceof Error ? err.stack : 'No stack trace');
+			console.error('Photo details:', {
+				name: photo.name,
+				size: photo.size,
+				type: photo.type
+			});
+			console.error('=== END ERROR DETAILS ===');
 			return fail(500, { error: 'Failed to upload photo' });
 		}
 	},
