@@ -67,6 +67,8 @@
 				bind:value={searchTerm}
 				placeholder={$t.patientSearch.searchPlaceholder}
 				class="block w-full pl-10 pr-3 py-3 sm:py-2 border-0 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-pink-500 cf-text text-base sm:text-sm"
+				id="patient-search"
+				name="searchTerm"
 			/>
 		</div>
 		<p class="mt-2 text-sm cf-text-light">

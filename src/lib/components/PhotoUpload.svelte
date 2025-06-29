@@ -194,6 +194,7 @@
 			</label>
 			<textarea
 				id="doctor-note-{photos[currentIndex].id}"
+				name="doctor-note-{photos[currentIndex].id}"
 				bind:value={photos[currentIndex].doctorNote}
 				on:blur={() => updateDoctorNote(photos[currentIndex].id, photos[currentIndex].doctorNote || '')}
 				placeholder={$t.photoUpload.addNotesPlaceholder}
@@ -263,6 +264,8 @@
 	accept="image/*"
 	{multiple}
 	class="hidden"
+	id="photo-upload-input"
+	name="photo-upload"
 	on:change={handleFileSelect}
 />
 

@@ -201,6 +201,8 @@
 						placeholder={$t.visitTimeline.visitTitlePlaceholder}
 						class="w-full px-4 py-3 sm:py-2 rounded-lg border-0 focus:ring-2 focus:ring-pink-500 cf-text text-base sm:text-sm"
 						on:keydown={(e) => e.key === 'Enter' && addNewVisit()}
+						id="new-visit-title"
+						name="newVisitTitle"
 					/>
 				</div>
 				<button
@@ -274,6 +276,8 @@
 									on:change={() => updateVisitDate(visit.id, 'initialConsultDate', visit.initialConsultDate || '')}
 									class="text-sm sm:text-base cf-text border border-pink-200 rounded-lg px-3 py-2 
 										focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+									id="initial-consult-date-{visit.id}"
+									name="initialConsultDate-{visit.id}"
 								/>
 								{:else if visit.initialConsultDate}
 								<span class="text-sm sm:text-base cf-text-muted">
@@ -306,6 +310,8 @@
 									on:change={() => updateVisitDate(visit.id, 'followUpDate', visit.followUpDate || '')}
 									class="text-sm sm:text-base cf-text border border-pink-200 rounded-lg px-3 py-2 
 										focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+									id="follow-up-date-{visit.id}"
+									name="followUpDate-{visit.id}"
 								/>
 								{:else if visit.followUpDate}
 								<span class="text-sm sm:text-base cf-text-muted">

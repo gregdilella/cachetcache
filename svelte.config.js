@@ -21,7 +21,42 @@ const config = {
 				include: ['/*'],
 				exclude: ['<all>']
 			}
-		})
+		}),
+		csp: {
+			directives: {
+				'script-src': [
+					'self',
+					'unsafe-inline',
+					'https://kit.fontawesome.com',
+					'https://va.vercel-scripts.com',
+					'https://vitals.vercel-insights.com'
+				],
+				'connect-src': [
+					'self',
+					'https://vitals.vercel-insights.com',
+					'https://vercel-insights.com',
+					'https://jdpseiwgyppmyhkxesyc.supabase.co',
+					'https://3c687933a8de78d69da8abaa15b32629.r2.cloudflarestorage.com'
+				],
+				'img-src': [
+					'self',
+					'data:',
+					'https:',
+					'https://3c687933a8de78d69da8abaa15b32629.r2.cloudflarestorage.com'
+				],
+				'font-src': [
+					'self',
+					'https://fonts.gstatic.com',
+					'https://kit.fontawesome.com'
+				],
+				'style-src': [
+					'self',
+					'unsafe-inline',
+					'https://fonts.googleapis.com'
+				]
+			},
+			mode: 'auto'
+		}
 	}
 };
 export default config;

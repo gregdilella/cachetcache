@@ -157,6 +157,8 @@
 			accept="image/jpeg,image/jpg,image/png,image/webp"
 			on:change={handleFileSelect}
 			class="hidden"
+			id="image-upload-input"
+			name="image-upload"
 		/>
 	{:else}
 		<!-- Preview and Upload -->
@@ -183,6 +185,7 @@
 				</label>
 				<textarea
 					id="description"
+					name="description"
 					bind:value={description}
 					placeholder="Add a description for your image..."
 					class="w-full p-3 border border-pink-200 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-transparent resize-none"
