@@ -21,7 +21,7 @@
   <div class="text-center">
     <!-- Hero Section -->
     <div class="my-8 md:my-16 px-4">
-      <h1 class="text-3xl sm:text-4xl md:text-7xl font-black mb-6 md:mb-8 animate-in fade-in slide-in-from-left-12 duration-700">
+      <h1 class="text-3xl sm:text-4xl md:text-7xl font-black mb-6 md:mb-8 animate-in fade-in slide-in-from-left-12 duration-700 serif-heading">
         {$t.servicesPage.heroTitle}
       </h1>
     </div>
@@ -31,7 +31,7 @@
       <div class="p-4 sm:p-6 md:p-8 space-y-4 md:space-y-6">
         <!-- Free Consultations -->
         <a href="https://cachetcache.janeapp.com/#/staff_member/1/treatment/1" target="_blank" rel="noopener noreferrer" class="block group">
-          <div class="text-lg sm:text-xl md:text-2xl font-semibold text-gray-800 hover:text-pink-600 transition-all flex justify-between items-center py-2 sm:py-3 border-b border-gray-200 last:border-b-0 min-h-[3rem]">
+          <div class="text-lg sm:text-xl md:text-2xl font-semibold text-gray-800 hover:text-pink-600 transition-all flex justify-between items-center py-2 sm:py-3 border-b border-gray-200 last:border-b-0 min-h-[3rem] non-cursive">
             <span class="pr-2 flex-1 text-left">{$t.servicesPage.freeConsultations}</span>
             <span class="text-base sm:text-lg text-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex-shrink-0">
               <span class="hidden sm:inline">{$t.servicesPage.bookNow} </span>&rarr;
@@ -41,7 +41,7 @@
         
         <!-- Neuromodulator Treatments -->
         <a href="https://cachetcache.janeapp.com/#/staff_member/1/treatment/2" target="_blank" rel="noopener noreferrer" class="block group">
-          <div class="text-lg sm:text-xl md:text-2xl font-semibold text-gray-800 hover:text-pink-600 transition-all flex justify-between items-center py-2 sm:py-3 border-b border-gray-200 last:border-b-0 min-h-[3rem]">
+          <div class="text-lg sm:text-xl md:text-2xl font-semibold text-gray-800 hover:text-pink-600 transition-all flex justify-between items-center py-2 sm:py-3 border-b border-gray-200 last:border-b-0 min-h-[3rem] non-cursive">
             <span class="pr-2 flex-1 text-left">{$t.servicesPage.neuromodulatorTreatments}</span>
             <span class="text-base sm:text-lg text-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex-shrink-0">
               <span class="hidden sm:inline">{$t.servicesPage.bookNow} </span>&rarr;
@@ -51,7 +51,7 @@
         
         <!-- Fillers -->
         <a href="https://cachetcache.janeapp.com/#/staff_member/1/treatment/3" target="_blank" rel="noopener noreferrer" class="block group">
-          <div class="text-lg sm:text-xl md:text-2xl font-semibold text-gray-800 hover:text-pink-600 transition-all flex justify-between items-center py-2 sm:py-3 border-b border-gray-200 last:border-b-0 min-h-[3rem]">
+          <div class="text-lg sm:text-xl md:text-2xl font-semibold text-gray-800 hover:text-pink-600 transition-all flex justify-between items-center py-2 sm:py-3 border-b border-gray-200 last:border-b-0 min-h-[3rem] non-cursive">
             <span class="pr-2 flex-1 text-left">{$t.servicesPage.fillers}</span>
             <span class="text-base sm:text-lg text-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex-shrink-0">
               <span class="hidden sm:inline">{$t.servicesPage.bookNow} </span>&rarr;
@@ -61,7 +61,7 @@
         
         <!-- Free Follow Up -->
         <a href="https://cachetcache.janeapp.com" target="_blank" rel="noopener noreferrer" class="block group">
-          <div class="text-lg sm:text-xl md:text-2xl font-semibold text-gray-800 hover:text-pink-600 transition-all flex justify-between items-center py-2 sm:py-3 min-h-[3rem]">
+          <div class="text-lg sm:text-xl md:text-2xl font-semibold text-gray-800 hover:text-pink-600 transition-all flex justify-between items-center py-2 sm:py-3 min-h-[3rem] non-cursive">
             <span class="pr-2 flex-1 text-left">{$t.servicesPage.freeFollowUp}</span>
             <span class="text-base sm:text-lg text-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex-shrink-0">
               <span class="hidden sm:inline">{$t.servicesPage.bookNow} </span>&rarr;

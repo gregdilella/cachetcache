@@ -36,8 +36,8 @@
 <main class="">
 	<div class="text-center px-4">
 		<div class="my-8 sm:my-16">
-			<h1 class="text-3xl sm:text-4xl md:text-7xl font-black mb-4 animate-in fade-in slide-in-from-left-12 duration-700">{$t.signinPage.heroTitle}</h1>
-			<h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-pink-700 mb-2 transition-all duration-1000 {visible ? 'opacity-100 blur-none' : 'opacity-0 blur-md'}">{$t.signinPage.accessAccount}</h2>
+			<h1 class="text-3xl sm:text-4xl md:text-7xl font-black mb-4 animate-in fade-in slide-in-from-left-12 duration-700 serif-heading">{$t.signinPage.heroTitle}</h1>
+			<h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-pink-700 mb-2 transition-all duration-1000 serif-heading {visible ? 'opacity-100 blur-none' : 'opacity-0 blur-md'}">{$t.signinPage.accessAccount}</h2>
 		</div>
 		<form 
 			method="POST" 

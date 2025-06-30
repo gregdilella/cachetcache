@@ -34,7 +34,7 @@
   <!-- Hero Section -->
   <section class="flex justify-center items-start pt-5 py-10 md:pt-20">
     <div class="flex flex-col items-center">
-      <h1 class="text-4xl md:text-7xl font-black mb-4 animate-in fade-in slide-in-from-left-12 duration-700" style="font-family: 'Sacramento', cursive;">
+      <h1 class="text-4xl md:text-7xl font-black mb-4 animate-in fade-in slide-in-from-left-12 duration-700 serif-heading">
         {$t.contactPage.heroTitle}
       </h1>
     </div>
@@ -47,7 +47,7 @@
       <div class="p-8">
         <!-- Address Section -->
         <div class="text-center mb-8">
-          <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4 non-cursive">{$t.contactPage.address}</h2>
+          <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4 serif-heading">{$t.contactPage.address}</h2>
           <p class="text-lg md:text-xl text-gray-700 mb-4 non-cursive">{$t.contactPage.addressValue}</p>
           <p class="text-lg md:text-xl text-gray-700 non-cursive">{$t.contactPage.bookingInstructions}</p>
         </div>
@@ -57,7 +57,7 @@
 
         <!-- Contact Form Section -->
         <div class="mb-8">
-          <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center non-cursive">{$t.contactPage.getInTouch}</h2>
+          <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center serif-heading">{$t.contactPage.getInTouch}</h2>
           
           <form 
             method="POST" 
@@ -146,7 +146,7 @@
 
         <!-- Booking Alternative Section -->
         <div class="text-center">
-          <h2 class="text-xl font-bold text-gray-800 mb-4 non-cursive">{$t.contactPage.or}</h2>
+          <h2 class="text-xl font-bold text-gray-800 mb-4 serif-heading">{$t.contactPage.or}</h2>
           <a href="https://cachetcache.janeapp.com" target="_blank" rel="noopener noreferrer" 
              class="text-lg sm:text-xl font-bold text-pink-500 hover:text-pink-700 transition-colors duration-300 underline touch-manipulation non-cursive">
             {$t.contactPage.bookAtJaneApp}

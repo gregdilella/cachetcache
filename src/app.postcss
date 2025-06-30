@@ -73,11 +73,11 @@ html {
 	padding: 3px;
 	background: linear-gradient(
 		45deg,
-		#facc15,
-		#f97316,
-		#ec4899,
-		#f97316,
-		#facc15
+		#fff4bc,
+		#D58A94,
+		#fff4bc,
+		#D58A94,
+		#fff4bc
 	);
 	background-size: 300% 300%;
 	animation: gradient-border 4s ease infinite;
@@ -100,27 +100,26 @@ html {
 /* Subtle gradient border variation */
 .pink-gradient-border {
 	position: relative;
-	background: white;
-	border-radius: 12px;
-	padding: 2px;
 	background: linear-gradient(
 		135deg,
-		#facc15,
-		#f97316,
-		#ec4899,
-		#f97316,
-		#facc15
+		#fff4bc,
+		#D58A94,
+		#fff4bc,
+		#D58A94,
+		#fff4bc
 	);
 	background-size: 200% 200%;
-	animation: gradient-shift 3s ease infinite;
+	animation: gradient-shift 8s ease infinite;
+	border-radius: 16px;
+	padding: 3px;
 }
 
 .pink-gradient-border::before {
 	content: '';
 	position: absolute;
-	inset: 2px;
-	background: white;
-	border-radius: 10px;
+	inset: 3px;
+	background: #f6f1ea;
+	border-radius: 8px;
 	z-index: 1;
 }
 
@@ -158,7 +157,7 @@ html {
 	background: white;
 	border-radius: 8px;
 	padding: 1px;
-	background: linear-gradient(135deg, #facc15, #f97316, #ec4899);
+	background: linear-gradient(135deg, #fff4bc, #D58A94, #fff4bc);
 	background-size: 200% 200%;
 	animation: gradient-shift 2s ease infinite;
 	transition: all 0.3s ease;
@@ -180,6 +179,18 @@ html {
 
 .cf-button:hover {
 	transform: scale(1.02);
+}
+
+/* Sidebar hover effects with dusty rose */
+.sidebar-hover:hover {
+	background-color: #D58A94;
+	color: white;
+}
+
+/* Sage green hover for authenticated items */
+.sidebar-hover-sage:hover {
+	background-color: #B1BCA0;
+	color: white;
 }
 
 /* Legacy classes updated */
@@ -207,4 +218,11 @@ html {
 .instagram-post {
 	@apply pink-gradient-border cf-hover mb-8;
 }
+
+/* Playfair Display serif font for unauthenticated page headings */
+.serif-heading {
+	font-family: 'Playfair Display', serif !important;
+}
+
+
 

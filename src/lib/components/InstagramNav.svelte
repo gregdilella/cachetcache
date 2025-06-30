@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import { goto, invalidateAll } from '$app/navigation';
 	import { Home, Search, Heart, User, Syringe, Mail, MessageCircle, PlusSquare, LogOut, Settings, Clock, Users, Languages } from 'lucide-svelte';
-	import cachetCacheImage from '$lib/assets/cachetcachewhite.png';
+	import cachetCacheImage from '$lib/assets/cachetcachetrasnlucent.png';
 	import type { Session, SupabaseClient } from '@supabase/supabase-js';
 	import { t, currentLanguage, switchLanguage } from '$lib/i18n/translations';
 	
@@ -35,7 +35,7 @@
 
 {#if mobile}
 	<!-- Mobile Bottom Navigation -->
-	<div class="flex justify-around items-center py-2 bg-white">
+	<div class="flex justify-around items-center py-2" style="background-color: #f6f1ea;">
 		{#if isAuthenticated}
 			<!-- Authenticated navigation -->
 			<a href="/user_profile" class="flex flex-col items-center p-2 {isActive('/user_profile') ? 'text-pink-600' : 'cf-text hover:text-pink-500'}">
@@ -101,7 +101,7 @@
 	</div>
 {:else}
 	<!-- Desktop Sidebar Navigation -->
-	<div class="flex flex-col h-full">
+	<div class="flex flex-col h-full" style="background-color: #f6f1ea;">
 		<!-- Logo/Brand -->
 		<div class="p-6 pink-gradient-border flex justify-center">
 			<img 
@@ -119,7 +119,7 @@
 					<li>
 						<a 
 							href="/user_profile" 
-							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-text hover:bg-pink-50 hover:text-pink-600"
+							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-text sidebar-hover-sage"
 						>
 							<Settings class="w-6 h-6" />
 							<span class="font-medium">{$t.profile}</span>
@@ -128,7 +128,7 @@
 					<li>
 						<a 
 							href="/dashboard" 
-							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-text hover:bg-pink-50 hover:text-pink-600"
+							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-text sidebar-hover-sage"
 						>
 							<Clock class="w-6 h-6" />
 							<span class="font-medium">{$t.timeline}</span>
@@ -138,7 +138,7 @@
 						<li>
 							<a 
 								href="/admin/patient-search" 
-								class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-text hover:bg-pink-50 hover:text-pink-600"
+								class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-text sidebar-hover-sage"
 							>
 								<Users class="w-6 h-6" />
 								<span class="font-medium">{$t.patients}</span>
@@ -171,7 +171,7 @@
 					<li>
 						<a 
 							href="/welcome" 
-							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-text hover:bg-pink-50 hover:text-pink-600"
+							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-text sidebar-hover"
 						>
 							<Home class="w-6 h-6" />
 							<span class="font-medium">{$t.home}</span>
@@ -183,7 +183,7 @@
 							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-hover
 								{isActive('/services') 
 									? 'pink-gradient-border text-pink-700 shadow-sm' 
-									: 'cf-text hover:bg-pink-50 hover:text-pink-600'}"
+									: 'cf-text sidebar-hover'}"
 						>
 							<Syringe class="w-6 h-6" />
 							<span class="font-medium">{$t.services}</span>
@@ -195,7 +195,7 @@
 							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-hover
 								{isActive('/about') 
 									? 'pink-gradient-border text-pink-700 shadow-sm' 
-									: 'cf-text hover:bg-pink-50 hover:text-pink-600'}"
+									: 'cf-text sidebar-hover'}"
 						>
 							<Search class="w-6 h-6" />
 							<span class="font-medium">{$t.about}</span>
@@ -207,7 +207,7 @@
 							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-hover
 								{isActive('/contact') 
 									? 'pink-gradient-border text-pink-700 shadow-sm' 
-									: 'cf-text hover:bg-pink-50 hover:text-pink-600'}"
+									: 'cf-text sidebar-hover'}"
 						>
 							<Mail class="w-6 h-6" />
 							<span class="font-medium">{$t.contact}</span>
@@ -230,7 +230,7 @@
 							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-hover
 								{isActive('/signin') 
 									? 'pink-gradient-border text-pink-700 shadow-sm' 
-									: 'cf-text hover:bg-pink-50 hover:text-pink-600'}"
+									: 'cf-text sidebar-hover'}"
 						>
 							<User class="w-6 h-6" />
 							<span class="font-medium">{$t.signin}</span>

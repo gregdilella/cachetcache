@@ -32,8 +32,8 @@
 <main class="">
 	<div class="text-center px-4">
 		<div class="my-8 sm:my-16">
-			<h1 class="text-3xl sm:text-4xl md:text-7xl font-black mb-4 animate-in fade-in slide-in-from-left-12 duration-700">{$t.signupPage.heroTitle}</h1>
-			<h2 class="text-xl sm:text-2xl md:text-3xl font-bold font-normal text-pink-700 mb-2 transition-all duration-1000 {visible ? 'opacity-100 blur-none' : 'opacity-0 blur-md'}">{$t.signupPage.createAccount}</h2>
+			<h1 class="text-3xl sm:text-4xl md:text-7xl font-black mb-4 animate-in fade-in slide-in-from-left-12 duration-700 serif-heading">{$t.signupPage.heroTitle}</h1>
+			<h2 class="text-xl sm:text-2xl md:text-3xl font-bold font-normal text-pink-700 mb-2 transition-all duration-1000 serif-heading {visible ? 'opacity-100 blur-none' : 'opacity-0 blur-md'}">{$t.signupPage.createAccount}</h2>
 		</div>
 		<form 
 			method="POST" 
@@ -96,7 +96,7 @@
 
 			<!-- Profile Information Section -->
 			<div class="pt-4 border-t border-pink-200">
-				<h3 class="text-lg font-semibold font-normal text-pink-700 mb-4">Profile Information</h3>
+				<h3 class="text-lg font-semibold font-normal text-pink-700 mb-4 serif-heading">Profile Information</h3>
 				
 				<div>
 					<label for="name" class="block mb-2 font-semibold text-pink-700 text-sm sm:text-base">{$t.name}</label>

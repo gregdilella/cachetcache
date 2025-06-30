@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { t } from '$lib/i18n/translations';
+	import cachetCacheImage from '$lib/assets/cachetcachetrasnlucent.png';
 	
 	let show = false;
 	let visible = false;
@@ -29,11 +30,15 @@
 <!-- Hero Section -->
 <section class="flex justify-center items-start pt-5 py-10 md:pt-20">
 	<div class="flex flex-col items-center">
-		<h1 class="text-7xl md:text-9xl font-black mb-4 animate-in fade-in slide-in-from-left-12 blur-in duration-700 text-center" style="font-family: 'Sacramento', cursive;">
-			Cachet Caché
-		</h1>
+		<div class="mb-4 animate-in fade-in slide-in-from-left-12 blur-in duration-700 text-center flex justify-center">
+			<img 
+				src={cachetCacheImage} 
+				alt="Cachet Caché" 
+				class="w-[300px] md:w-[400px] h-auto"
+			/>
+		</div>
 
-		<h2 class="text-center text-2xl md:text-3xl font-bold animate-in fade-in slide-in-from-bottom-8 delay-200 animate-blur-in text-gray-800 non-cursive">
+		<h2 class="text-center text-2xl md:text-3xl font-bold animate-in fade-in slide-in-from-bottom-8 delay-200 animate-blur-in text-gray-800 serif-heading">
 			Medical Aesthetics Clinic
 		</h2>
 		<p class="text-center text-xl md:text-2xl mt-4 text-pink-600 font-semibold">
@@ -47,7 +52,7 @@
 	<div class="mx-auto max-w-6xl px-6">
 		<div class="gradient-border-card cf-hover w-full transition-all duration-1000 {visible ? 'opacity-100 blur-none' : 'opacity-0 blur-md'}">
 			<div class="p-8">
-				<h1 class="text-4xl font-black mb-6 text-center non-cursive">{$t.welcomePage.whatInNameTitle}</h1>
+				<h1 class="text-4xl font-black mb-6 text-center serif-heading">{$t.welcomePage.whatInNameTitle}</h1>
 				<div class="space-y-6 max-w-3xl mx-auto">
 					<div class="space-y-4">
 						<div class="flex items-start gap-3">
