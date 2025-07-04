@@ -283,6 +283,7 @@ export const actions: Actions = {
 
 		const formData = await request.formData();
 		const title = formData.get('title') as string;
+		const initialConsultDate = formData.get('initialConsultDate') as string;
 
 		if (!title?.trim()) {
 			return fail(400, { error: 'Visit title is required' });
@@ -295,13 +296,21 @@ export const actions: Actions = {
 		// Use admin client if creating for another user to bypass RLS
 		const clientToUse = isCreatingForOtherUser ? createSupabaseAdminClient() : supabase;
 
+		// Prepare the visit data
+		const visitData: any = {
+			user_id: targetUserId,
+			title: title.trim(),
+			expanded: true
+		};
+
+		// Add initial consult date if provided
+		if (initialConsultDate) {
+			visitData.initial_consult_date = initialConsultDate;
+		}
+
 		const { data: visit, error: insertError } = await clientToUse
 			.from('visits')
-			.insert({
-				user_id: targetUserId,
-				title: title.trim(),
-				expanded: true
-			})
+			.insert(visitData)
 			.select()
 			.single();
 

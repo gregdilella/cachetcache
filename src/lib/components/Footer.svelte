@@ -4,8 +4,8 @@
 	const currentYear = new Date().getFullYear();
 </script>
 
-<footer class="w-full border-t-2 border-gray-300 text-center py-6 px-4 mt-auto" style="background-color: #B1BCA0;">
-	<div class="flex flex-col items-center gap-4 max-w-6xl mx-auto">
+<footer class="w-full border-t-2 border-gray-300 text-right py-6 px-4 mt-auto" style="background-color: #B1BCA0;">
+	<div class="flex flex-col items-end gap-4 max-w-6xl mx-auto">
 		<!-- Copyright -->
 		<p class="text-white font-medium non-cursive">
 			Copyright © {currentYear}

@@ -77,7 +77,7 @@
 	</div>
 
 	<!-- Users Table - Desktop -->
-	<div class="hidden sm:block gradient-border-card shadow-lg overflow-hidden">
+				<div class="hidden sm:block auth-gradient-border shadow-lg overflow-hidden">
 		<div class="overflow-x-auto">
 			<table class="min-w-full divide-y divide-gray-200">
 				<thead class="bg-gray-50">
@@ -179,7 +179,7 @@
 	<div class="sm:hidden space-y-4">
 		{#each filteredUsers as user (user.id)}
 			<div 
-				class="gradient-border-card cf-hover cursor-pointer p-4"
+				class="auth-gradient-border cf-hover cursor-pointer p-4"
 				on:click={() => navigateToPatientTimeline(user.id)}
 				role="button"
 				tabindex="0"

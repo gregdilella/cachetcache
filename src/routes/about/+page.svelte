@@ -22,7 +22,7 @@
 <!-- Hero Section -->
 <section class="flex justify-center items-start pt-5 py-10 md:pt-20">
 	<div class="flex flex-col items-center">
-		<h1 class="text-4xl md:text-7xl font-black mb-4 animate-in fade-in slide-in-from-left-12 blur-in duration-700 serif-heading">
+		<h1 class="text-4xl md:text-7xl mb-4 animate-in fade-in slide-in-from-left-12 blur-in duration-700" style="font-family: 'Playfair Display', serif !important; font-weight: 500 !important;">
 			{$t.aboutPage.heroTitle}
 		</h1>
 	</div>
@@ -34,7 +34,7 @@
 		<!-- First Box: Meet Dr. Lisa Henriques -->
 		<div class="gradient-border-card cf-hover transition-all duration-1000 {visible ? 'opacity-100 blur-none' : 'opacity-0 blur-md'}">
 			<div class="p-8 text-center">
-				<h1 class="text-4xl font-black mb-6 serif-heading text-gray-800">{$t.aboutPage.meetDrLisa}</h1>
+				<h1 class="text-4xl mb-6 text-gray-800" style="font-family: 'Playfair Display', serif !important; font-weight: 500 !important;">{$t.aboutPage.meetDrLisa}</h1>
 				<img
 					src={me}
 					alt="Dr. Lisa Henriques"
@@ -42,13 +42,13 @@
 					class="w-full max-w-xs md:max-w-sm rounded-2xl mx-auto mb-6"
 				/>
 				<div class="text-left max-w-3xl mx-auto">
-					<p class="text-lg leading-relaxed text-balance pb-4 text-gray-700 non-cursive">
+					<p class="text-lg leading-relaxed text-balance pb-4 text-gray-700" style="font-family: 'Avenir Next', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important; font-weight: 300 !important;">
 						{$t.aboutPage.aboutParagraph1}
 					</p>
-					<p class="text-lg leading-relaxed text-balance pb-4 text-gray-700 non-cursive">
+					<p class="text-lg leading-relaxed text-balance pb-4 text-gray-700" style="font-family: 'Avenir Next', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important; font-weight: 300 !important;">
 						{$t.aboutPage.aboutParagraph2}
 					</p>
-					<p class="text-lg leading-relaxed text-balance text-gray-700 non-cursive">
+					<p class="text-lg leading-relaxed text-balance text-gray-700" style="font-family: 'Avenir Next', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important; font-weight: 300 !important;">
 						{$t.aboutPage.aboutParagraph3}
 					</p>
 				</div>
@@ -59,10 +59,10 @@
 		<div class="gradient-border-card cf-hover transition-all duration-1000 {visible ? 'opacity-100 blur-none' : 'opacity-0 blur-md'}">
 			<div class="p-8 md:flex md:items-start md:gap-8">
 				<div class="md:flex-1">
-					<h2 class="text-2xl font-black mb-4 text-gray-800 serif-heading">
+					<h2 class="text-2xl mb-4 text-gray-800" style="font-family: 'Playfair Display', serif !important; font-weight: 500 !important;">
 						{$t.aboutPage.educationTitle}
 					</h2>
-					<ul class="text-lg leading-relaxed text-gray-700 space-y-2 non-cursive">
+					<ul class="text-lg leading-relaxed text-gray-700 space-y-2 non-cursive" style="font-family: 'Avenir Next', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important; font-weight: 300 !important;">
 						<li>• {$t.aboutPage.medicalDegree}</li>
 						<li>• {$t.aboutPage.residency}</li>
 						<li>• {$t.aboutPage.aestheticTraining}</li>

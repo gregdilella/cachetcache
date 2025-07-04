@@ -100,9 +100,19 @@ export const en: Translations = {
 		title: 'Services | Cachet Caché',
 		description: 'Our medical aesthetic services',
 		heroTitle: 'Services',
-		freeConsultations: 'Free consultations',
-		neuromodulatorTreatments: 'Neuromodulator Treatments - Botox',
-		fillers: 'Fillers',
+		freeConsultations: 'Consultations - 100$',
+		consultationDeduction: '*deducted from price of treatment',
+		neuromodulatorTreatments: 'Neuromodulator Treatments (Example Botox)',
+		neuromodulatorPricing: {
+			tier1: '0-10 units - 12 $/unit',
+			tier2: '11-50 units - 11 $/unit',
+			tier3: '> 50 units - 10 $/unit'
+		},
+		fillers: 'Hyaluronic acid fillers',
+		fillerPricing: {
+			full: 'Full syringe 750 $',
+			half: 'Half syringe 400 $'
+		},
 		freeFollowUp: 'Free follow-up and touch-ups',
 		bookNow: 'Book now'
 	},
@@ -117,7 +127,7 @@ export const en: Translations = {
 		bookingInstructions: 'To book an appointment, please fill out the form below:',
 		getInTouch: 'Get in Touch',
 		or: 'Or',
-		bookAtJaneApp: 'Book at Jane App'
+		bookAtJaneApp: 'Book through Jane App'
 	},
 	
 	// Sign in page

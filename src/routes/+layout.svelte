@@ -23,7 +23,7 @@
 	// Check if current path is the home page
 	$: isHomePage = $page.url.pathname === '/';
 	$: isWelcomePage = $page.url.pathname === '/welcome';
-	$: isCreamBackgroundPage = ['/welcome', '/services', '/about', '/contact'].includes($page.url.pathname);
+	$: isCreamBackgroundPage = ['/welcome', '/services', '/about', '/contact', '/signin', '/signup'].includes($page.url.pathname);
 	
 	// Mobile sidebar state
 	let showMobileSidebar = false;
@@ -66,7 +66,7 @@
 		<!-- Main Content with Sidebar -->
 		<div class="flex flex-1">
 			<!-- Desktop Sidebar Navigation (fixed) -->
-			<div class="hidden lg:block w-64 shadow-sm pink-gradient-border" style="background-color: #f6f1ea;">
+			<div class="hidden lg:block w-64 shadow-sm {data.session ? 'auth-gradient-border' : 'pink-gradient-border'}" style="background-color: #f6f1ea;">
 				<div class="sticky top-0 h-screen">
 					<InstagramNav session={data.session} supabase={data.supabase} user={data.userProfile} />
 				</div>
@@ -100,7 +100,7 @@
 						></div>
 						
 						<!-- Sidebar -->
-						<div class="absolute left-0 top-0 h-full w-80 max-w-[85vw] shadow-xl pink-gradient-border" style="background-color: #f6f1ea;">
+						<div class="absolute left-0 top-0 h-full w-80 max-w-[85vw] shadow-xl {data.session ? 'auth-gradient-border' : 'pink-gradient-border'}" style="background-color: #f6f1ea;">
 							<!-- Close Button -->
 							<div class="absolute top-4 right-4 z-10">
 								<button

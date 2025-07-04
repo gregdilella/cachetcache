@@ -50,6 +50,9 @@
 		try {
 			const formData = new FormData();
 			formData.append('title', visit.title);
+			if (visit.initialConsultDate) {
+				formData.append('initialConsultDate', visit.initialConsultDate);
+			}
 			
 			const response = await fetch('?/createVisit', {
 				method: 'POST',
@@ -291,10 +294,10 @@
 </svelte:head>
 
 <!-- Dashboard Header -->
-<div class="gradient-border-card mb-8">
+<div class="auth-gradient-border mb-8">
 	<div class="p-12">
 		<div class="flex flex-col sm:flex-row items-center gap-8">
-			<div class="w-24 h-24 rounded-full overflow-hidden bg-gradient-to-r from-pink-500 to-purple-500 flex items-center justify-center">
+			<div class="w-24 h-24 rounded-full overflow-hidden flex items-center justify-center" style="background-color: #B1BCA0;">
 				{#if mostRecentPhoto}
 					<img 
 						src={mostRecentPhoto.url} 

@@ -12,9 +12,14 @@
 	<title>Cachet Caché</title>
 	<meta name="description" content={$t.welcomePage.description} />
 	<meta property="og:title" content="Cachet Caché" />
-	<meta property="og:image" content="ccpink.png" />
+	<meta property="og:image" content="https://www.cachetcache.com/ChatGPTCCthumbnail.png" />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="630" />
 	<meta property="og:description" content={$t.welcomePage.description} />
 	<meta property="og:url" content="https://www.cachetcache.com" />
+	<meta property="og:type" content="website" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:image" content="https://www.cachetcache.com/ChatGPTCCthumbnail.png" />
 </svelte:head>
 
 <style>

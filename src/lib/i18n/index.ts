@@ -107,8 +107,18 @@ export type Translations = {
 		description: string;
 		heroTitle: string;
 		freeConsultations: string;
+		consultationDeduction: string;
 		neuromodulatorTreatments: string;
+		neuromodulatorPricing: {
+			tier1: string;
+			tier2: string;
+			tier3: string;
+		};
 		fillers: string;
+		fillerPricing: {
+			full: string;
+			half: string;
+		};
 		freeFollowUp: string;
 		bookNow: string;
 	};

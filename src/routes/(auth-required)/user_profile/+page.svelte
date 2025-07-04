@@ -44,10 +44,10 @@
 </svelte:head>
 
 <!-- Profile Settings -->
-<div class="gradient-border-card">
+<div class="auth-gradient-border">
 	<div class="p-8">
 		<div class="flex items-center gap-4 mb-8">
-			<div class="w-12 h-12 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 flex items-center justify-center">
+			<div class="w-12 h-12 rounded-full flex items-center justify-center" style="background-color: #B1BCA0;">
 				<Settings class="w-6 h-6 text-white" />
 			</div>
 			<div>
@@ -57,13 +57,13 @@
 		</div>
 
 		{#if form?.error}
-			<div class="mb-8 p-6 bg-red-50 pink-gradient-border">
+			<div class="mb-8 p-6 bg-red-50 auth-gradient-border">
 				<p class="text-red-600 text-sm">{form.error}</p>
 			</div>
 		{/if}
 
 		{#if form?.success}
-			<div class="mb-8 p-6 bg-green-50 pink-gradient-border">
+			<div class="mb-8 p-6 bg-green-50 auth-gradient-border">
 				<p class="text-green-600 text-sm">{$t.userProfile.profileUpdated}</p>
 			</div>
 		{/if}
@@ -85,7 +85,7 @@
 					<label for="name" class="block text-sm font-medium cf-text mb-3">
 						{$t.userProfile.fullNameRequired}
 					</label>
-					<div class="pink-gradient-border">
+					<div class="auth-gradient-border">
 						<input
 							type="text"
 							id="name"
@@ -102,7 +102,7 @@
 					<label for="phone_number" class="block text-sm font-medium cf-text mb-3">
 						{$t.userProfile.phoneNumber}
 					</label>
-					<div class="pink-gradient-border">
+					<div class="auth-gradient-border">
 						<input
 							type="tel"
 							id="phone_number"
@@ -118,7 +118,7 @@
 					<label for="sex" class="block text-sm font-medium cf-text mb-3">
 						{$t.userProfile.sex}
 					</label>
-					<div class="pink-gradient-border">
+					<div class="auth-gradient-border">
 						<select
 							id="sex"
 							name="sex"
@@ -136,7 +136,7 @@
 					<label for="birthdate" class="block text-sm font-medium cf-text mb-3">
 						{$t.userProfile.dateOfBirth}
 					</label>
-					<div class="pink-gradient-border">
+					<div class="auth-gradient-border">
 						<input
 							type="date"
 							id="birthdate"
@@ -153,17 +153,16 @@
 			</div>
 
 			<div class="mt-10">
-				<div class="cf-button w-full">
-					<button
-						type="submit"
-						disabled={loading}
-						class="w-full bg-gradient-to-r from-pink-500 to-purple-500 text-white py-4 px-8 rounded-xl font-medium 
-							hover:from-pink-600 hover:to-purple-600 disabled:opacity-50 disabled:cursor-not-allowed 
-							transition-all duration-200"
-					>
-						{loading ? $t.userProfile.updating : $t.userProfile.updateProfile}
-					</button>
-				</div>
+				<button
+					type="submit"
+					disabled={loading}
+					class="w-full text-white py-4 px-8 rounded-xl font-medium 
+						disabled:opacity-50 disabled:cursor-not-allowed 
+						transition-all duration-200 hover:opacity-90"
+					style="background-color: #B1BCA0;"
+				>
+					{loading ? $t.userProfile.updating : $t.userProfile.updateProfile}
+				</button>
 			</div>
 		</form>
 	</div>

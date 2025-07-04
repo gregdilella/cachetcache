@@ -100,9 +100,19 @@ export const fr: Translations = {
 		title: 'Services | Cachet Caché',
 		description: 'Nos services d\'esthétique médicale',
 		heroTitle: 'Services',
-		freeConsultations: 'Consultations gratuites',
-		neuromodulatorTreatments: 'Traitements Neuromodulateurs - Botox',
-		fillers: 'Agents de comblement',
+		freeConsultations: 'Consultations - 100$',
+		consultationDeduction: '*déduit du prix du traitement',
+		neuromodulatorTreatments: 'Traitements Neuromodulateurs (Exemple Botox)',
+		neuromodulatorPricing: {
+			tier1: '0-10 unités - 12 $/unité',
+			tier2: '11-50 unités - 11 $/unité',
+			tier3: '> 50 unités - 10 $/unité'
+		},
+		fillers: 'Agents de comblement à l\'acide hyaluronique',
+		fillerPricing: {
+			full: 'Seringue complète 750 $',
+			half: 'Demi-seringue 400 $'
+		},
 		freeFollowUp: 'Suivi et retouches gratuits',
 		bookNow: 'Réserver maintenant'
 	},

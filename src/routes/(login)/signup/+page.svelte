@@ -163,10 +163,11 @@
 			<button 
 				type="submit" 
 				disabled={loading} 
-				class="bg-gradient-to-r from-pink-400 to-purple-400 text-white font-bold 
+				class="text-white font-bold 
 					text-base sm:text-lg py-3 sm:py-2 px-6 sm:px-4 rounded-lg border border-pink-300 
-					transition-all duration-300 hover:from-pink-500 hover:to-purple-500 w-full 
+					transition-all duration-300 hover:opacity-90 w-full 
 					disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation"
+				style="background-color: #D58A94;"
 			>
 				{loading ? $t.creatingAccount : $t.signup}
 			</button>

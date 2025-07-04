@@ -36,8 +36,8 @@
 <main class="">
 	<div class="text-center px-4">
 		<div class="my-8 sm:my-16">
-			<h1 class="text-3xl sm:text-4xl md:text-7xl font-black mb-4 animate-in fade-in slide-in-from-left-12 duration-700 serif-heading">{$t.signinPage.heroTitle}</h1>
-			<h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-pink-700 mb-2 transition-all duration-1000 serif-heading {visible ? 'opacity-100 blur-none' : 'opacity-0 blur-md'}">{$t.signinPage.accessAccount}</h2>
+			<h1 class="text-3xl sm:text-4xl md:text-7xl mb-4 animate-in fade-in slide-in-from-left-12 duration-700" style="font-family: 'Playfair Display', serif !important; font-weight: 500 !important;">{$t.signinPage.heroTitle}</h1>
+			<h2 class="text-xl sm:text-2xl md:text-3xl text-pink-700 mb-2 transition-all duration-1000 {visible ? 'opacity-100 blur-none' : 'opacity-0 blur-md'}" style="font-family: 'Playfair Display', serif !important; font-weight: 500 !important;">{$t.signinPage.accessAccount}</h2>
 		</div>
 		<form 
 			method="POST" 
@@ -91,10 +91,11 @@
 			<button 
 				type="submit" 
 				disabled={loading} 
-				class="bg-gradient-to-r from-pink-400 to-purple-400 text-white font-bold 
+				class="text-white font-bold 
 					text-base sm:text-lg py-3 sm:py-2 px-6 sm:px-4 rounded-lg border border-pink-300 
-					transition-all duration-300 hover:from-pink-500 hover:to-purple-500 w-full 
+					transition-all duration-300 hover:opacity-90 w-full 
 					disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation"
+				style="background-color: #D58A94;"
 			>
 				{loading ? $t.signingIn : $t.signin}
 			</button>

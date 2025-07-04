@@ -193,6 +193,37 @@ html {
 	color: white;
 }
 
+/* Authenticated gradient border with sage green and mimosa */
+.auth-gradient-border {
+	position: relative;
+	background: linear-gradient(
+		135deg,
+		#B1BCA0,
+		#fff4bc,
+		#B1BCA0,
+		#fff4bc,
+		#B1BCA0
+	);
+	background-size: 200% 200%;
+	animation: gradient-shift 8s ease infinite;
+	border-radius: 16px;
+	padding: 3px;
+}
+
+.auth-gradient-border::before {
+	content: '';
+	position: absolute;
+	inset: 3px;
+	background: white;
+	border-radius: 8px;
+	z-index: 1;
+}
+
+.auth-gradient-border > * {
+	position: relative;
+	z-index: 2;
+}
+
 /* Legacy classes updated */
 .bento-box {
 	@apply cf-hover pink-gradient-border p-8 text-center transition-all duration-200;

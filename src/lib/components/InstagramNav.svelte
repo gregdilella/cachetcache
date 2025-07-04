@@ -2,7 +2,6 @@
 	import { page } from '$app/stores';
 	import { goto, invalidateAll } from '$app/navigation';
 	import { Home, Search, Heart, User, Syringe, Mail, MessageCircle, PlusSquare, LogOut, Settings, Clock, Users, Languages } from 'lucide-svelte';
-	import cachetCacheImage from '$lib/assets/cachetcachetrasnlucent.png';
 	import type { Session, SupabaseClient } from '@supabase/supabase-js';
 	import { t, currentLanguage, switchLanguage } from '$lib/i18n/translations';
 	
@@ -103,11 +102,11 @@
 	<!-- Desktop Sidebar Navigation -->
 	<div class="flex flex-col h-full" style="background-color: #f6f1ea;">
 		<!-- Logo/Brand -->
-		<div class="p-6 pink-gradient-border flex justify-center">
+		<div class="p-6 flex justify-center">
 			<img 
-				src={cachetCacheImage} 
+				src="/ChatGPTCCthumbnail.png" 
 				alt="Cachet Caché" 
-				class="max-w-[280px] w-full h-auto"
+				class="max-w-[280px] w-full h-auto rounded-2xl"
 			/>
 		</div>
 		
@@ -180,10 +179,7 @@
 					<li>
 						<a 
 							href="/services" 
-							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-hover
-								{isActive('/services') 
-									? 'pink-gradient-border text-pink-700 shadow-sm' 
-									: 'cf-text sidebar-hover'}"
+							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-text sidebar-hover"
 						>
 							<Syringe class="w-6 h-6" />
 							<span class="font-medium">{$t.services}</span>
@@ -192,10 +188,7 @@
 					<li>
 						<a 
 							href="/about" 
-							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-hover
-								{isActive('/about') 
-									? 'pink-gradient-border text-pink-700 shadow-sm' 
-									: 'cf-text sidebar-hover'}"
+							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-text sidebar-hover"
 						>
 							<Search class="w-6 h-6" />
 							<span class="font-medium">{$t.about}</span>
@@ -204,10 +197,7 @@
 					<li>
 						<a 
 							href="/contact" 
-							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-hover
-								{isActive('/contact') 
-									? 'pink-gradient-border text-pink-700 shadow-sm' 
-									: 'cf-text sidebar-hover'}"
+							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-text sidebar-hover"
 						>
 							<Mail class="w-6 h-6" />
 							<span class="font-medium">{$t.contact}</span>
@@ -227,10 +217,7 @@
 					<li>
 						<a 
 							href="/signin" 
-							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-hover
-								{isActive('/signin') 
-									? 'pink-gradient-border text-pink-700 shadow-sm' 
-									: 'cf-text sidebar-hover'}"
+							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-text sidebar-hover"
 						>
 							<User class="w-6 h-6" />
 							<span class="font-medium">{$t.signin}</span>

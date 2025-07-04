@@ -35,10 +35,17 @@
 	function addNewVisit() {
 		if (!newVisitTitle.trim()) return;
 		
+		// Get today's date in local timezone (YYYY-MM-DD format)
+		const today = new Date();
+		const localDate = today.getFullYear() + '-' + 
+			String(today.getMonth() + 1).padStart(2, '0') + '-' + 
+			String(today.getDate()).padStart(2, '0');
+		
 		const newVisit: Visit = {
 			id: crypto.randomUUID(),
 			title: newVisitTitle.trim(),
 			expanded: true,
+			initialConsultDate: localDate, // Set today as default in local timezone
 			initialConsultPhotos: [],
 			followUpPhotos: []
 		};
@@ -183,10 +190,10 @@
 <div class="space-y-6">
 	<!-- Add New Visit - Only show for admin users -->
 	{#if userProfile?.is_admin}
-	<div class="gradient-border-card cf-hover">
+	<div class="auth-gradient-border cf-hover">
 		<div class="p-4 sm:p-8">
 			<div class="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
-				<div class="w-3 h-3 rounded-full bg-pink-500"></div>
+				<div class="w-3 h-3 rounded-full" style="background-color: #B1BCA0;"></div>
 				<div>
 					<h3 class="font-bold cf-text text-lg sm:text-xl timeline-heading">{$t.visitTimeline.addNewVisit}</h3>
 					<p class="text-sm sm:text-base cf-text-muted mt-1">{$t.visitTimeline.createNewRecord}</p>
@@ -194,7 +201,7 @@
 			</div>
 			
 			<div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
-				<div class="flex-1 pink-gradient-border">
+				<div class="flex-1 auth-gradient-border">
 					<input
 						type="text"
 						bind:value={newVisitTitle}
@@ -208,9 +215,10 @@
 				<button
 					on:click={addNewVisit}
 					disabled={!newVisitTitle.trim()}
-					class="cf-button px-6 py-3 sm:py-2 text-base sm:text-sm font-medium text-pink-700 
-						hover:text-pink-800 disabled:opacity-50 disabled:cursor-not-allowed 
-						transition-all duration-200 cf-hover touch-manipulation"
+					class="px-6 py-3 sm:py-2 text-base sm:text-sm font-medium text-white 
+						disabled:opacity-50 disabled:cursor-not-allowed 
+						transition-all duration-200 cf-hover touch-manipulation rounded-lg"
+					style="background-color: #B1BCA0;"
 				>
 					<span class="flex items-center gap-2">
 						<Plus class="w-5 h-5 sm:w-4 sm:h-4" />
@@ -224,7 +232,7 @@
 	
 	<!-- Visit Timeline -->
 	{#each visits as visit (visit.id)}
-		<div class="gradient-border-card cf-hover">
+		<div class="auth-gradient-border cf-hover">
 			<div class="p-4 sm:p-8">
 				<!-- Visit Header -->
 				<div class="flex items-start justify-between mb-4 sm:mb-6">
@@ -233,16 +241,16 @@
 						class="flex items-center gap-3 sm:gap-4 flex-1 text-left cf-hover transition-all duration-200 touch-manipulation"
 						aria-expanded={visit.expanded}
 					>
-						<div class="w-3 h-3 rounded-full bg-pink-500 flex-shrink-0"></div>
+						<div class="w-3 h-3 rounded-full flex-shrink-0" style="background-color: #B1BCA0;"></div>
 						<div class="min-w-0">
 							<h3 class="font-bold cf-text text-lg sm:text-xl visit-title">{visit.title}</h3>
 							<p class="text-sm sm:text-base cf-text-muted mt-1">{getPhotosSummary(visit)}</p>
 						</div>
 						<div class="ml-auto flex-shrink-0">
 							{#if visit.expanded}
-								<ChevronDown class="w-5 h-5 text-pink-600" />
+								<ChevronDown class="w-5 h-5" style="color: #B1BCA0;" />
 							{:else}
-								<ChevronRight class="w-5 h-5 text-pink-600" />
+								<ChevronRight class="w-5 h-5" style="color: #B1BCA0;" />
 							{/if}
 						</div>
 					</button>
