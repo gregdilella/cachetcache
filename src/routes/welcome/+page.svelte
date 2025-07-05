@@ -84,9 +84,7 @@
 				
 				<!-- Text overlay positioned at bottom -->
 				<div class="absolute inset-x-0 bottom-0 flex flex-col items-center justify-end px-6 pb-8 text-center">
-					<h1 class="text-3xl md:text-4xl lg:text-5xl mb-2 drop-shadow-lg" style="font-family: 'Playfair Display', serif !important; font-weight: 500 !important; color: white !important;">
-						Medical Aesthetics Clinic
-					</h1>
+
 					<p class="text-xl md:text-2xl lg:text-3xl font-semibold drop-shadow-lg" style="font-family: 'Great Vibes', cursive; color: white !important;">
 						 The <span class="sparkle-word">speakeasy</span> of aesthetic clinics 
 					</p>
