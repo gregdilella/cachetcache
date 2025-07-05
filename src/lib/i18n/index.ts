@@ -76,13 +76,13 @@ export type Translations = {
 		heroSubtitle: string;
 		heroTagline: string;
 		whatInNameTitle: string;
+		definition: string;
 		cachetDef: string;
 		cacheDef: string;
 		philosophy1: string;
 		philosophy2: string;
 		philosophy3: string;
 		philosophy4: string;
-		philosophy5: string;
 	};
 	
 	// About page

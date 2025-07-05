@@ -82,11 +82,17 @@
 				<!-- Dark overlay for better text contrast -->
 				<div class="absolute inset-0 bg-black/40 bg-gradient-to-t from-black/60 via-black/30 to-transparent"></div>
 				
-				<!-- Text overlay positioned at bottom -->
+				<!-- Center text overlay - "cache cachet" -->
+				<div class="absolute inset-0 flex flex-col items-center justify-center px-6 pt-24 text-center">
+					<h1 class="text-4xl md:text-5xl lg:text-6xl drop-shadow-lg" style="font-family: 'Playfair Display', serif !important; font-weight: 600 !important; color: white !important;">
+						CACHET CACHÉ
+					</h1>
+				</div>
+				
+				<!-- Bottom text overlay positioned at bottom -->
 				<div class="absolute inset-x-0 bottom-0 flex flex-col items-center justify-end px-6 pb-8 text-center">
-
 					<p class="text-xl md:text-2xl lg:text-3xl font-semibold drop-shadow-lg" style="font-family: 'Great Vibes', cursive; color: white !important;">
-						 The <span class="sparkle-word">speakeasy</span> of aesthetic clinics 
+						 The <span class="sparkle-word">speakeasy</span> of medical aesthetic clinics 
 					</p>
 				</div>
 			</div>
@@ -99,27 +105,26 @@
 	<div class="mx-auto max-w-6xl px-6">
 		<div class="gradient-border-card cf-hover w-full transition-all duration-1000 {visible ? 'opacity-100 blur-none' : 'opacity-0 blur-md'}">
 			<div class="p-8">
-				<h1 class="text-4xl font-black mb-6 text-center" style="font-family: 'Great Vibes', cursive !important;">What's in a name?</h1>
+				<h1 class="text-4xl font-black mb-6 text-center" style="font-family: 'Great Vibes', cursive !important;">{$t.welcomePage.whatInNameTitle}</h1>
 				<div class="space-y-6 max-w-3xl mx-auto">
 					<h2 class="text-3xl text-left text-gray-800 font-bold" style="font-family: 'Playfair Display', serif !important;">ca·chet caché</h2>
-					<h3 class="text-xl font-semibold text-left text-gray-700 sans font-thin italic" style="font-family: 'Avenir Next', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">Definition:</h3>
+					<h3 class="text-xl font-semibold text-left text-gray-700 sans font-thin italic" style="font-family: 'Avenir Next', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">{$t.welcomePage.definition}</h3>
 					<ul class="space-y-3 text-lg text-gray-700 sans font-normal" style="font-family: 'Avenir Next', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
 						<li class="flex items-start gap-3">
 							<span class="text-pink-500 mt-1">•</span>
-							<span><strong>cachet:</strong> a distinguished mark or seal, prestige</span>
+							<span>{@html $t.welcomePage.cachetDef}</span>
 						</li>
 						<li class="flex items-start gap-3">
 							<span class="text-pink-500 mt-1">•</span>
-							<span><strong>caché:</strong> hidden</span>
+							<span>{@html $t.welcomePage.cacheDef}</span>
 						</li>
 					</ul>
 					
 					<div class="text-left text-gray-700 sans font-normal mt-8 space-y-4" style="font-family: 'Avenir Next', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-						<p>If you are searching for the place to get a naturally youthful look, without anyone knowing – look no further.</p>
-
-						<p>We believe less is more.</p>
-						<p>Our goal is to minimize signs of aging while maintaining your own unique look, while others are kept guessing whether you hit the genetic jackpot.</p>
-						<p>We strive to build our business through word-of-mouth and less through loud advertisement focused marketing.</p>
+						<p>{$t.welcomePage.philosophy1}</p>
+						<p>{$t.welcomePage.philosophy2}</p>
+						<p>{$t.welcomePage.philosophy3}</p>
+						<p>{$t.welcomePage.philosophy4}</p>
 					</div>
 				</div>
 			</div>

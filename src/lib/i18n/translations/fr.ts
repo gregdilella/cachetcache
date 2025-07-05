@@ -68,15 +68,15 @@ export const fr: Translations = {
 		description: 'Bienvenue chez Cachet Caché - Clinique d\'Esthétique Médicale',
 		heroTitle: 'Cachet Caché',
 		heroSubtitle: 'Clinique d\'Esthétique Médicale',
-		heroTagline: '✨ Le speakeasy des cliniques de médecine esthétique ✨',
+		heroTagline: 'Le speakeasy des cliniques d\'esthétique médicale',
 		whatInNameTitle: 'Que signifie notre nom?',
-		cachetDef: 'marque ou sceau distinctif, prestige',
-		cacheDef: 'caché',
+		definition: 'Définition:',
+		cachetDef: '<strong>cachet:</strong> marque ou sceau distinctif, prestige',
+		cacheDef: '<strong>caché:</strong> caché',
 		philosophy1: 'Si vous cherchez l\'endroit pour obtenir un look naturellement jeune, sans que personne ne le sache – ne cherchez plus.',
-		philosophy2: 'Cachet Caché est le speakeasy des cliniques de médecine esthétique.',
-		philosophy3: 'Nous valorisons votre intimité et vos préférences personnelles pendant votre traitement.',
-		philosophy4: 'Nous nous efforçons de développer notre clientèle par le bouche-à-oreille plutôt que par le marketing traditionnel.',
-		philosophy5: 'Nous croyons au "moins c\'est plus" et à l\'expansion organique.'
+		philosophy2: 'Nous croyons que moins c\'est plus.',
+		philosophy3: 'Notre objectif est de minimiser les signes du vieillissement tout en préservant votre look unique, laissant les autres deviner si vous avez touché le gros lot génétique.',
+		philosophy4: 'Nous nous efforçons de développer notre entreprise par le bouche-à-oreille plutôt que par la publicité axée sur le marketing bruyant.'
 	},
 	
 	// About page

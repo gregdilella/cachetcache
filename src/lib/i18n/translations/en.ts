@@ -68,15 +68,15 @@ export const en: Translations = {
 		description: 'Welcome to Cachet Caché - Medical Aesthetics Clinic',
 		heroTitle: 'Cachet Caché',
 		heroSubtitle: 'Medical Aesthetics Clinic',
-		heroTagline: '✨ The speakeasy of esthetic medicine clinics ✨',
+		heroTagline: 'The speakeasy of medical aesthetic clinics',
 		whatInNameTitle: 'What\'s in a name?',
-		cachetDef: 'distinguished mark or seal, prestige',
-		cacheDef: 'hidden',
+		definition: 'Definition:',
+		cachetDef: '<strong>cachet:</strong> a distinguished mark or seal, prestige',
+		cacheDef: '<strong>caché:</strong> hidden',
 		philosophy1: 'If you are searching for the place to get a naturally youthful look, without anyone knowing – look no further.',
-		philosophy2: 'Cachet Caché is the speakeasy of esthetic medicine clinics.',
-		philosophy3: 'We value your privacy and your personal preferences while treating you.',
-		philosophy4: 'We strive to bring business through word-of-mouth and less through traditional marketing.',
-		philosophy5: 'We believe in less-is-more and organic expansion.'
+		philosophy2: 'We believe less is more.',
+		philosophy3: 'Our goal is to minimize signs of aging while maintaining your own unique look, while others are kept guessing whether you hit the genetic jackpot.',
+		philosophy4: 'We strive to build our business through word-of-mouth and less through loud advertisement focused marketing.'
 	},
 	
 	// About page
