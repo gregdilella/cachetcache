@@ -102,17 +102,16 @@
 	<!-- Desktop Sidebar Navigation -->
 	<div class="flex flex-col h-full" style="background-color: #f6f1ea;">
 		<!-- Logo/Brand -->
-		<div class="p-6 flex justify-center">
+		<div class="w-full">
 			<img 
-				src="/ChatGPTCCthumbnail.png" 
+				src="/CCtranslucent.png" 
 				alt="Cachet Caché" 
-				class="max-w-[280px] w-full h-auto rounded-2xl"
+				class="w-full block"
 			/>
 		</div>
-		
 		<!-- Navigation Items -->
-		<nav class="flex-1 p-4">
-			<ul class="space-y-2 sidebar-nav">
+		<nav class="flex-1 p-0">
+			<ul class="space-y-2 sidebar-nav" style="margin-top:0;margin-bottom:0;padding-top:0;">
 				{#if isAuthenticated}
 					<!-- Authenticated navigation -->
 					<li>
