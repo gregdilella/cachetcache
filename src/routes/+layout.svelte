@@ -23,7 +23,7 @@
 	// Check if current path is the home page
 	$: isHomePage = $page.url.pathname === '/';
 	$: isWelcomePage = $page.url.pathname === '/welcome';
-	$: isCreamBackgroundPage = ['/welcome', '/services', '/about', '/contact', '/signin', '/signup'].includes($page.url.pathname);
+	$: isCreamBackgroundPage = ['/welcome', '/services', '/about', '/contact', '/signin', '/signup', '/blog'].includes($page.url.pathname);
 	
 	// Mobile sidebar state
 	let showMobileSidebar = false;
@@ -66,7 +66,7 @@
 		<!-- Main Content with Sidebar -->
 		<div class="flex flex-1">
 			<!-- Desktop Sidebar Navigation (fixed) -->
-			<div class="hidden lg:block w-64 shadow-sm {data.session ? 'auth-gradient-border' : 'pink-gradient-border'}" style="background-color: #f6f1ea;">
+			<div class="hidden lg:block w-64 shadow-sm sidebar-full-height {data.session ? 'auth-gradient-border' : 'pink-gradient-border'}" style="background-color: #f6f1ea;">
 				<div class="sticky top-0 h-screen">
 					<InstagramNav session={data.session} supabase={data.supabase} user={data.userProfile} />
 				</div>
@@ -74,7 +74,7 @@
 			
 			<!-- Main Content Area -->
 			<div class="flex-1 flex flex-col min-h-screen">
-				<!-- Mobile Hamburger Menu -->
+				
 				<div class="lg:hidden fixed top-4 left-4 z-50">
 					<button
 						on:click={toggleMobileSidebar}
@@ -115,7 +115,7 @@
 							
 							<!-- Navigation Content -->
 							<div 
-								class="h-full overflow-y-auto" 
+								class="overflow-y-auto pb-8" 
 								on:click={closeMobileSidebar}
 								on:keydown={(e) => e.key === 'Enter' && closeMobileSidebar()}
 								role="navigation"
@@ -196,5 +196,11 @@
 	/* Enhanced gradient backgrounds */
 	:global(.bg-gradient-to-br) {
 		background-image: linear-gradient(to bottom right, #f8fafc, #e2e8f0, #f1f5f9);
+	}
+
+	/* Sidebar full height */
+	:global(.sidebar-full-height) {
+		min-height: 100vh;
+		height: 100%;
 	}
 </style>

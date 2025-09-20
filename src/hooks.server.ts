@@ -72,8 +72,8 @@ const authGuard: Handle = async ({ event, resolve }) => {
   event.locals.user = user
 
   if (event.locals.session && event.route?.id?.includes('(login)')) {
-    console.log('redirecting to dashboard')
-    redirect(303, '/dashboard')
+    console.log('redirecting to blog')
+    redirect(303, '/blog')
   }
 
   return resolve(event)

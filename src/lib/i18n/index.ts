@@ -15,6 +15,7 @@ export type Translations = {
 	signin: string;
 	signup: string;
 	profile: string;
+	blog: string;
 	timeline: string;
 	patients: string;
 	signOut: string;
@@ -64,8 +65,42 @@ export type Translations = {
 		signin: string;
 		signup: string;
 		profile: string;
+		blog: string;
 		dashboard: string;
 		admin: string;
+	};
+
+	// Blog page
+	blogPage: {
+		title: string;
+		description: string;
+		heroTitle: string;
+		createPost: string;
+		postTitle: string;
+		postContent: string;
+		publish: string;
+		noPosts: string;
+		comments: string;
+		addComment: string;
+		reply: string;
+		like: string;
+		dislike: string;
+		likedBy: string;
+		dislikedBy: string;
+		postedBy: string;
+		commentsCount: string;
+		repliesCount: string;
+		writeComment: string;
+		writeReply: string;
+		posting: string;
+		commenting: string;
+		replying: string;
+		deletePost: string;
+		editPost: string;
+		deleteComment: string;
+		editComment: string;
+		confirmDelete: string;
+		adminOnly: string;
 	};
 	
 	// Welcome page

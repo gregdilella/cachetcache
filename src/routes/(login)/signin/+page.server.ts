@@ -6,7 +6,7 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession } }) => {
 	
 	// If already signed in, redirect to dashboard
 	if (session) {
-		throw redirect(303, '/dashboard');
+		throw redirect(303, '/blog');
 	}
 };
 
@@ -41,7 +41,7 @@ export const actions: Actions = {
 		}
 
 		console.log('Signin successful for user:', data.user.id);
-		// Redirect directly to user's timeline
-		throw redirect(303, `/dashboard/${data.user.id}`);
+		// Redirect to blog page
+		throw redirect(303, '/blog');
 	}
 }; 

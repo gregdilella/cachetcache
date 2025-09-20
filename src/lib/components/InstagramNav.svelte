@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { goto, invalidateAll } from '$app/navigation';
-	import { Home, Search, Heart, User, Syringe, Mail, MessageCircle, PlusSquare, LogOut, Settings, Clock, Users, Languages } from 'lucide-svelte';
+	import { Home, Search, Heart, User, Syringe, Mail, MessageCircle, PlusSquare, LogOut, Settings, Clock, Users, Languages, FileText } from 'lucide-svelte';
 	import type { Session, SupabaseClient } from '@supabase/supabase-js';
 	import { t, currentLanguage, switchLanguage } from '$lib/i18n/translations';
 	
@@ -40,6 +40,10 @@
 			<a href="/user_profile" class="flex flex-col items-center p-2 {isActive('/user_profile') ? 'text-pink-600' : 'cf-text hover:text-pink-500'}">
 				<Settings class="w-6 h-6" />
 				<span class="text-xs mt-1">{$t.profile}</span>
+			</a>
+			<a href="/blog" class="flex flex-col items-center p-2 {isActive('/blog') ? 'text-pink-600' : 'cf-text hover:text-pink-500'}">
+				<FileText class="w-6 h-6" />
+				<span class="text-xs mt-1">{$t.blog}</span>
 			</a>
 			<a href="/dashboard" class="flex flex-col items-center p-2 {isActive('/dashboard') ? 'text-pink-600' : 'cf-text hover:text-pink-500'}">
 				<Clock class="w-6 h-6" />
@@ -110,19 +114,21 @@
 			/>
 		</div>
 		<!-- Navigation Items -->
-		<nav class="flex-1 p-0">
+		<nav class="p-0">
 			<ul class="space-y-2 sidebar-nav" style="margin-top:0;margin-bottom:0;padding-top:0;">
 				{#if isAuthenticated}
 					<!-- Authenticated navigation -->
 					<li>
 						<a 
-							href="/user_profile" 
+							href="/blog" 
 							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-text sidebar-hover-sage"
 						>
-							<Settings class="w-6 h-6" />
-							<span class="font-medium">{$t.profile}</span>
+							<FileText class="w-6 h-6" />
+							<span class="font-medium">{$t.blog}</span>
 						</a>
 					</li>
+					<!-- Space break -->
+					<li class="py-2"></li>
 					<li>
 						<a 
 							href="/dashboard" 
@@ -130,6 +136,15 @@
 						>
 							<Clock class="w-6 h-6" />
 							<span class="font-medium">{$t.timeline}</span>
+						</a>
+					</li>
+					<li>
+						<a 
+							href="/user_profile" 
+							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-text sidebar-hover-sage"
+						>
+							<Settings class="w-6 h-6" />
+							<span class="font-medium">{$t.profile}</span>
 						</a>
 					</li>
 					{#if user?.is_admin}
@@ -143,6 +158,8 @@
 							</a>
 						</li>
 					{/if}
+					<!-- Space break -->
+					<li class="py-2"></li>
 					<!-- Language Toggle -->
 					<li>
 						<button 

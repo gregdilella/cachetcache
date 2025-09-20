@@ -36,7 +36,8 @@ const config = {
 					'https://vitals.vercel-insights.com',
 					'https://vercel-insights.com',
 					'https://jdpseiwgyppmyhkxesyc.supabase.co',
-					'https://3c687933a8de78d69da8abaa15b32629.r2.cloudflarestorage.com'
+					'https://3c687933a8de78d69da8abaa15b32629.r2.cloudflarestorage.com',
+					'https://ka-f.fontawesome.com'
 				],
 				'img-src': [
 					'self',
@@ -47,12 +48,14 @@ const config = {
 				'font-src': [
 					'self',
 					'https://fonts.gstatic.com',
-					'https://kit.fontawesome.com'
+					'https://kit.fontawesome.com',
+					'https://ka-f.fontawesome.com'
 				],
 				'style-src': [
 					'self',
 					'unsafe-inline',
-					'https://fonts.googleapis.com'
+					'https://fonts.googleapis.com',
+					'https://ka-f.fontawesome.com'
 				]
 			},
 			mode: 'auto'

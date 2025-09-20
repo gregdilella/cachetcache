@@ -4,9 +4,9 @@ import type { Actions, PageServerLoad } from './$types';
 export const load: PageServerLoad = async ({ locals: { safeGetSession } }) => {
 	const { session } = await safeGetSession();
 	
-	// If already signed in, redirect to dashboard
+	// If already signed in, redirect to blog
 	if (session) {
-		throw redirect(303, '/dashboard');
+		throw redirect(303, '/blog');
 	}
 };
 
