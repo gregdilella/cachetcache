@@ -11,6 +11,10 @@ export default {
 	content: [
 		'./src/**/*.{html,js,svelte,ts}'
 	],
+	safelist: [
+		// Preserve highlight.js classes
+		{ pattern: /^hljs-/ }
+	],
 	theme: {
 		extend: {
 			fontFamily: {
