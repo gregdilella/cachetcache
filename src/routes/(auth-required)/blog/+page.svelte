@@ -440,6 +440,7 @@
 							{/if}
 						</div>
 					</div>
+					</div>
 					</article>
 				{/each}
 			{:else}

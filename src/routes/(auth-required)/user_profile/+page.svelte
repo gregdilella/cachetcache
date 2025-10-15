@@ -5,8 +5,7 @@
 	import { Settings } from 'lucide-svelte';
 	import { t } from '$lib/i18n/translations/index.js';
 
-	export let data: PageData;
-	export let form: ActionData;
+	let { data, form }: { data: PageData; form: ActionData } = $props();
 
 	let loading = false;
 	

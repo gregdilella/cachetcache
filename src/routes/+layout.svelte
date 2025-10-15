@@ -1,9 +1,5 @@
 <script lang="ts">
 	import '../app.postcss';
-	import {
-		Modal,
-		initializeStores
-	} from '@skeletonlabs/skeleton';
 	import InstagramNav from '$lib/components/InstagramNav.svelte';
 	import Footer from '$lib/components/Footer.svelte';
 	// import { inject } from '@vercel/analytics';
@@ -18,7 +14,6 @@
 	// Since you're on Cloudflare Pages, commenting these out to prevent 404 errors
 	// inject();
 	// injectSpeedInsights();
-	initializeStores();
 	
 	// Check if current path is the home page using Svelte 5 $derived
 	let isHomePage = $derived(page.url.pathname === '/');
@@ -55,8 +50,6 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
 	<link href="https://fonts.googleapis.com/css2?family=Sacramento&family=Montserrat:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 </svelte:head>
-
-<Modal />
 
 {#if isHomePage}
 	<!-- Home page with original design - no footer -->

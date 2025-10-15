@@ -1,9 +1,6 @@
-import { join } from 'path';
 import type { Config } from 'tailwindcss';
 import forms from '@tailwindcss/forms';
 import typography from '@tailwindcss/typography';
-import { skeleton } from '@skeletonlabs/tw-plugin';
-import { abyss } from './src/abyss';
 import animate from 'tailwindcss-animate';
 
 
@@ -12,8 +9,7 @@ import animate from 'tailwindcss-animate';
 export default {
 	darkMode: 'class',
 	content: [
-		'./src/**/*.{html,js,svelte,ts}',
-		join(require.resolve('@skeletonlabs/skeleton'), '../**/*.{html,js,svelte,ts}')
+		'./src/**/*.{html,js,svelte,ts}'
 	],
 	theme: {
 		extend: {
@@ -61,11 +57,6 @@ export default {
 	plugins: [
 		forms,
 		typography,
-		skeleton({
-			themes: {
-				custom: [abyss]
-			}
-		}),
 		animate
 	]
 } satisfies Config;
