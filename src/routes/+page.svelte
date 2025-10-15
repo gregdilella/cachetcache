@@ -14,11 +14,11 @@
 		}, 100);
 		
 		// Show button after text animation completes
-		// Words start at 0ms and end at 800ms + 300ms animation = 1100ms
+		// Words start at 0ms and end at 1000ms + 300ms animation = 1300ms
 		// Add buffer time for smooth transition
 		setTimeout(() => {
 			showButton = true;
-		}, 1300); // 100ms (mounted) + 1100ms (last word) + 100ms (buffer)
+		}, 1500); // 100ms (mounted) + 1300ms (last word) + 100ms (buffer)
 	});
 	
 	/**
@@ -72,66 +72,52 @@
 		to { transform: rotate(360deg); }
 	}
 	
-	/* White glow effect */
-	@keyframes ethereal-glow {
-		0%, 100% { 
-			filter: drop-shadow(0 0 40px rgba(255, 255, 255, 0.4)) 
-			        drop-shadow(0 0 80px rgba(255, 255, 255, 0.3))
-			        drop-shadow(0 0 120px rgba(255, 255, 255, 0.2));
-		}
-		50% { 
-			filter: drop-shadow(0 0 60px rgba(255, 255, 255, 0.6)) 
-			        drop-shadow(0 0 100px rgba(255, 255, 255, 0.5))
-			        drop-shadow(0 0 140px rgba(255, 255, 255, 0.3));
-		}
-	}
 	
-	@keyframes float {
-		0%, 100% { transform: translateY(0px); }
-		50% { transform: translateY(-20px); }
-	}
-	
-	/* Logo with soft fade-into-gradient glow */
+	/* Logo with soft natural glow - similar to button */
 	.logo-wrapper {
-		animation: ethereal-glow 4s ease-in-out infinite, float 6s ease-in-out infinite;
-		transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 		position: relative;
+		animation: logo-glow 4s ease-in-out infinite;
+		/* No float animation - keep it stable */
+		border-radius: 32px; /* Match the image border-radius */
+		background: transparent; /* Ensure no background color */
+		overflow: visible; /* Don't clip the glow */
 	}
 	
-	.logo-wrapper::before {
-		content: '';
-		position: absolute;
-		inset: -40px;
-		background: radial-gradient(
-			circle,
-			rgba(255, 255, 255, 0.2) 0%,
-			rgba(255, 255, 255, 0.1) 30%,
-			rgba(255, 255, 255, 0.05) 60%,
-			transparent 100%
-		);
-		border-radius: 32px;
-		animation: pulse-glow 3s ease-in-out infinite;
-		z-index: -1;
-	}
-	
-	@keyframes pulse-glow {
-		0%, 100% { 
-			transform: scale(1);
-			opacity: 0.6;
+	@keyframes logo-glow {
+		0%, 100% {
+			box-shadow: 
+				0 0 30px rgba(255, 244, 188, 0.4),
+				0 0 60px rgba(213, 138, 148, 0.3),
+				0 10px 40px rgba(213, 138, 148, 0.2);
 		}
-		50% { 
-			transform: scale(1.1);
-			opacity: 1;
+		50% {
+			box-shadow: 
+				0 0 50px rgba(255, 244, 188, 0.6),
+				0 0 90px rgba(213, 138, 148, 0.5),
+				0 15px 60px rgba(213, 138, 148, 0.3);
 		}
 	}
 	
-	.logo-wrapper:hover {
-		transform: scale(1.08);
-		animation: ethereal-glow 2s ease-in-out infinite, float 3s ease-in-out infinite;
+	/* Mobile: gentler glow */
+	@media (max-width: 768px) {
+		@keyframes logo-glow {
+			0%, 100% {
+				box-shadow: 
+					0 0 20px rgba(255, 244, 188, 0.3),
+					0 0 40px rgba(213, 138, 148, 0.25),
+					0 8px 30px rgba(213, 138, 148, 0.15);
+			}
+			50% {
+				box-shadow: 
+					0 0 35px rgba(255, 244, 188, 0.5),
+					0 0 60px rgba(213, 138, 148, 0.4),
+					0 12px 45px rgba(213, 138, 148, 0.25);
+			}
+		}
 	}
 	
 	.logo-wrapper img {
-		border-radius: 50%;
+		border-radius: 32px;
 		position: relative;
 		z-index: 1;
 	}
@@ -237,7 +223,7 @@
 		</button>
 		
 		<!-- Elegant subtitle with word-by-word animation -->
-		<p class="entrance-text text-3xl md:text-5xl font-light text-center px-4 py-8">
+		<p class="entrance-text text-3xl md:text-5xl font-light text-center px-4 py-16">
 			{#if mounted}
 				<span class="word" style="animation-delay: 0ms;">The</span>
 				{' '}
@@ -248,6 +234,8 @@
 				<span class="word" style="animation-delay: 600ms;">Medical</span>
 				{' '}
 				<span class="word" style="animation-delay: 800ms;">Aesthetics</span>
+				{' '}
+				<span class="word" style="animation-delay: 1000ms;">Clinics</span>
 			{/if}
 		</p>
 		
