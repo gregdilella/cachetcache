@@ -34,9 +34,10 @@
 	}
 	
 	// Initialize birthdate from existing age or birthdate
-	let birthdate = data.userProfile?.birthdate || getBirthdateFromAge(data.userProfile?.age || null);
+	let birthdate = $state(data.userProfile?.birthdate || getBirthdateFromAge(data.userProfile?.age || null));
 	
-	$: calculatedAge = calculateAge(birthdate);
+	// Svelte 5 $derived for computed age
+	let calculatedAge = $derived(calculateAge(birthdate));
 </script>
 
 <svelte:head>

@@ -118,7 +118,7 @@
 								id="content"
 								name="content"
 								bind:value={newPostContent}
-								on:input={autoResize}
+								oninput={autoResize}
 								class="premium-input resize-none min-h-[140px]"
 								placeholder={$t.blogPage.postContent}
 								required
@@ -166,7 +166,11 @@
 											<button
 												type="submit"
 												class="p-2 rounded-lg text-red-500 hover:bg-red-50 hover:text-red-700 transition-all duration-200"
-												onclick="return confirm('{$t.blogPage.confirmDelete}')"
+												onclick={(e) => {
+													if (!confirm($t.blogPage.confirmDelete)) {
+														e.preventDefault();
+													}
+												}}
 											>
 												<Trash2 class="w-5 h-5" />
 											</button>
@@ -257,7 +261,7 @@
 										<textarea
 											name="content"
 											bind:value={commentInputs[post.id]}
-											on:input={autoResize}
+											oninput={autoResize}
 											class="premium-input resize-none"
 											placeholder={$t.blogPage.writeComment}
 											rows="2"
@@ -306,7 +310,7 @@
 										<textarea
 											name="content"
 											bind:value={commentInputs[post.id]}
-											on:input={autoResize}
+											oninput={autoResize}
 											class="premium-input resize-none"
 											placeholder={$t.blogPage.writeComment}
 											rows="2"
@@ -347,7 +351,7 @@
 											<!-- Reply Button (Admin Only) -->
 											{#if data.user?.is_admin}
 												<button
-													on:click={() => toggleReplies(comment.id)}
+													onclick={() => toggleReplies(comment.id)}
 													class="text-sage-600 hover:text-sage-700 text-sm font-semibold flex items-center gap-1.5 
 														px-3 py-1.5 rounded-lg hover:bg-sage-50 transition-all duration-200"
 												>
@@ -378,7 +382,7 @@
 															<textarea
 																name="content"
 																bind:value={replyInputs[comment.id]}
-																on:input={autoResize}
+																oninput={autoResize}
 																class="premium-input resize-none text-sm flex-1"
 																placeholder={$t.blogPage.writeReply}
 																rows="2"

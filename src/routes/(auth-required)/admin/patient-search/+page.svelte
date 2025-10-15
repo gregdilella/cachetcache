@@ -4,10 +4,12 @@
 	import type { PageData } from './$types';
 	import { t } from '$lib/i18n/translations/index.js';
 
-	export let data: PageData;
+	let { data }: { data: PageData } = $props();
 
-	let searchTerm = '';
-	$: filteredUsers = data.users.filter(user => {
+	let searchTerm = $state('');
+	
+	// Svelte 5 $derived for filtered users
+	let filteredUsers = $derived(data.users.filter(user => {
 		if (!searchTerm) return true;
 		const search = searchTerm.toLowerCase();
 		return (
@@ -16,7 +18,7 @@
 			user.sex?.toLowerCase().includes(search) ||
 			user.id?.toString().includes(search)
 		);
-	});
+	}));
 
 	function formatDate(dateString: string | null) {
 		if (!dateString) return 'N/A';
@@ -112,10 +114,10 @@
 					{#each filteredUsers as user (user.id)}
 						<tr 
 							class="hover:bg-gray-50 cf-hover cursor-pointer transition-colors" 
-							on:click={() => navigateToPatientTimeline(user.id)}
+							onclick={() => navigateToPatientTimeline(user.id)}
 							role="button"
 							tabindex="0"
-							on:keydown={(e) => e.key === 'Enter' && navigateToPatientTimeline(user.id)}
+							onkeydown={(e) => e.key === 'Enter' && navigateToPatientTimeline(user.id)}
 						>
 							<td class="px-6 py-4 whitespace-nowrap">
 								<div class="flex items-center">
@@ -192,10 +194,10 @@
 		{#each filteredUsers as user (user.id)}
 			<div 
 				class="auth-gradient-border cf-hover cursor-pointer p-4"
-				on:click={() => navigateToPatientTimeline(user.id)}
+				onclick={() => navigateToPatientTimeline(user.id)}
 				role="button"
 				tabindex="0"
-				on:keydown={(e) => e.key === 'Enter' && navigateToPatientTimeline(user.id)}
+				onkeydown={(e) => e.key === 'Enter' && navigateToPatientTimeline(user.id)}
 			>
 				<div class="flex items-start gap-3">
 					<div class="flex-shrink-0 h-12 w-12">

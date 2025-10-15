@@ -1,19 +1,27 @@
 <script lang="ts">
 	import { Heart, MessageCircle, Share, Bookmark, Trash2, Edit } from 'lucide-svelte';
-	import { createEventDispatcher } from 'svelte';
 	
-	export let images: Array<{
-		id: string;
-		filename: string;
-		original_name: string;
-		description: string | null;
-		created_at: string | null;
-		file_size: number;
-		mime_type: string;
-		signedUrl?: string | null;
-	}> = [];
+	// Svelte 5 Props
+	interface Props {
+		images?: Array<{
+			id: string;
+			filename: string;
+			original_name: string;
+			description: string | null;
+			created_at: string | null;
+			file_size: number;
+			mime_type: string;
+			signedUrl?: string | null;
+		}>;
+		ondelete?: (data: { id: string }) => void;
+		onedit?: (data: { id: string }) => void;
+	}
 	
-	const dispatch = createEventDispatcher();
+	let { 
+		images = [],
+		ondelete = () => {},
+		onedit = () => {}
+	}: Props = $props();
 	
 	function formatFileSize(bytes: number): string {
 		if (bytes === 0) return '0 Bytes';
@@ -56,11 +64,11 @@
 	}
 	
 	function handleDelete(imageId: string) {
-		dispatch('delete', { id: imageId });
+		ondelete({ id: imageId });
 	}
 	
 	function handleEdit(imageId: string) {
-		dispatch('edit', { id: imageId });
+		onedit({ id: imageId });
 	}
 </script>
 
@@ -91,14 +99,14 @@
 					<!-- Action Menu -->
 					<div class="flex items-center gap-2">
 						<button
-							on:click={() => handleEdit(image.id)}
+							onclick={() => handleEdit(image.id)}
 							class="p-2 text-pink-600 hover:text-pink-800 hover:bg-pink-50 rounded-full transition-colors"
 							title="Edit image"
 						>
 							<Edit class="w-4 h-4" />
 						</button>
 						<button
-							on:click={() => handleDelete(image.id)}
+							onclick={() => handleDelete(image.id)}
 							class="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 rounded-full transition-colors"
 							title="Delete image"
 						>

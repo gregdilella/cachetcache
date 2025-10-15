@@ -8,11 +8,11 @@
 	import Footer from '$lib/components/Footer.svelte';
 	// import { inject } from '@vercel/analytics';
 	// import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { Menu, X } from 'lucide-svelte';
 	import type { LayoutData } from './$types';
 
-	export let data: LayoutData;
+	let { data }: { data: LayoutData } = $props();
 
 	// Vercel Analytics - Only works when deployed on Vercel
 	// Since you're on Cloudflare Pages, commenting these out to prevent 404 errors
@@ -20,14 +20,17 @@
 	// injectSpeedInsights();
 	initializeStores();
 	
-	// Check if current path is the home page
-	$: isHomePage = $page.url.pathname === '/';
-	$: isWelcomePage = $page.url.pathname === '/welcome';
-	$: isCreamBackgroundPage = ['/welcome', '/services', '/about', '/contact', '/signin', '/signup', '/blog'].includes($page.url.pathname);
+	// Check if current path is the home page using Svelte 5 $derived
+	let isHomePage = $derived(page.url.pathname === '/');
+	let isWelcomePage = $derived(page.url.pathname === '/welcome');
+	let isCreamBackgroundPage = $derived(['/welcome', '/services', '/about', '/contact', '/signin', '/signup', '/blog'].includes(page.url.pathname));
 	
 	// Mobile sidebar state
-	let showMobileSidebar = false;
+	let showMobileSidebar = $state(false);
 	
+	/**
+	 * Toggle mobile sidebar visibility
+	 */
 	function toggleMobileSidebar() {
 		showMobileSidebar = !showMobileSidebar;
 		// Prevent body scroll when sidebar is open
@@ -38,6 +41,9 @@
 		}
 	}
 	
+	/**
+	 * Close mobile sidebar
+	 */
 	function closeMobileSidebar() {
 		showMobileSidebar = false;
 		document.body.style.overflow = 'auto';
@@ -63,10 +69,11 @@
 	<!-- Simplified layout for other pages -->
 	<div class="flex flex-col min-h-screen {isCreamBackgroundPage ? '' : 'bg-gradient-to-br from-gray-50 to-slate-100'}" style="{isCreamBackgroundPage ? 'background-color: #FAF9F6;' : ''}">
 		<!-- Main Content with Sidebar -->
-		<div class="flex flex-1">
-			<!-- Desktop Sidebar Navigation (fixed) -->
-			<div class="hidden lg:block w-64 shadow-sm sidebar-full-height {data.session ? 'auth-gradient-border' : 'pink-gradient-border'}" style="background-color: #f6f1ea;">
-				<div class="sticky top-0 h-screen">
+		<div class="flex flex-1 relative">
+			<!-- Desktop Sidebar Navigation (extends to bottom, stops before footer) -->
+			<div class="hidden lg:block w-64 shadow-sm {data.session ? 'auth-gradient-border' : 'pink-gradient-border'}" 
+				style="background-color: #f6f1ea; min-height: calc(100vh - 120px);">
+				<div class="sticky top-0 h-screen flex flex-col">
 					<InstagramNav session={data.session} supabase={data.supabase} user={data.userProfile} />
 				</div>
 			</div>
@@ -76,7 +83,7 @@
 				
 				<div class="lg:hidden fixed top-4 left-4 z-50">
 					<button
-						on:click={toggleMobileSidebar}
+						onclick={toggleMobileSidebar}
 						class="w-12 h-12 bg-white rounded-xl shadow-lg border border-pink-200 flex items-center justify-center
 							text-pink-700 hover:bg-pink-50 transition-colors touch-manipulation"
 						aria-label="Toggle menu"
@@ -91,8 +98,8 @@
 						<!-- Backdrop -->
 						<div 
 							class="absolute inset-0 bg-black/50"
-							on:click={closeMobileSidebar}
-							on:keydown={(e) => e.key === 'Escape' && closeMobileSidebar()}
+							onclick={closeMobileSidebar}
+							onkeydown={(e) => e.key === 'Escape' && closeMobileSidebar()}
 							role="button"
 							tabindex="-1"
 							aria-label="Close menu"
@@ -103,7 +110,7 @@
 							<!-- Close Button -->
 							<div class="absolute top-4 right-4 z-10">
 								<button
-									on:click={closeMobileSidebar}
+									onclick={closeMobileSidebar}
 									class="w-10 h-10 bg-pink-100 rounded-full flex items-center justify-center
 										text-pink-700 hover:bg-pink-200 transition-colors touch-manipulation"
 									aria-label="Close menu"

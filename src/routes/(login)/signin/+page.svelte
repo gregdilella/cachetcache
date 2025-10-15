@@ -1,17 +1,17 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { onMount } from 'svelte';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { t } from '$lib/i18n/translations';
 	import type { ActionData } from './$types';
 
-	export let form: ActionData;
+	let { form }: { form: ActionData } = $props();
 
-	let loading = false;
-	let visible = false;
+	let loading = $state(false);
+	let visible = $state(false);
 
-	// Get message from URL parameters
-	$: successMessage = $page.url.searchParams.get('message');
+	// Get message from URL parameters using Svelte 5 $derived
+	let successMessage = $derived(page.url.searchParams.get('message'));
 
 	onMount(() => {
 		setTimeout(() => {

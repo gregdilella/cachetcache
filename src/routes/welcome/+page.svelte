@@ -2,9 +2,13 @@
 	import { onMount } from 'svelte';
 	import { t } from '$lib/i18n/translations';
 	
-	let show = false;
-	let visible = false;
+	// Svelte 5 $state for reactive state
+	let show = $state(false);
+	let visible = $state(false);
 
+	/**
+	 * Initialize animations on mount
+	 */
 	onMount(() => {
 		const timeout = setTimeout(() => {
 			show = true;
@@ -70,7 +74,8 @@
 		position: relative;
 		border-radius: 32px;
 		overflow: hidden;
-		box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
+		box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+		margin: 0 auto;
 	}
 	
 	.hero-image-wrapper::before {
@@ -84,51 +89,45 @@
 		background-size: 200% 200%;
 	}
 	
+	@keyframes gradient-shift {
+		0%, 100% { background-position: 0% 50%; }
+		50% { background-position: 100% 50%; }
+	}
+	
 	.modern-tagline {
 		font-family: 'Great Vibes', cursive;
-		background: linear-gradient(135deg, #ffffff 0%, #fffef9 100%);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-clip: text;
-		filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+		/* Visible white text with shadow for contrast against dark background */
+		color: white;
+		text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 	}
 </style>
 
 <!-- Hero Section with modern design -->
-<section class="flex justify-center items-start pt-8 py-12 md:pt-24">
-	<div class="flex flex-col items-center max-w-5xl mx-auto px-4">
-		<div class="relative mb-8 animate-in fade-in slide-in-from-bottom-8 duration-1000">
-			<div class="hero-image-wrapper w-[320px] md:w-[440px] h-[420px] md:h-[540px]">
+<section class="flex justify-center items-center pt-12 pb-8 md:pt-20 md:pb-12">
+	<div class="flex flex-col items-center max-w-6xl mx-auto px-4 w-full">
+		<div class="animate-in fade-in slide-in-from-bottom-8 duration-1000 w-full flex flex-col items-center">
+			<!-- Image without text overlay -->
+			<div class="hero-image-wrapper w-[280px] md:w-[360px] mb-6">
 				<img 
-					src="/lips.jpg" 
+					src="/Frontpageimage.png" 
 					alt="Cachet Caché" 
-					class="w-full h-full object-cover object-top"
+					class="w-full h-auto object-contain"
 				/>
-				
-				<!-- Refined gradient overlay -->
-				<div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/20"></div>
-				
-				<!-- Modern title overlay -->
-				<div class="absolute inset-0 flex flex-col items-center justify-center px-6">
-					<h1 class="text-5xl md:text-6xl lg:text-7xl font-bold drop-shadow-2xl tracking-tight" 
-						style="font-family: 'Playfair Display', serif !important; font-weight: 700 !important; color: white !important; letter-spacing: -0.02em;">
-						CACHET CACHÉ
-					</h1>
-				</div>
-				
-				<!-- Modern tagline -->
-				<div class="absolute inset-x-0 bottom-0 px-8 pb-10">
-					<p class="modern-tagline text-2xl md:text-3xl lg:text-4xl font-semibold text-center">
-						The <span class="sparkle-word">speakeasy</span> of medical aesthetic clinics 
-					</p>
-				</div>
+			</div>
+			
+			<!-- Tagline below the image -->
+			<div class="text-center px-6 mb-8">
+				<p class="modern-tagline text-2xl md:text-3xl lg:text-4xl font-semibold" 
+					style="color: #D58A94;">
+					The <span class="sparkle-word">speakeasy</span> of medical aesthetic clinics 
+				</p>
 			</div>
 		</div>
 	</div>
 </section>
 
 <!-- Modern "What's in a name" Section -->
-<section id="about" class="mt-20 md:mt-28 mb-16">
+<section id="about" class="mt-8 md:mt-12 mb-16">
 	<div class="mx-auto max-w-6xl px-6">
 		<div class="gradient-border-card cf-hover w-full transition-all duration-1000 {visible ? 'opacity-100 blur-none' : 'opacity-0 blur-md'}">
 			<div class="p-10 md:p-14">

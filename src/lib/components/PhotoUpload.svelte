@@ -1,33 +1,49 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
 	import { Upload, Image as ImageIcon, X, ChevronLeft, ChevronRight, FileText } from 'lucide-svelte';
 	import { t } from '$lib/i18n/translations/index.js';
 	
-	export let placeholder = 'Upload photos';
-	export let multiple = true;
-	export let photos: Array<{id: string, url: string, uploading?: boolean, doctorNote?: string}> = [];
-	export let userProfile: any = null; // User profile to check admin status
-	export let readonly = false; // Whether the component is in read-only mode
+	// Svelte 5 props with callback functions instead of createEventDispatcher
+	interface Props {
+		placeholder?: string;
+		multiple?: boolean;
+		photos?: Array<{id: string, url: string, uploading?: boolean, doctorNote?: string}>;
+		userProfile?: any;
+		readonly?: boolean;
+		onupload?: (file: File) => void;
+		onremove?: (photoId: string) => void;
+		onnoteUpdate?: (data: { photoId: string; note: string }) => void;
+	}
 	
-	const dispatch = createEventDispatcher();
+	let { 
+		placeholder = 'Upload photos',
+		multiple = true,
+		photos = [],
+		userProfile = null,
+		readonly = false,
+		onupload = () => {},
+		onremove = () => {},
+		onnoteUpdate = () => {}
+	}: Props = $props();
 	
 	let fileInput: HTMLInputElement;
-	let dragOver = false;
-	let currentIndex = 0;
-	let showModal = false;
-	let modalImageUrl = '';
+	let dragOver = $state(false);
+	let currentIndex = $state(0);
+	let showModal = $state(false);
+	let modalImageUrl = $state('');
 	
-	// Reset currentIndex when photos change
-	$: if (photos.length > 0 && currentIndex >= photos.length) {
-		currentIndex = Math.max(0, photos.length - 1);
-	}
+	// Reset currentIndex when photos change using Svelte 5 $effect
+	$effect(() => {
+		if (photos.length > 0 && currentIndex >= photos.length) {
+			currentIndex = Math.max(0, photos.length - 1);
+		}
+	});
 	
 	function handleFileSelect(event: Event) {
 		const target = event.target as HTMLInputElement;
 		if (target.files) {
 			const files = Array.from(target.files);
 			files.forEach(file => {
-				dispatch('upload', file);
+				onupload(file);
 			});
 		}
 	}
@@ -39,7 +55,7 @@
 		if (event.dataTransfer?.files) {
 			const files = Array.from(event.dataTransfer.files);
 			files.forEach(file => {
-				dispatch('upload', file);
+				onupload(file);
 			});
 		}
 	}
@@ -54,7 +70,7 @@
 	}
 	
 	function removePhoto(photoId: string) {
-		dispatch('remove', photoId);
+		onremove(photoId);
 		// Adjust currentIndex if needed
 		if (currentIndex >= photos.length - 1) {
 			currentIndex = Math.max(0, photos.length - 2);
@@ -74,7 +90,7 @@
 	}
 	
 	function updateDoctorNote(photoId: string, note: string) {
-		dispatch('noteUpdate', { photoId, note });
+		onnoteUpdate({ photoId, note });
 	}
 	
 	function openModal(imageUrl: string) {
@@ -117,7 +133,7 @@
 				<button
 					type="button"
 					class="w-full h-full p-0 border-0 bg-transparent cursor-pointer"
-					on:click={() => openModal(photos[currentIndex].url)}
+					onclick={() => openModal(photos[currentIndex].url)}
 					aria-label="{$t.photoUpload.viewEnlargedPhoto} {currentIndex + 1}"
 				>
 					<img
@@ -137,7 +153,10 @@
 				<!-- Remove Photo Button - Admin only -->
 				{#if userProfile?.is_admin && !readonly}
 				<button
-					on:click|stopPropagation={() => removePhoto(photos[currentIndex].id)}
+					onclick={(e) => {
+						e.stopPropagation();
+						removePhoto(photos[currentIndex].id);
+					}}
 					class="absolute top-2 right-2 w-10 h-10 sm:w-8 sm:h-8 bg-red-500 text-white rounded-full 
 						hover:bg-red-600 transition-colors flex items-center justify-center z-10 touch-manipulation"
 				>
@@ -148,7 +167,10 @@
 				<!-- Navigation Arrows (only show if multiple photos) -->
 				{#if photos.length > 1}
 					<button
-						on:click|stopPropagation={prevPhoto}
+						onclick={(e) => {
+							e.stopPropagation();
+							prevPhoto();
+						}}
 						class="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-8 sm:h-8 bg-black/50 text-white rounded-full 
 							hover:bg-black/70 transition-colors flex items-center justify-center z-10 touch-manipulation"
 					>
@@ -156,7 +178,10 @@
 					</button>
 					
 					<button
-						on:click|stopPropagation={nextPhoto}
+						onclick={(e) => {
+							e.stopPropagation();
+							nextPhoto();
+						}}
 						class="absolute right-12 sm:right-10 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-8 sm:h-8 bg-black/50 text-white rounded-full 
 							hover:bg-black/70 transition-colors flex items-center justify-center z-10 touch-manipulation"
 					>
@@ -170,7 +195,7 @@
 				<div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5 sm:gap-1">
 					{#each photos as _, index}
 						<button
-							on:click={() => goToPhoto(index)}
+							onclick={() => goToPhoto(index)}
 							class="w-3 h-3 sm:w-2 sm:h-2 rounded-full transition-colors touch-manipulation
 								{index === currentIndex ? 'bg-white' : 'bg-white/50'}"
 						/>
@@ -196,7 +221,7 @@
 				id="doctor-note-{photos[currentIndex].id}"
 				name="doctor-note-{photos[currentIndex].id}"
 				bind:value={photos[currentIndex].doctorNote}
-				on:blur={() => updateDoctorNote(photos[currentIndex].id, photos[currentIndex].doctorNote || '')}
+				onblur={() => updateDoctorNote(photos[currentIndex].id, photos[currentIndex].doctorNote || '')}
 				placeholder={$t.photoUpload.addNotesPlaceholder}
 				class="w-full p-3 border border-pink-200 rounded-xl {userProfile?.is_admin && !readonly ? 'focus:ring-2 focus:ring-pink-500 focus:border-transparent' : 'bg-gray-50'} resize-none text-sm sm:text-base"
 				rows="3"
@@ -210,11 +235,11 @@
 			class="w-full p-4 sm:p-3 border-2 border-dashed border-pink-200 rounded-xl text-pink-600 
 				hover:border-pink-300 hover:bg-pink-25 transition-colors cursor-pointer touch-manipulation
 				{dragOver ? 'border-pink-400 bg-pink-50' : ''}"
-			on:drop={handleDrop}
-			on:dragover={handleDragOver}
-			on:dragleave={handleDragLeave}
-			on:click={() => fileInput.click()}
-			on:keydown={(e) => e.key === 'Enter' && fileInput.click()}
+			ondrop={handleDrop}
+			ondragover={handleDragOver}
+			ondragleave={handleDragLeave}
+			onclick={() => fileInput.click()}
+			onkeydown={(e) => e.key === 'Enter' && fileInput.click()}
 			role="button"
 			tabindex="0"
 		>
@@ -232,11 +257,11 @@
 		class="w-full h-48 sm:h-64 border-2 border-dashed border-pink-200 rounded-xl 
 			hover:border-pink-300 hover:bg-pink-25 transition-colors cursor-pointer touch-manipulation
 			{dragOver ? 'border-pink-400 bg-pink-50' : ''}"
-		on:drop={handleDrop}
-		on:dragover={handleDragOver}
-		on:dragleave={handleDragLeave}
-		on:click={() => fileInput.click()}
-		on:keydown={(e) => e.key === 'Enter' && fileInput.click()}
+		ondrop={handleDrop}
+		ondragover={handleDragOver}
+		ondragleave={handleDragLeave}
+		onclick={() => fileInput.click()}
+		onkeydown={(e) => e.key === 'Enter' && fileInput.click()}
 		role="button"
 		tabindex="0"
 	>
@@ -266,7 +291,7 @@
 	class="hidden"
 	id="photo-upload-input"
 	name="photo-upload"
-	on:change={handleFileSelect}
+	onchange={handleFileSelect}
 />
 
 <!-- Modal for full-screen image view -->
@@ -274,8 +299,8 @@
 <div 
 	use:appendToBody
 	class="fixed inset-0 w-screen h-screen bg-black/95 z-50 flex items-center justify-center modal-backdrop"
-	on:click={handleModalClick}
-	on:keydown={(e) => e.key === 'Escape' && closeModal()}
+	onclick={handleModalClick}
+	onkeydown={(e) => e.key === 'Escape' && closeModal()}
 	role="dialog"
 	aria-modal="true"
 	tabindex="-1"
@@ -294,7 +319,7 @@
 		
 		<!-- Close Button - Enhanced visibility -->
 		<button
-			on:click={closeModal}
+			onclick={closeModal}
 			class="absolute top-4 right-4 sm:top-6 sm:right-6 w-14 h-14 sm:w-16 sm:h-16 
 				bg-white/90 text-gray-900 rounded-full hover:bg-white transition-all duration-200 
 				flex items-center justify-center touch-manipulation shadow-2xl border-2 border-gray-200

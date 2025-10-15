@@ -1,19 +1,27 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
 	import { Upload, X, Image as ImageIcon } from 'lucide-svelte';
 	
-	export let loading = false;
-	export let error = '';
-	export let success = '';
+	// Svelte 5 Props
+	interface Props {
+		loading?: boolean;
+		error?: string;
+		success?: string;
+		onuploaded?: (image: any) => void;
+	}
 	
-	const dispatch = createEventDispatcher();
+	let { 
+		loading = false, 
+		error = '', 
+		success = '',
+		onuploaded = () => {}
+	}: Props = $props();
 	
 	let fileInput: HTMLInputElement;
-	let dragOver = false;
-	let previewUrl = '';
-	let selectedFile: File | null = null;
-	let description = '';
-	let uploadProgress = 0;
+	let dragOver = $state(false);
+	let previewUrl = $state('');
+	let selectedFile = $state<File | null>(null);
+	let description = $state('');
+	let uploadProgress = $state(0);
 	
 	function handleFileSelect(event: Event) {
 		const target = event.target as HTMLInputElement;
@@ -101,7 +109,7 @@
 			const result = await response.json();
 			success = 'Image uploaded successfully!';
 			
-			dispatch('uploaded', result.image);
+			onuploaded(result.image);
 			
 			// Clear form after successful upload
 			setTimeout(() => {
@@ -135,10 +143,10 @@
 				{dragOver 
 					? 'border-pink-400 bg-pink-50' 
 					: 'border-pink-200 hover:border-pink-300 hover:bg-pink-25'}"
-			on:drop={handleDrop}
-			on:dragover={handleDragOver}
-			on:dragleave={handleDragLeave}
-			on:click={() => fileInput.click()}
+			ondrop={handleDrop}
+			ondragover={handleDragOver}
+			ondragleave={handleDragLeave}
+			onclick={() => fileInput.click()}
 			role="button"
 			tabindex="0"
 		>
@@ -155,7 +163,7 @@
 			bind:this={fileInput}
 			type="file"
 			accept="image/jpeg,image/jpg,image/png,image/webp"
-			on:change={handleFileSelect}
+			onchange={handleFileSelect}
 			class="hidden"
 			id="image-upload-input"
 			name="image-upload"
@@ -171,7 +179,7 @@
 					class="w-full max-h-96 object-cover rounded-2xl"
 				/>
 				<button
-					on:click={clearSelection}
+					onclick={clearSelection}
 					class="absolute top-2 right-2 w-8 h-8 bg-black/50 rounded-full flex items-center justify-center text-white hover:bg-black/70 transition-colors"
 				>
 					<X class="w-4 h-4" />
@@ -212,7 +220,7 @@
 			<!-- Action Buttons -->
 			<div class="flex gap-3">
 				<button
-					on:click={uploadImage}
+					onclick={uploadImage}
 					disabled={loading}
 					class="flex-1 bg-gradient-to-r from-pink-500 to-purple-500 text-white py-3 px-6 rounded-xl font-medium 
 						hover:from-pink-600 hover:to-purple-600 disabled:opacity-50 disabled:cursor-not-allowed 
@@ -222,7 +230,7 @@
 				</button>
 				
 				<button
-					on:click={clearSelection}
+					onclick={clearSelection}
 					disabled={loading}
 					class="px-6 py-3 border border-pink-200 text-pink-600 rounded-xl font-medium 
 						hover:bg-pink-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"

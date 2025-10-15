@@ -1,15 +1,10 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
 	import { Calendar, ChevronDown, ChevronRight, Plus, Upload, X } from 'lucide-svelte';
 	import PhotoUpload from './PhotoUpload.svelte';
 	import { t } from '$lib/i18n/translations/index.js';
 	import { currentLanguage } from '$lib/i18n/index.js';
 	
-	export let visits: Visit[] = [];
-	export let userProfile: any = null; // Add user profile prop to check admin status
-	
-	const dispatch = createEventDispatcher();
-	
+	// Define Visit interface
 	interface Visit {
 		id: string;
 		title: string;
@@ -30,7 +25,30 @@
 		}>;
 	}
 	
-	let newVisitTitle = '';
+	// Svelte 5 Props with callback functions
+	interface Props {
+		visits: Visit[];
+		userProfile?: any;
+		onvisitAdded?: (visit: Visit) => void;
+		onvisitDeleted?: (data: { visitId: string }) => void;
+		onphotoUpload?: (data: { visitId: string; type: string; file: File; photoId: string }) => void;
+		onphotoRemoved?: (data: { visitId: string; type: string; photoId: string }) => void;
+		ondateUpdated?: (data: { visitId: string; field: string; date: string }) => void;
+		onnoteUpdated?: (data: { visitId: string; type: string; photoId: string; note: string }) => void;
+	}
+	
+	let {
+		visits = $bindable([]),
+		userProfile = null,
+		onvisitAdded = () => {},
+		onvisitDeleted = () => {},
+		onphotoUpload = () => {},
+		onphotoRemoved = () => {},
+		ondateUpdated = () => {},
+		onnoteUpdated = () => {}
+	}: Props = $props();
+	
+	let newVisitTitle = $state('');
 	
 	function addNewVisit() {
 		if (!newVisitTitle.trim()) return;
@@ -53,7 +71,7 @@
 		visits = [newVisit, ...visits];
 		newVisitTitle = '';
 		
-		dispatch('visitAdded', newVisit);
+		onvisitAdded(newVisit);
 	}
 	
 	function toggleVisit(visitId: string) {
@@ -67,12 +85,11 @@
 	function deleteVisit(visitId: string) {
 		if (confirm($t.visitTimeline.deleteConfirm)) {
 			visits = visits.filter(visit => visit.id !== visitId);
-			dispatch('visitDeleted', { visitId });
+			onvisitDeleted({ visitId });
 		}
 	}
 	
-	function handlePhotoUpload(visitId: string, type: 'initialConsult' | 'followUp', event: CustomEvent<File>) {
-		const file = event.detail;
+	function handlePhotoUpload(visitId: string, type: 'initialConsult' | 'followUp', file: File) {
 		
 		// Create new photo object
 		const newPhoto = {
@@ -96,7 +113,7 @@
 			return visit;
 		});
 		
-		dispatch('photoUpload', { visitId, type, file, photoId: newPhoto.id });
+		onphotoUpload({ visitId, type, file, photoId: newPhoto.id });
 	}
 	
 	function handlePhotoRemove(visitId: string, type: 'initialConsult' | 'followUp', photoId: string) {
@@ -113,11 +130,11 @@
 			return visit;
 		});
 		
-		dispatch('photoRemoved', { visitId, type, photoId });
+		onphotoRemoved({ visitId, type, photoId });
 	}
 	
-	function handleNoteUpdate(visitId: string, type: 'initialConsult' | 'followUp', event: CustomEvent) {
-		const { photoId, note } = event.detail;
+	function handleNoteUpdate(visitId: string, type: 'initialConsult' | 'followUp', data: { photoId: string; note: string }) {
+		const { photoId, note } = data;
 		
 		visits = visits.map(visit => {
 			if (visit.id === visitId) {
@@ -136,7 +153,7 @@
 			return visit;
 		});
 		
-		dispatch('noteUpdated', { visitId, type, photoId, note });
+		onnoteUpdated({ visitId, type, photoId, note });
 	}
 	
 	function updateVisitDate(visitId: string, dateType: 'initialConsultDate' | 'followUpDate', date: string) {
@@ -146,7 +163,7 @@
 				: visit
 		);
 		
-		dispatch('dateUpdated', { visitId, dateType, date });
+		ondateUpdated({ visitId, field: dateType, date });
 	}
 	
 	function getPhotosSummary(visit: Visit): string {
@@ -207,13 +224,13 @@
 						bind:value={newVisitTitle}
 						placeholder={$t.visitTimeline.visitTitlePlaceholder}
 						class="w-full px-4 py-3 sm:py-2 rounded-lg border-0 focus:ring-2 focus:ring-pink-500 cf-text text-base sm:text-sm"
-						on:keydown={(e) => e.key === 'Enter' && addNewVisit()}
+						onkeydown={(e) => e.key === 'Enter' && addNewVisit()}
 						id="new-visit-title"
 						name="newVisitTitle"
 					/>
 				</div>
 				<button
-					on:click={addNewVisit}
+					onclick={addNewVisit}
 					disabled={!newVisitTitle.trim()}
 					class="px-6 py-3 sm:py-2 text-base sm:text-sm font-medium text-white 
 						disabled:opacity-50 disabled:cursor-not-allowed 
@@ -237,7 +254,7 @@
 				<!-- Visit Header -->
 				<div class="flex items-start justify-between mb-4 sm:mb-6">
 					<button
-						on:click={() => toggleVisit(visit.id)}
+						onclick={() => toggleVisit(visit.id)}
 						class="flex items-center gap-3 sm:gap-4 flex-1 text-left cf-hover transition-all duration-200 touch-manipulation"
 						aria-expanded={visit.expanded}
 					>
@@ -258,7 +275,10 @@
 					<!-- Delete Button - Admin only -->
 					{#if userProfile?.is_admin}
 					<button
-						on:click|stopPropagation={() => deleteVisit(visit.id)}
+						onclick={(e) => {
+							e.stopPropagation();
+							deleteVisit(visit.id);
+						}}
 						class="ml-3 sm:ml-4 p-2 text-red-600 hover:text-red-700 transition-colors 
 							cf-hover rounded-lg touch-manipulation"
 						aria-label="Delete visit {visit.title}"
@@ -281,7 +301,7 @@
 								<input
 									type="date"
 									bind:value={visit.initialConsultDate}
-									on:change={() => updateVisitDate(visit.id, 'initialConsultDate', visit.initialConsultDate || '')}
+									onchange={() => updateVisitDate(visit.id, 'initialConsultDate', visit.initialConsultDate || '')}
 									class="text-sm sm:text-base cf-text border border-pink-200 rounded-lg px-3 py-2 
 										focus:ring-2 focus:ring-pink-500 focus:border-transparent"
 									id="initial-consult-date-{visit.id}"
@@ -299,9 +319,9 @@
 								photos={visit.initialConsultPhotos || []}
 								{userProfile}
 								readonly={!userProfile?.is_admin}
-								on:upload={(event) => handlePhotoUpload(visit.id, 'initialConsult', event)}
-								on:remove={(event) => handlePhotoRemove(visit.id, 'initialConsult', event.detail)}
-								on:noteUpdate={(event) => handleNoteUpdate(visit.id, 'initialConsult', event)}
+								onupload={(file) => handlePhotoUpload(visit.id, 'initialConsult', file)}
+								onremove={(photoId) => handlePhotoRemove(visit.id, 'initialConsult', photoId)}
+								onnoteUpdate={(data) => handleNoteUpdate(visit.id, 'initialConsult', data)}
 							/>
 						</div>
 
@@ -315,7 +335,7 @@
 								<input
 									type="date"
 									bind:value={visit.followUpDate}
-									on:change={() => updateVisitDate(visit.id, 'followUpDate', visit.followUpDate || '')}
+									onchange={() => updateVisitDate(visit.id, 'followUpDate', visit.followUpDate || '')}
 									class="text-sm sm:text-base cf-text border border-pink-200 rounded-lg px-3 py-2 
 										focus:ring-2 focus:ring-pink-500 focus:border-transparent"
 									id="follow-up-date-{visit.id}"
@@ -333,9 +353,9 @@
 								photos={visit.followUpPhotos || []}
 								{userProfile}
 								readonly={!userProfile?.is_admin}
-								on:upload={(event) => handlePhotoUpload(visit.id, 'followUp', event)}
-								on:remove={(event) => handlePhotoRemove(visit.id, 'followUp', event.detail)}
-								on:noteUpdate={(event) => handleNoteUpdate(visit.id, 'followUp', event)}
+								onupload={(file) => handlePhotoUpload(visit.id, 'followUp', file)}
+								onremove={(photoId) => handlePhotoRemove(visit.id, 'followUp', photoId)}
+								onnoteUpdate={(data) => handleNoteUpdate(visit.id, 'followUp', data)}
 							/>
 						</div>
 					</div>

@@ -1,11 +1,10 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { t } from '$lib/i18n/translations';
-	import cachetCacheImage from '$lib/assets/cachetcache1.png';
 	import { onMount } from 'svelte';
 	
-	let mounted = false;
-	let hovered = false;
+	let mounted = $state(false);
+	let hovered = $state(false);
 	
 	onMount(() => {
 		setTimeout(() => {
@@ -13,6 +12,9 @@
 		}, 100);
 	});
 	
+	/**
+	 * Navigate to the welcome page
+	 */
 	function navigateToWelcome() {
 		goto('/welcome');
 	}
@@ -60,17 +62,17 @@
 		to { transform: rotate(360deg); }
 	}
 	
-	/* Enhanced glow effect that fades into gradient */
+	/* White glow effect */
 	@keyframes ethereal-glow {
 		0%, 100% { 
-			filter: drop-shadow(0 0 40px rgba(255, 244, 188, 0.4)) 
-			        drop-shadow(0 0 80px rgba(213, 138, 148, 0.3))
-			        drop-shadow(0 0 120px rgba(177, 188, 160, 0.2));
+			filter: drop-shadow(0 0 40px rgba(255, 255, 255, 0.4)) 
+			        drop-shadow(0 0 80px rgba(255, 255, 255, 0.3))
+			        drop-shadow(0 0 120px rgba(255, 255, 255, 0.2));
 		}
 		50% { 
-			filter: drop-shadow(0 0 60px rgba(255, 244, 188, 0.6)) 
-			        drop-shadow(0 0 100px rgba(213, 138, 148, 0.5))
-			        drop-shadow(0 0 140px rgba(177, 188, 160, 0.3));
+			filter: drop-shadow(0 0 60px rgba(255, 255, 255, 0.6)) 
+			        drop-shadow(0 0 100px rgba(255, 255, 255, 0.5))
+			        drop-shadow(0 0 140px rgba(255, 255, 255, 0.3));
 		}
 	}
 	
@@ -92,12 +94,12 @@
 		inset: -40px;
 		background: radial-gradient(
 			circle,
-			rgba(255, 244, 188, 0.15) 0%,
-			rgba(213, 138, 148, 0.1) 30%,
-			rgba(177, 188, 160, 0.05) 60%,
+			rgba(255, 255, 255, 0.2) 0%,
+			rgba(255, 255, 255, 0.1) 30%,
+			rgba(255, 255, 255, 0.05) 60%,
 			transparent 100%
 		);
-		border-radius: 50%;
+		border-radius: 32px;
 		animation: pulse-glow 3s ease-in-out infinite;
 		z-index: -1;
 	}
@@ -187,32 +189,33 @@
 	<div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-r from-pink-200/10 to-red-200/10 rounded-full blur-3xl opacity-30"></div>
 	
 	<div class="relative z-10 flex flex-col items-center gap-12 max-w-4xl mx-auto px-4">
-		<!-- Logo with ethereal glow that fades into background -->
+		<!-- Hero Image with elegant entrance -->
 		<button 
-			on:click={navigateToWelcome}
-			on:mouseenter={() => hovered = true}
-			on:mouseleave={() => hovered = false}
+			onclick={navigateToWelcome}
+			onmouseenter={() => hovered = true}
+			onmouseleave={() => hovered = false}
 			class="border-none bg-transparent cursor-pointer focus:outline-none group"
 			aria-label="Enter Cachet Caché"
 		>
 			<div class="logo-wrapper transition-all duration-[1500ms] {mounted ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}">
 				<img 
-					src={cachetCacheImage} 
-					alt="Cachet Caché logo" 
-					class="max-w-[280px] sm:max-w-md md:max-w-2xl w-full" 
+					src="/Frontpageimage.png" 
+					alt="Cachet Caché" 
+					class="w-[280px] md:w-[360px] h-auto object-contain" 
+					style="border-radius: 32px;"
 				/>
 			</div>
 		</button>
 		
 		<!-- Elegant subtitle with slower fade -->
 		<p class="entrance-text text-xl md:text-3xl font-light text-center px-4 transition-all duration-[1800ms] delay-700 {mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}">
-			The Hidden Gem of Medical Aesthetics
+			The Speakeasy of Medical Aesthetics
 		</p>
 		
 		<!-- Enter button with healthy glow -->
 		<div class="transition-all duration-[2000ms] delay-[1400ms] {mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}">
 			<button
-				on:click={navigateToWelcome}
+				onclick={navigateToWelcome}
 				class="enter-button group relative px-10 py-5 overflow-hidden rounded-full font-bold text-xl
 					bg-gradient-to-r from-yellow-100 to-pink-100 hover:from-yellow-200 hover:to-pink-200
 					transition-all duration-500 hover:scale-110

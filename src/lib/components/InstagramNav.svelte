@@ -1,22 +1,40 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { goto, invalidateAll } from '$app/navigation';
 	import { Home, Search, Heart, User, Syringe, Mail, MessageCircle, PlusSquare, LogOut, Settings, Clock, Users, Languages, FileText } from 'lucide-svelte';
 	import type { Session, SupabaseClient } from '@supabase/supabase-js';
 	import { t, currentLanguage, switchLanguage } from '$lib/i18n/translations';
 	
-	export let mobile = false;
-	export let session: Session | null = null;
-	export let supabase: SupabaseClient | undefined = undefined;
-	export let user: any = null;
+	// Svelte 5 Props with proper types
+	interface Props {
+		mobile?: boolean;
+		session?: Session | null | undefined;
+		supabase?: SupabaseClient | undefined;
+		user?: any | null;
+	}
 	
-	$: currentPath = $page.url.pathname;
-	$: isAuthenticated = session !== null && session !== undefined;
+	let { 
+		mobile = false, 
+		session = null, 
+		supabase = undefined, 
+		user = null 
+	}: Props = $props();
 	
-	function isActive(path: string) {
+	// Reactive values using Svelte 5 $derived rune
+	let currentPath = $derived(page.url.pathname);
+	let isAuthenticated = $derived(session !== null && session !== undefined);
+	
+	/**
+	 * Check if the given path matches the current path EXACTLY
+	 * This ensures only ONE navigation item is highlighted at a time
+	 */
+	function isActive(path: string): boolean {
 		return currentPath === path;
 	}
 	
+	/**
+	 * Handle user sign out
+	 */
 	async function handleSignOut() {
 		if (!supabase) return;
 		const { error } = await supabase.auth.signOut();
@@ -26,6 +44,9 @@
 		}
 	}
 	
+	/**
+	 * Toggle between English and French
+	 */
 	function toggleLanguage() {
 		const newLanguage = $currentLanguage === 'en' ? 'fr' : 'en';
 		switchLanguage(newLanguage);
@@ -57,14 +78,14 @@
 			{/if}
 			<!-- Language Toggle -->
 			<button 
-				on:click={toggleLanguage}
+				onclick={toggleLanguage}
 				class="flex flex-col items-center p-2 text-blue-600 hover:text-blue-700"
 			>
 				<Languages class="w-6 h-6" />
 				<span class="text-xs mt-1">{$currentLanguage === 'en' ? $t.french : $t.english}</span>
 			</button>
 			<button 
-				on:click={handleSignOut}
+				onclick={handleSignOut}
 				class="flex flex-col items-center p-2 text-red-600 hover:text-red-700"
 			>
 				<LogOut class="w-6 h-6" />
@@ -90,7 +111,7 @@
 			</a>
 			<!-- Language Toggle -->
 			<button 
-				on:click={toggleLanguage}
+				onclick={toggleLanguage}
 				class="flex flex-col items-center p-2 text-blue-600 hover:text-blue-700"
 			>
 				<Languages class="w-6 h-6" />
@@ -104,26 +125,29 @@
 	</div>
 {:else}
 	<!-- Desktop Sidebar Navigation with modern design -->
-	<div class="flex flex-col h-full">
-		<!-- Logo/Brand with elegant padding -->
-		<div class="w-full p-4">
-			<img 
-				src="/CCtranslucent.png" 
-				alt="Cachet Caché" 
-				class="w-full block hover:scale-105 transition-transform duration-300"
-			/>
+	<div class="flex flex-col h-full -mt-4">
+		<!-- Logo/Brand - no alignment constraints, maximized size -->
+		<div class="w-full">
+			<div class="relative w-full h-26 flex items-center justify-center">
+				<img 
+					src="/logoimagecurrent.png" 
+					alt="Cachet Caché" 
+					class="w-full h-full opacity-90 hover:opacity-100 transition-all duration-300"
+					style="object-fit: contain;"
+				/>
+			</div>
 		</div>
 		
 		<!-- Navigation Items -->
-		<nav class="px-4 pb-4 flex-1">
+		<nav class="px-4 pb-4 flex-1 -mt-4">
 			<ul class="space-y-2" style="font-family: 'Avenir Next', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;">
 				{#if isAuthenticated}
-					<!-- Authenticated navigation with sage green theme -->
+					<!-- Authenticated navigation with sage green to eggshell gradient -->
 					<li>
 						<a 
 							href="/blog" 
 							class="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all duration-300 
-								{isActive('/blog') ? 'bg-gradient-to-r from-sage-500 to-sage-600 text-white shadow-md' : 'text-gray-700 sidebar-hover-sage'}"
+								{isActive('/blog') ? 'bg-gradient-to-r from-sage-500 to-[#f6f1ea] text-sage-700 shadow-md' : 'text-gray-700 sidebar-hover-sage'}"
 						>
 							<FileText class="w-5 h-5" />
 							<span class="font-semibold text-sm">{$t.blog}</span>
@@ -136,7 +160,7 @@
 						<a 
 							href="/dashboard" 
 							class="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all duration-300
-								{isActive('/dashboard') ? 'bg-gradient-to-r from-sage-500 to-sage-600 text-white shadow-md' : 'text-gray-700 sidebar-hover-sage'}"
+								{isActive('/dashboard') ? 'bg-gradient-to-r from-sage-500 to-[#f6f1ea] text-sage-700 shadow-md' : 'text-gray-700 sidebar-hover-sage'}"
 						>
 							<Clock class="w-5 h-5" />
 							<span class="font-semibold text-sm">{$t.timeline}</span>
@@ -147,7 +171,7 @@
 						<a 
 							href="/user_profile" 
 							class="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all duration-300
-								{isActive('/user_profile') ? 'bg-gradient-to-r from-sage-500 to-sage-600 text-white shadow-md' : 'text-gray-700 sidebar-hover-sage'}"
+								{isActive('/user_profile') ? 'bg-gradient-to-r from-sage-500 to-[#f6f1ea] text-sage-700 shadow-md' : 'text-gray-700 sidebar-hover-sage'}"
 						>
 							<Settings class="w-5 h-5" />
 							<span class="font-semibold text-sm">{$t.profile}</span>
@@ -159,7 +183,7 @@
 							<a 
 								href="/admin/patient-search" 
 								class="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all duration-300
-									{isActive('/admin/patient-search') ? 'bg-gradient-to-r from-sage-500 to-sage-600 text-white shadow-md' : 'text-gray-700 sidebar-hover-sage'}"
+									{isActive('/admin/patient-search') ? 'bg-gradient-to-r from-sage-500 to-[#f6f1ea] text-sage-700 shadow-md' : 'text-gray-700 sidebar-hover-sage'}"
 							>
 								<Users class="w-5 h-5" />
 								<span class="font-semibold text-sm">{$t.patients}</span>
@@ -172,7 +196,7 @@
 					<!-- Language Toggle -->
 					<li>
 						<button 
-							on:click={toggleLanguage}
+							onclick={toggleLanguage}
 							class="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all duration-300
 								text-blue-600 hover:bg-blue-50/80 hover:text-blue-700 hover:shadow-sm w-full text-left"
 						>
@@ -183,7 +207,7 @@
 					
 					<li>
 						<button 
-							on:click={handleSignOut}
+							onclick={handleSignOut}
 							class="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all duration-300
 								text-red-600 hover:bg-red-50/80 hover:text-red-700 hover:shadow-sm w-full text-left"
 						>
@@ -242,7 +266,7 @@
 					<!-- Language Toggle -->
 					<li>
 						<button 
-							on:click={toggleLanguage}
+							onclick={toggleLanguage}
 							class="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all duration-300
 								text-blue-600 hover:bg-blue-50/80 hover:text-blue-700 hover:shadow-sm w-full text-left"
 						>

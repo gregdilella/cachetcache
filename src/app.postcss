@@ -102,7 +102,7 @@ body {
 	z-index: 3;
 }
 
-/* Elegant gradient border for sidebar */
+/* Elegant gradient border for sidebar with glow */
 .pink-gradient-border {
 	position: relative;
 	background: linear-gradient(
@@ -112,7 +112,7 @@ body {
 		#fff4bc 100%
 	);
 	background-size: 100% 400%;
-	animation: gradient-shift 12s ease infinite;
+	animation: gradient-shift 12s ease infinite, sidebar-glow-pink 3s ease-in-out infinite;
 	border-radius: 0;
 	padding: 3px 0 3px 3px;
 }
@@ -129,6 +129,22 @@ body {
 .pink-gradient-border > * {
 	position: relative;
 	z-index: 2;
+}
+
+/* Glowing animation for pink sidebar */
+@keyframes sidebar-glow-pink {
+	0%, 100% {
+		box-shadow: 
+			0 0 30px rgba(255, 244, 188, 0.3),
+			0 0 60px rgba(213, 138, 148, 0.25),
+			0 4px 20px rgba(213, 138, 148, 0.2);
+	}
+	50% {
+		box-shadow: 
+			0 0 40px rgba(255, 244, 188, 0.5),
+			0 0 80px rgba(213, 138, 148, 0.4),
+			0 8px 30px rgba(213, 138, 148, 0.3);
+	}
 }
 
 /* Modern hover effects */
@@ -172,33 +188,35 @@ body {
 	box-shadow: 0 8px 25px rgba(213, 138, 148, 0.3);
 }
 
-/* Refined sidebar hover effects */
+/* Refined sidebar hover effects - beautiful pink to orange gradient */
 .sidebar-hover {
 	border-radius: 12px;
 	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .sidebar-hover:hover {
-	background: linear-gradient(135deg, #D58A94 0%, #e39fa8 100%);
+	/* Match the active state gradient: pink-500 to orange-500 */
+	background: linear-gradient(135deg, #ec4899 0%, #f97316 100%);
 	color: white;
 	transform: translateX(4px);
-	box-shadow: 0 4px 12px rgba(213, 138, 148, 0.3);
+	box-shadow: 0 4px 12px rgba(236, 72, 153, 0.3);
 }
 
-/* Sage green hover for authenticated items */
+/* Sage green hover for authenticated items - fades to eggshell */
 .sidebar-hover-sage {
 	border-radius: 12px;
 	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .sidebar-hover-sage:hover {
-	background: linear-gradient(135deg, #B1BCA0 0%, #c1ccb0 100%);
-	color: white;
+	/* Match the active state: sage-500 to eggshell white */
+	background: linear-gradient(135deg, #B1BCA0 0%, #f6f1ea 100%);
+	color: #6b7c5e; /* sage-700 for better contrast */
 	transform: translateX(4px);
 	box-shadow: 0 4px 12px rgba(177, 188, 160, 0.3);
 }
 
-/* Premium authenticated gradient border */
+/* Premium authenticated gradient border with glow */
 .auth-gradient-border {
 	position: relative;
 	background: linear-gradient(
@@ -208,7 +226,7 @@ body {
 		#B1BCA0 100%
 	);
 	background-size: 100% 400%;
-	animation: gradient-shift 12s ease infinite;
+	animation: gradient-shift 12s ease infinite, sidebar-glow-sage 3s ease-in-out infinite;
 	border-radius: 0;
 	padding: 3px 0 3px 3px;
 }
@@ -225,6 +243,22 @@ body {
 .auth-gradient-border > * {
 	position: relative;
 	z-index: 2;
+}
+
+/* Glowing animation for authenticated sidebar */
+@keyframes sidebar-glow-sage {
+	0%, 100% {
+		box-shadow: 
+			0 0 30px rgba(177, 188, 160, 0.3),
+			0 0 60px rgba(255, 244, 188, 0.25),
+			0 4px 20px rgba(177, 188, 160, 0.2);
+	}
+	50% {
+		box-shadow: 
+			0 0 40px rgba(177, 188, 160, 0.5),
+			0 0 80px rgba(255, 244, 188, 0.4),
+			0 8px 30px rgba(177, 188, 160, 0.3);
+	}
 }
 
 /* Modern bento box */

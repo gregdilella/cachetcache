@@ -1,14 +1,14 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import type { PageData } from './$types';
 	import { invalidateAll } from '$app/navigation';
 	import VisitTimeline from '$lib/components/VisitTimeline.svelte';
 	import { User, Calendar } from 'lucide-svelte';
 	import { t } from '$lib/i18n/translations/index.js';
 
-	export let data: PageData;
+	let { data }: { data: PageData } = $props();
 
-	let loading = false;
+	let loading = $state(false);
 	
 	// Use visits data from the server
 	interface Visit {
@@ -32,15 +32,15 @@
 	}
 	
 	// Initialize visits from server data
-	let visits: Visit[] = data.visits || [];
+	let visits = $state<Visit[]>(data.visits || []);
 	
 	// Update local visits when server data changes (e.g., after successful upload)
-	$: {
+	$effect(() => {
 		if (data.visits) {
 			// Update visits with fresh server data
 			visits = data.visits;
 		}
-	}
+	});
 
 	// Visit timeline handlers
 	async function handleVisitAdded(event: CustomEvent) {
@@ -286,7 +286,8 @@
 		return mostRecentPhoto;
 	}
 	
-	$: mostRecentPhoto = getMostRecentPhoto();
+	// Svelte 5 $derived for computed value
+	let mostRecentPhoto = $derived(getMostRecentPhoto());
 </script>
 
 <svelte:head>

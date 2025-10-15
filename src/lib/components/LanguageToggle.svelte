@@ -22,18 +22,21 @@
 		}
 	}
 
-	$: if (typeof window !== 'undefined') {
-		if (showDropdown) {
-			document.addEventListener('click', handleClickOutside);
-		} else {
-			document.removeEventListener('click', handleClickOutside);
+	// Svelte 5 $effect for side effects
+	$effect(() => {
+		if (typeof window !== 'undefined') {
+			if (showDropdown) {
+				document.addEventListener('click', handleClickOutside);
+			} else {
+				document.removeEventListener('click', handleClickOutside);
+			}
 		}
-	}
+	});
 </script>
 
 <div class="language-toggle relative">
 	<button
-		on:click={toggleDropdown}
+		onclick={toggleDropdown}
 		class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 hover:bg-pink-50 hover:text-pink-600 transition-all duration-200"
 		aria-label={$t.language}
 	>
@@ -54,14 +57,14 @@
 	{#if showDropdown}
 		<div class="absolute top-full left-0 mt-1 bg-white border border-pink-200 rounded-lg shadow-lg min-w-[120px] z-50">
 			<button
-				on:click={() => handleLanguageChange('en')}
+				onclick={() => handleLanguageChange('en')}
 				class="flex items-center w-full px-3 py-2 text-sm text-gray-700 hover:bg-pink-50 hover:text-pink-600 transition-colors duration-150 rounded-t-lg
 					{$currentLanguage === 'en' ? 'bg-pink-100 text-pink-700 font-medium' : ''}"
 			>
 				{$t.english}
 			</button>
 			<button
-				on:click={() => handleLanguageChange('fr')}
+				onclick={() => handleLanguageChange('fr')}
 				class="flex items-center w-full px-3 py-2 text-sm text-gray-700 hover:bg-pink-50 hover:text-pink-600 transition-colors duration-150 rounded-b-lg
 					{$currentLanguage === 'fr' ? 'bg-pink-100 text-pink-700 font-medium' : ''}"
 			>
