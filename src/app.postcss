@@ -3,7 +3,6 @@
 @tailwind utilities;
 @tailwind variants;
 
-
 @font-face {
 	font-family: 'Geist';
 	src: url('/fonts/Geist.ttf');
@@ -14,112 +13,116 @@
 	--theme-font-family-heading: 'Geist', sans-serif;
 }
 
-/* Cloudflare-inspired gradient animations */
+/* Modern gradient animations */
 @keyframes gradient-shift {
-	0% {
-		background-position: 0% 50%;
-	}
-	50% {
-		background-position: 100% 50%;
-	}
-	100% {
-		background-position: 0% 50%;
-	}
+	0%, 100% { background-position: 0% 50%; }
+	50% { background-position: 100% 50%; }
 }
 
 @keyframes gradient-border {
-	0% {
-		background-position: 0% 50%;
-	}
-	50% {
-		background-position: 100% 50%;
-	}
-	100% {
-		background-position: 0% 50%;
-	}
+	0%, 100% { background-position: 0% 50%; }
+	50% { background-position: 100% 50%; }
+}
+
+@keyframes float {
+	0%, 100% { transform: translateY(0px); }
+	50% { transform: translateY(-10px); }
+}
+
+@keyframes shimmer {
+	0% { background-position: -200% center; }
+	100% { background-position: 200% center; }
+}
+
+@keyframes glow {
+	0%, 100% { box-shadow: 0 0 20px rgba(255, 244, 188, 0.3), 0 0 40px rgba(213, 138, 148, 0.2); }
+	50% { box-shadow: 0 0 30px rgba(255, 244, 188, 0.5), 0 0 60px rgba(213, 138, 148, 0.3); }
 }
 
 html {
 	@apply scroll-smooth;
 }
 
+body {
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
 /* Safe area support for iOS devices */
-.pb-safe {
-	padding-bottom: env(safe-area-inset-bottom);
-}
-
-.pt-safe {
-	padding-top: env(safe-area-inset-top);
-}
-
-.pl-safe {
-	padding-left: env(safe-area-inset-left);
-}
-
-.pr-safe {
-	padding-right: env(safe-area-inset-right);
-}
+.pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+.pt-safe { padding-top: env(safe-area-inset-top); }
+.pl-safe { padding-left: env(safe-area-inset-left); }
+.pr-safe { padding-right: env(safe-area-inset-right); }
 
 /* Touch manipulation for better mobile experience */
 .touch-manipulation {
 	touch-action: manipulation;
 }
 
-/* Modern card with animated gradient border */
+/* Ultra-modern gradient card with mesh effect */
 .gradient-border-card {
 	position: relative;
-	background: white;
-	border-radius: 16px;
-	padding: 3px;
 	background: linear-gradient(
-		45deg,
-		#fff4bc,
-		#D58A94,
-		#fff4bc,
-		#D58A94,
-		#fff4bc
+		135deg,
+		#fff4bc 0%,
+		#ffecb3 25%,
+		#D58A94 50%,
+		#ffecb3 75%,
+		#fff4bc 100%
 	);
-	background-size: 300% 300%;
-	animation: gradient-border 4s ease infinite;
+	background-size: 400% 400%;
+	animation: gradient-shift 8s ease infinite;
+	border-radius: 24px;
+	padding: 2px;
+	overflow: hidden;
 }
 
 .gradient-border-card::before {
 	content: '';
 	position: absolute;
-	inset: 3px;
-	background: white;
-	border-radius: 13px;
+	inset: 2px;
+	background: linear-gradient(to bottom, #ffffff 0%, #fffef9 100%);
+	border-radius: 22px;
 	z-index: 1;
+}
+
+.gradient-border-card::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background: radial-gradient(circle at 20% 50%, rgba(255, 244, 188, 0.1) 0%, transparent 50%),
+	            radial-gradient(circle at 80% 80%, rgba(213, 138, 148, 0.1) 0%, transparent 50%);
+	border-radius: 24px;
+	z-index: 2;
+	pointer-events: none;
 }
 
 .gradient-border-card > * {
 	position: relative;
-	z-index: 2;
+	z-index: 3;
 }
 
-/* Subtle gradient border variation */
+/* Elegant gradient border for sidebar */
 .pink-gradient-border {
 	position: relative;
 	background: linear-gradient(
-		135deg,
-		#fff4bc,
-		#D58A94,
-		#fff4bc,
-		#D58A94,
-		#fff4bc
+		180deg,
+		#fff4bc 0%,
+		#D58A94 50%,
+		#fff4bc 100%
 	);
-	background-size: 200% 200%;
-	animation: gradient-shift 8s ease infinite;
-	border-radius: 16px;
-	padding: 3px;
+	background-size: 100% 400%;
+	animation: gradient-shift 12s ease infinite;
+	border-radius: 0;
+	padding: 3px 0 3px 3px;
 }
 
 .pink-gradient-border::before {
 	content: '';
 	position: absolute;
-	inset: 3px;
-	background: #f6f1ea;
-	border-radius: 8px;
+	inset: 3px 0 3px 3px;
+	background: linear-gradient(to bottom, #faf9f6 0%, #f6f1ea 100%);
+	border-radius: 0;
 	z-index: 1;
 }
 
@@ -128,19 +131,20 @@ html {
 	z-index: 2;
 }
 
-/* Cloudflare-style hover effects */
+/* Modern hover effects */
 .cf-hover {
-	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .cf-hover:hover {
-	transform: translateY(-2px);
-	box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+	transform: translateY(-4px);
+	box-shadow: 0 20px 40px -10px rgba(213, 138, 148, 0.2), 
+	            0 10px 20px -10px rgba(255, 244, 188, 0.3);
 }
 
-/* Text improvements - black text instead of pink */
+/* Text improvements */
 .cf-text {
-	@apply text-gray-900;
+	@apply text-gray-800;
 }
 
 .cf-text-muted {
@@ -151,71 +155,70 @@ html {
 	@apply text-gray-500;
 }
 
-/* Modern button with gradient border */
+/* Modern glass-morphism button */
 .cf-button {
 	position: relative;
-	background: white;
-	border-radius: 8px;
-	padding: 1px;
-	background: linear-gradient(135deg, #fff4bc, #D58A94, #fff4bc);
-	background-size: 200% 200%;
-	animation: gradient-shift 2s ease infinite;
+	background: linear-gradient(135deg, rgba(255, 244, 188, 0.9), rgba(213, 138, 148, 0.9));
+	border-radius: 12px;
+	padding: 12px 24px;
+	backdrop-filter: blur(10px);
+	border: 1px solid rgba(255, 255, 255, 0.3);
 	transition: all 0.3s ease;
-}
-
-.cf-button::before {
-	content: '';
-	position: absolute;
-	inset: 1px;
-	background: white;
-	border-radius: 7px;
-	z-index: 1;
-}
-
-.cf-button > * {
-	position: relative;
-	z-index: 2;
+	box-shadow: 0 4px 15px rgba(213, 138, 148, 0.2);
 }
 
 .cf-button:hover {
-	transform: scale(1.02);
+	transform: translateY(-2px);
+	box-shadow: 0 8px 25px rgba(213, 138, 148, 0.3);
 }
 
-/* Sidebar hover effects with dusty rose */
+/* Refined sidebar hover effects */
+.sidebar-hover {
+	border-radius: 12px;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 .sidebar-hover:hover {
-	background-color: #D58A94;
+	background: linear-gradient(135deg, #D58A94 0%, #e39fa8 100%);
 	color: white;
+	transform: translateX(4px);
+	box-shadow: 0 4px 12px rgba(213, 138, 148, 0.3);
 }
 
 /* Sage green hover for authenticated items */
-.sidebar-hover-sage:hover {
-	background-color: #B1BCA0;
-	color: white;
+.sidebar-hover-sage {
+	border-radius: 12px;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Authenticated gradient border with sage green and mimosa */
+.sidebar-hover-sage:hover {
+	background: linear-gradient(135deg, #B1BCA0 0%, #c1ccb0 100%);
+	color: white;
+	transform: translateX(4px);
+	box-shadow: 0 4px 12px rgba(177, 188, 160, 0.3);
+}
+
+/* Premium authenticated gradient border */
 .auth-gradient-border {
 	position: relative;
 	background: linear-gradient(
-		135deg,
-		#B1BCA0,
-		#fff4bc,
-		#B1BCA0,
-		#fff4bc,
-		#B1BCA0
+		180deg,
+		#B1BCA0 0%,
+		#fff4bc 50%,
+		#B1BCA0 100%
 	);
-	background-size: 200% 200%;
-	animation: gradient-shift 8s ease infinite;
-	border-radius: 16px;
-	padding: 3px;
+	background-size: 100% 400%;
+	animation: gradient-shift 12s ease infinite;
+	border-radius: 0;
+	padding: 3px 0 3px 3px;
 }
 
 .auth-gradient-border::before {
 	content: '';
 	position: absolute;
-	inset: 3px;
-	background: white;
-	border-radius: 8px;
+	inset: 3px 0 3px 3px;
+	background: linear-gradient(to bottom, #faf9f6 0%, #f6f1ea 100%);
+	border-radius: 0;
 	z-index: 1;
 }
 
@@ -224,35 +227,110 @@ html {
 	z-index: 2;
 }
 
-/* Legacy classes updated */
+/* Modern bento box */
 .bento-box {
-	@apply cf-hover pink-gradient-border p-8 text-center transition-all duration-200;
+	@apply cf-hover rounded-3xl p-8 text-center;
+	background: linear-gradient(to bottom, #ffffff 0%, #fffef9 100%);
+	border: 2px solid rgba(213, 138, 148, 0.1);
 }
 
 .bento-heading {
-	@apply mb-4 font-black cf-text;
+	@apply mb-4 font-black text-gray-900;
 }
 
 .disc-list {
-	@apply list-inside list-disc cf-text;
+	@apply list-inside list-disc text-gray-700;
 }
 
+/* Modern link icon with glass effect */
 .link-icon {
-	@apply cf-button aspect-square inline-flex items-center justify-center;
+	@apply aspect-square inline-flex items-center justify-center rounded-xl;
+	background: linear-gradient(135deg, rgba(255, 244, 188, 0.8), rgba(213, 138, 148, 0.8));
+	backdrop-filter: blur(10px);
+	border: 1px solid rgba(255, 255, 255, 0.3);
+	transition: all 0.3s ease;
 }
 
-/* Instagram-style cards with new design */
+.link-icon:hover {
+	transform: scale(1.05) rotate(5deg);
+	box-shadow: 0 8px 20px rgba(213, 138, 148, 0.3);
+}
+
+/* Instagram-style cards with refined design */
 .instagram-card {
-	@apply pink-gradient-border cf-hover mb-6;
+	@apply mb-6 rounded-2xl overflow-hidden;
+	background: white;
+	border: 1px solid rgba(213, 138, 148, 0.15);
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+	transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.instagram-card:hover {
+	transform: translateY(-4px);
+	box-shadow: 0 12px 40px rgba(213, 138, 148, 0.15);
 }
 
 .instagram-post {
-	@apply pink-gradient-border cf-hover mb-8;
+	@apply mb-8 rounded-2xl overflow-hidden;
+	background: white;
+	border: 1px solid rgba(213, 138, 148, 0.15);
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+	transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Playfair Display serif font for unauthenticated page headings */
+.instagram-post:hover {
+	transform: translateY(-4px);
+	box-shadow: 0 12px 40px rgba(213, 138, 148, 0.15);
+}
+
+/* Premium input styling */
+.premium-input {
+	@apply w-full px-4 py-3 rounded-xl border-2 border-gray-200 bg-white;
+	transition: all 0.3s ease;
+	font-family: 'Avenir Next', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.premium-input:focus {
+	outline: none;
+	border-color: #D58A94;
+	box-shadow: 0 0 0 4px rgba(213, 138, 148, 0.1);
+}
+
+/* Modern button styles */
+.premium-button {
+	@apply px-6 py-3 rounded-xl font-semibold;
+	background: linear-gradient(135deg, #D58A94 0%, #e39fa8 100%);
+	color: white;
+	border: none;
+	box-shadow: 0 4px 15px rgba(213, 138, 148, 0.3);
+	transition: all 0.3s ease;
+	font-family: 'Avenir Next', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.premium-button:hover:not(:disabled) {
+	transform: translateY(-2px);
+	box-shadow: 0 8px 25px rgba(213, 138, 148, 0.4);
+}
+
+.premium-button:disabled {
+	opacity: 0.6;
+	cursor: not-allowed;
+}
+
+/* Serif heading styles */
 .serif-heading {
 	font-family: 'Playfair Display', serif !important;
+	font-weight: 600 !important;
+	background: linear-gradient(135deg, #D58A94 0%, #B1BCA0 100%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+}
+
+/* Sidebar full height */
+.sidebar-full-height {
+	min-height: 100vh;
+	height: 100%;
 }
 
 

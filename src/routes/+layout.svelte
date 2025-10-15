@@ -53,12 +53,11 @@
 <Modal />
 
 {#if isHomePage}
-	<!-- Home page with original design -->
+	<!-- Home page with original design - no footer -->
 	<div class="w-full min-h-screen flex flex-col">
-		<div class="flex-1 max-w-6xl mx-auto w-full px-4">
+		<div class="flex-1 w-full">
 			<slot />
 		</div>
-		<Footer />
 	</div>
 {:else}
 	<!-- Simplified layout for other pages -->
@@ -113,16 +112,10 @@
 								</button>
 							</div>
 							
-							<!-- Navigation Content -->
-							<div 
-								class="overflow-y-auto pb-8" 
-								on:click={closeMobileSidebar}
-								on:keydown={(e) => e.key === 'Enter' && closeMobileSidebar()}
-								role="navigation"
-								aria-label="Mobile navigation"
-							>
-								<InstagramNav mobile={false} session={data.session} supabase={data.supabase} user={data.userProfile} />
-							</div>
+						<!-- Navigation Content -->
+						<nav class="overflow-y-auto pb-8" aria-label="Mobile navigation">
+							<InstagramNav mobile={false} session={data.session} supabase={data.supabase} user={data.userProfile} />
+						</nav>
 						</div>
 					</div>
 				{/if}
@@ -139,13 +132,24 @@
 {/if}
 
 <style>
-	/* Default font for all elements is non-cursive */
+	/* Premium typography system */
 	:global(h1, h2, h3, h4, h5, h6) {
 		font-family: 'Montserrat', sans-serif !important;
-		color: #111827 !important; /* Black text for headings */
+		color: #1f2937 !important;
+		font-weight: 700;
+		letter-spacing: -0.02em;
 	}
 	
-	/* Keep the font-normal class for explicit override if needed */
+	:global(h1) {
+		font-size: clamp(2rem, 5vw, 4rem);
+		line-height: 1.1;
+	}
+	
+	:global(h2) {
+		font-size: clamp(1.5rem, 4vw, 3rem);
+		line-height: 1.2;
+	}
+	
 	:global(.font-normal) {
 		font-family: 'Montserrat', sans-serif !important;
 		font-style: normal !important;
@@ -153,54 +157,73 @@
 	
 	:global(body) {
 		font-family: 'Montserrat', sans-serif;
-		color: #111827; /* Black text for body */
+		color: #1f2937;
+		background: linear-gradient(to bottom, #fafafa 0%, #f5f5f5 100%);
 	}
 	
 	:global(p) {
-		color: #111827 !important; /* Black text for paragraphs */
+		color: #374151 !important;
+		line-height: 1.7;
+		font-weight: 400;
 	}
 	
+	/* Modern card designs */
 	:global(.instagram-card) {
-		background: white;
-		border-radius: 16px;
-		border: none;
-		box-shadow: none;
+		background: linear-gradient(to bottom, #ffffff 0%, #fffef9 100%);
+		border-radius: 20px;
+		border: 1px solid rgba(213, 138, 148, 0.1);
+		box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
 		margin-bottom: 1.5rem;
 		overflow: hidden;
+		backdrop-filter: blur(10px);
 	}
 	
 	:global(.instagram-post) {
-		background: white;
-		border-radius: 12px;
-		border: none;
+		background: linear-gradient(to bottom, #ffffff 0%, #fffef9 100%);
+		border-radius: 20px;
+		border: 1px solid rgba(213, 138, 148, 0.1);
+		box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
 		margin-bottom: 2rem;
 		overflow: hidden;
+		backdrop-filter: blur(10px);
 	}
 	
-	/* Override any pink text colors */
+	/* Refined color palette */
 	:global(.text-pink-600),
 	:global(.text-pink-500),
 	:global(.text-pink-700) {
-		color: #111827 !important;
+		color: #D58A94 !important;
 	}
 	
-	/* Ensure timeline elements and other specific elements are not cursive */
+	/* Modern typography for special elements */
 	:global(.visit-title),
 	:global(.timeline-heading),
 	:global(.visit-content h3),
 	:global(.visit-content h4),
 	:global(.non-cursive) {
 		font-family: 'Montserrat', sans-serif !important;
+		font-weight: 600;
 	}
 	
-	/* Enhanced gradient backgrounds */
+	/* Premium gradient backgrounds */
 	:global(.bg-gradient-to-br) {
-		background-image: linear-gradient(to bottom right, #f8fafc, #e2e8f0, #f1f5f9);
+		background-image: linear-gradient(
+			to bottom right, 
+			#fafafa 0%, 
+			#fff9f5 50%, 
+			#faf5f0 100%
+		);
 	}
 
-	/* Sidebar full height */
+	/* Sidebar enhancements */
 	:global(.sidebar-full-height) {
 		min-height: 100vh;
 		height: 100%;
+		background: linear-gradient(to bottom, #faf9f6 0%, #f6f1ea 50%, #faf9f6 100%);
+	}
+	
+	/* Smooth transitions */
+	:global(*) {
+		transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 	}
 </style>

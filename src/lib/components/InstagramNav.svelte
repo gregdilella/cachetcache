@@ -103,140 +103,162 @@
 		{/if}
 	</div>
 {:else}
-	<!-- Desktop Sidebar Navigation -->
-	<div class="flex flex-col h-full" style="background-color: #f6f1ea;">
-		<!-- Logo/Brand -->
-		<div class="w-full">
+	<!-- Desktop Sidebar Navigation with modern design -->
+	<div class="flex flex-col h-full">
+		<!-- Logo/Brand with elegant padding -->
+		<div class="w-full p-4">
 			<img 
 				src="/CCtranslucent.png" 
 				alt="Cachet Caché" 
-				class="w-full block"
+				class="w-full block hover:scale-105 transition-transform duration-300"
 			/>
 		</div>
+		
 		<!-- Navigation Items -->
-		<nav class="p-0">
-			<ul class="space-y-2 sidebar-nav" style="margin-top:0;margin-bottom:0;padding-top:0;">
+		<nav class="px-4 pb-4 flex-1">
+			<ul class="space-y-2" style="font-family: 'Avenir Next', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;">
 				{#if isAuthenticated}
-					<!-- Authenticated navigation -->
+					<!-- Authenticated navigation with sage green theme -->
 					<li>
 						<a 
 							href="/blog" 
-							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-text sidebar-hover-sage"
+							class="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all duration-300 
+								{isActive('/blog') ? 'bg-gradient-to-r from-sage-500 to-sage-600 text-white shadow-md' : 'text-gray-700 sidebar-hover-sage'}"
 						>
-							<FileText class="w-6 h-6" />
-							<span class="font-medium">{$t.blog}</span>
+							<FileText class="w-5 h-5" />
+							<span class="font-semibold text-sm">{$t.blog}</span>
 						</a>
 					</li>
-					<!-- Space break -->
-					<li class="py-2"></li>
+					
+					<li class="py-1"></li>
+					
 					<li>
 						<a 
 							href="/dashboard" 
-							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-text sidebar-hover-sage"
+							class="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all duration-300
+								{isActive('/dashboard') ? 'bg-gradient-to-r from-sage-500 to-sage-600 text-white shadow-md' : 'text-gray-700 sidebar-hover-sage'}"
 						>
-							<Clock class="w-6 h-6" />
-							<span class="font-medium">{$t.timeline}</span>
+							<Clock class="w-5 h-5" />
+							<span class="font-semibold text-sm">{$t.timeline}</span>
 						</a>
 					</li>
+					
 					<li>
 						<a 
 							href="/user_profile" 
-							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-text sidebar-hover-sage"
+							class="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all duration-300
+								{isActive('/user_profile') ? 'bg-gradient-to-r from-sage-500 to-sage-600 text-white shadow-md' : 'text-gray-700 sidebar-hover-sage'}"
 						>
-							<Settings class="w-6 h-6" />
-							<span class="font-medium">{$t.profile}</span>
+							<Settings class="w-5 h-5" />
+							<span class="font-semibold text-sm">{$t.profile}</span>
 						</a>
 					</li>
+					
 					{#if user?.is_admin}
 						<li>
 							<a 
 								href="/admin/patient-search" 
-								class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-text sidebar-hover-sage"
+								class="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all duration-300
+									{isActive('/admin/patient-search') ? 'bg-gradient-to-r from-sage-500 to-sage-600 text-white shadow-md' : 'text-gray-700 sidebar-hover-sage'}"
 							>
-								<Users class="w-6 h-6" />
-								<span class="font-medium">{$t.patients}</span>
+								<Users class="w-5 h-5" />
+								<span class="font-semibold text-sm">{$t.patients}</span>
 							</a>
 						</li>
 					{/if}
-					<!-- Space break -->
-					<li class="py-2"></li>
+					
+					<li class="py-1"></li>
+					
 					<!-- Language Toggle -->
 					<li>
 						<button 
 							on:click={toggleLanguage}
-							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-hover
-								text-blue-600 hover:bg-blue-50 hover:text-blue-700 w-full text-left"
+							class="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all duration-300
+								text-blue-600 hover:bg-blue-50/80 hover:text-blue-700 hover:shadow-sm w-full text-left"
 						>
-							<Languages class="w-6 h-6" />
-							<span class="font-medium">{$currentLanguage === 'en' ? $t.french : $t.english}</span>
+							<Languages class="w-5 h-5" />
+							<span class="font-semibold text-sm">{$currentLanguage === 'en' ? $t.french : $t.english}</span>
 						</button>
 					</li>
+					
 					<li>
 						<button 
 							on:click={handleSignOut}
-							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-hover
-								text-red-600 hover:bg-red-50 hover:text-red-700 w-full text-left"
+							class="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all duration-300
+								text-red-600 hover:bg-red-50/80 hover:text-red-700 hover:shadow-sm w-full text-left"
 						>
-							<LogOut class="w-6 h-6" />
-							<span class="font-medium">{$t.signOut}</span>
+							<LogOut class="w-5 h-5" />
+							<span class="font-semibold text-sm">{$t.signOut}</span>
 						</button>
 					</li>
 				{:else}
-					<!-- Unauthenticated navigation -->
+					<!-- Unauthenticated navigation with pink theme -->
 					<li>
 						<a 
 							href="/welcome" 
-							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-text sidebar-hover"
+							class="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all duration-300
+								{isActive('/welcome') ? 'bg-gradient-to-r from-pink-500 to-orange-500 text-white shadow-md' : 'text-gray-700 sidebar-hover'}"
 						>
-							<Home class="w-6 h-6" />
-							<span class="font-medium">{$t.home}</span>
+							<Home class="w-5 h-5" />
+							<span class="font-semibold text-sm">{$t.home}</span>
 						</a>
 					</li>
+					
 					<li>
 						<a 
 							href="/services" 
-							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-text sidebar-hover"
+							class="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all duration-300
+								{isActive('/services') ? 'bg-gradient-to-r from-pink-500 to-orange-500 text-white shadow-md' : 'text-gray-700 sidebar-hover'}"
 						>
-							<Syringe class="w-6 h-6" />
-							<span class="font-medium">{$t.services}</span>
+							<Syringe class="w-5 h-5" />
+							<span class="font-semibold text-sm">{$t.services}</span>
 						</a>
 					</li>
+					
 					<li>
 						<a 
 							href="/about" 
-							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-text sidebar-hover"
+							class="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all duration-300
+								{isActive('/about') ? 'bg-gradient-to-r from-pink-500 to-orange-500 text-white shadow-md' : 'text-gray-700 sidebar-hover'}"
 						>
-							<Search class="w-6 h-6" />
-							<span class="font-medium">{$t.about}</span>
+							<Search class="w-5 h-5" />
+							<span class="font-semibold text-sm">{$t.about}</span>
 						</a>
 					</li>
+					
 					<li>
 						<a 
 							href="/contact" 
-							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-text sidebar-hover"
+							class="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all duration-300
+								{isActive('/contact') ? 'bg-gradient-to-r from-pink-500 to-orange-500 text-white shadow-md' : 'text-gray-700 sidebar-hover'}"
 						>
-							<Mail class="w-6 h-6" />
-							<span class="font-medium">{$t.contact}</span>
+							<Mail class="w-5 h-5" />
+							<span class="font-semibold text-sm">{$t.contact}</span>
 						</a>
 					</li>
+					
+					<li class="py-1"></li>
+					
 					<!-- Language Toggle -->
 					<li>
 						<button 
 							on:click={toggleLanguage}
-							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-hover
-								text-blue-600 hover:bg-blue-50 hover:text-blue-700 w-full text-left"
+							class="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all duration-300
+								text-blue-600 hover:bg-blue-50/80 hover:text-blue-700 hover:shadow-sm w-full text-left"
 						>
-							<Languages class="w-6 h-6" />
-							<span class="font-medium">{$currentLanguage === 'en' ? $t.french : $t.english}</span>
+							<Languages class="w-5 h-5" />
+							<span class="font-semibold text-sm">{$currentLanguage === 'en' ? $t.french : $t.english}</span>
 						</button>
 					</li>
+					
 					<li>
 						<a 
 							href="/signin" 
-							class="flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cf-text sidebar-hover"
+							class="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all duration-300
+								{isActive('/signin') ? 'bg-gradient-to-r from-pink-500 to-orange-500 text-white shadow-md' : 'text-gray-700 sidebar-hover'}"
 						>
-							<User class="w-6 h-6" />
-							<span class="font-medium">{$t.signin}</span>
+							<User class="w-5 h-5" />
+							<span class="font-semibold text-sm">{$t.signin}</span>
 						</a>
 					</li>
 				{/if}

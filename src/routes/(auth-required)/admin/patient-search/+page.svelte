@@ -48,31 +48,43 @@
 </svelte:head>
 
 <div class="max-w-7xl mx-auto p-4 sm:p-6">
-	<div class="mb-6 sm:mb-8">
-		<div class="flex items-center gap-3 mb-2">
-			<UsersIcon class="w-6 h-6 sm:w-8 sm:h-8 text-pink-600" />
-			<h1 class="text-2xl sm:text-3xl font-bold cf-text">{$t.patientSearch.heading}</h1>
+	<!-- Header -->
+	<div class="mb-10">
+		<div class="flex items-center gap-4 mb-4">
+			<div class="w-14 h-14 rounded-2xl flex items-center justify-center bg-gradient-to-br from-sage-500 to-sage-600 shadow-lg">
+				<UsersIcon class="w-7 h-7 text-white" />
+			</div>
+			<div>
+				<h1 class="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent" 
+					style="font-family: 'Playfair Display', serif !important; letter-spacing: -0.02em;">
+					{$t.patientSearch.heading}
+				</h1>
+				<p class="text-gray-600 text-base mt-1" 
+					style="font-family: 'Avenir Next', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;">
+					{$t.patientSearch.subtitle}
+				</p>
+			</div>
 		</div>
-		<p class="cf-text-muted text-sm sm:text-base">{$t.patientSearch.subtitle}</p>
 	</div>
 
-	<!-- Search Box -->
-	<div class="mb-6">
-		<div class="relative w-full sm:max-w-md pink-gradient-border">
-			<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
-				<Search class="h-5 w-5 text-gray-400" />
+	<!-- Modern Search Box -->
+	<div class="mb-10">
+		<div class="relative w-full sm:max-w-xl">
+			<div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none z-10">
+				<Search class="h-6 w-6 text-gray-400" />
 			</div>
 			<input
 				type="text"
 				bind:value={searchTerm}
 				placeholder={$t.patientSearch.searchPlaceholder}
-				class="block w-full pl-10 pr-3 py-3 sm:py-2 border-0 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-pink-500 cf-text text-base sm:text-sm"
+				class="premium-input pl-14 text-lg"
 				id="patient-search"
 				name="searchTerm"
 			/>
 		</div>
-		<p class="mt-2 text-sm cf-text-light">
-			{$t.patientSearch.showingResults} {filteredUsers.length} {$t.patientSearch.ofResults} {data.users.length} {$t.patientSearch.patients}
+		<p class="mt-3 text-sm text-gray-600" 
+			style="font-family: 'Avenir Next', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;">
+			{$t.patientSearch.showingResults} <span class="font-semibold text-sage-600">{filteredUsers.length}</span> {$t.patientSearch.ofResults} {data.users.length} {$t.patientSearch.patients}
 		</p>
 	</div>
 
