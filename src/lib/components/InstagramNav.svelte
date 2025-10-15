@@ -126,16 +126,21 @@
 {:else}
 	<!-- Desktop Sidebar Navigation with modern design -->
 	<div class="flex flex-col h-full -mt-4">
-		<!-- Logo/Brand - no alignment constraints, maximized size -->
+		<!-- Logo/Brand - clickable with hover effect -->
 		<div class="w-full">
-			<div class="relative w-full h-26 flex items-center justify-center">
+			<a 
+				href="/"
+				class="relative w-full h-26 flex items-center justify-center group cursor-pointer"
+				aria-label="Return to home"
+			>
 				<img 
 					src="/logoimagecurrent.png" 
 					alt="Cachet Caché" 
-					class="w-full h-full opacity-90 hover:opacity-100 transition-all duration-300"
+					class="w-full h-full opacity-90 group-hover:opacity-100 transition-all duration-300 
+						group-hover:scale-110 group-hover:drop-shadow-lg"
 					style="object-fit: contain;"
 				/>
-			</div>
+			</a>
 		</div>
 		
 		<!-- Navigation Items -->

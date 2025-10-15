@@ -7,18 +7,22 @@ import type { Database } from '$lib/types/supabase.types';
 type Visit = Database['public']['Tables']['visits']['Row'];
 type VisitPhoto = Database['public']['Tables']['visit_photos']['Row'];
 
-export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase }, params }) => {
-	const { session, user } = await safeGetSession();
+export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase }, params, platform }) => {
+	try {
+		const { session, user } = await safeGetSession();
 
-	if (!session || !user) {
-		throw redirect(303, '/signin');
-	}
+		if (!session || !user) {
+			throw redirect(303, '/signin');
+		}
 
-	// Validate that user_slug is a valid UUID format
-	const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-	if (!uuidRegex.test(params.user_slug)) {
-		throw error(404, 'Invalid user ID format');
-	}
+		console.log('📍 Dashboard load - User:', user.id, 'Requesting:', params.user_slug);
+
+		// Validate that user_slug is a valid UUID format
+		const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+		if (!uuidRegex.test(params.user_slug)) {
+			console.error('❌ Invalid UUID format:', params.user_slug);
+			throw error(404, 'Invalid user ID format');
+		}
 
 	// Check if current user is admin
 	const { data: currentUserProfile, error: currentUserError } = await supabase
@@ -119,80 +123,109 @@ export const load: PageServerLoad = async ({ locals: { safeGetSession, supabase 
 	// Generate signed URLs for each image
 	let imagesWithUrls: Array<any> = [];
 	if (userImages && userImages.length > 0) {
-		imagesWithUrls = await Promise.all(
-			userImages.map(async (image) => {
-				try {
-					const signedUrl = await getSignedDownloadUrl(image.r2_key, 3600); // 1 hour expiry
-					return {
-						...image,
-						signedUrl
-					};
-				} catch (err) {
-					console.error('Error generating signed URL for image:', image.id, err);
-					return {
-						...image,
-						signedUrl: null
-					};
-				}
-			})
-		);
+		try {
+			imagesWithUrls = await Promise.all(
+				userImages.map(async (image) => {
+					try {
+						const signedUrl = await getSignedDownloadUrl(image.r2_key, 3600, platform); // 1 hour expiry
+						return {
+							...image,
+							signedUrl
+						};
+					} catch (err) {
+						console.error('Error generating signed URL for image:', image.id, err);
+						return {
+							...image,
+							signedUrl: null
+						};
+					}
+				})
+			);
+		} catch (err) {
+			console.error('Error processing user images:', err);
+			// Continue with empty array if image processing fails
+			imagesWithUrls = [];
+		}
 	}
 
 	// Process visits data and generate signed URLs for photos
 	let visitsWithPhotos: Array<any> = [];
 	if (visits && visits.length > 0) {
-		visitsWithPhotos = await Promise.all(
-			visits.map(async (visit: Visit & { visit_photos: VisitPhoto[] }) => {
-				// Group photos by type
-				const initialConsultPhotos = [];
-				const followUpPhotos = [];
+		try {
+			visitsWithPhotos = await Promise.all(
+				visits.map(async (visit: Visit & { visit_photos: VisitPhoto[] }) => {
+					// Group photos by type
+					const initialConsultPhotos = [];
+					const followUpPhotos = [];
 
-				if (visit.visit_photos && visit.visit_photos.length > 0) {
-					for (const photo of visit.visit_photos) {
-						try {
-							const signedUrl = await getSignedDownloadUrl(photo.r2_key, 3600);
-							const photoWithUrl = {
-								id: photo.id,
-								url: signedUrl,
-								doctorNote: photo.doctor_note || '',
-								uploading: false
-							};
+					if (visit.visit_photos && visit.visit_photos.length > 0) {
+						for (const photo of visit.visit_photos) {
+							try {
+								const signedUrl = await getSignedDownloadUrl(photo.r2_key, 3600, platform);
+								const photoWithUrl = {
+									id: photo.id,
+									url: signedUrl,
+									doctorNote: photo.doctor_note || '',
+									uploading: false
+								};
 
-							if (photo.photo_type === 'initial_consult') {
-								initialConsultPhotos.push(photoWithUrl);
-							} else if (photo.photo_type === 'follow_up') {
-								followUpPhotos.push(photoWithUrl);
+								if (photo.photo_type === 'initial_consult') {
+									initialConsultPhotos.push(photoWithUrl);
+								} else if (photo.photo_type === 'follow_up') {
+									followUpPhotos.push(photoWithUrl);
+								}
+							} catch (err) {
+								console.error('Error generating signed URL for photo:', photo.id, err);
+								// Continue processing other photos even if one fails
 							}
-						} catch (err) {
-							console.error('Error generating signed URL for photo:', photo.id, err);
 						}
 					}
-				}
 
-				return {
-					id: visit.id,
-					title: visit.title,
-					expanded: visit.expanded || false,
-					initialConsultDate: visit.initial_consult_date,
-					followUpDate: visit.follow_up_date,
-					initialConsultPhotos,
-					followUpPhotos
-				};
-			})
-		);
+					return {
+						id: visit.id,
+						title: visit.title,
+						expanded: visit.expanded || false,
+						initialConsultDate: visit.initial_consult_date,
+						followUpDate: visit.follow_up_date,
+						initialConsultPhotos,
+						followUpPhotos
+					};
+				})
+			);
+		} catch (err) {
+			console.error('Error processing visits:', err);
+			// Continue with empty array if visit processing fails
+			visitsWithPhotos = [];
+		}
 	}
 
-	return {
-		userProfile: userProfile || null,
-		userImages: imagesWithUrls || [],
-		visits: visitsWithPhotos || [],
-		user_slug: params.user_slug,
-		isViewingOtherUser,
-		currentUser: {
-			id: user.id,
-			is_admin: currentUserProfile?.is_admin || false
-		}
-	};
+		console.log('✅ Dashboard load successful:', {
+			userProfileLoaded: !!userProfile,
+			imagesCount: imagesWithUrls.length,
+			visitsCount: visitsWithPhotos.length,
+			isViewingOtherUser
+		});
+
+		return {
+			userProfile: userProfile || null,
+			userImages: imagesWithUrls || [],
+			visits: visitsWithPhotos || [],
+			user_slug: params.user_slug,
+			isViewingOtherUser,
+			currentUser: {
+				id: user.id,
+				is_admin: currentUserProfile?.is_admin || false
+			}
+		};
+	} catch (err) {
+		console.error('💥 Dashboard load error:', {
+			error: err instanceof Error ? err.message : String(err),
+			stack: err instanceof Error ? err.stack : undefined,
+			params: params.user_slug
+		});
+		// Re-throw if it's already a SvelteKit error or redirect
+		throw err;
+	}
 };
 
 export const actions: Actions = {
@@ -469,7 +502,7 @@ export const actions: Actions = {
 		return { success: true };
 	},
 
-	deleteImage: async ({ request, locals: { safeGetSession, supabase } }) => {
+	deleteImage: async ({ request, locals: { safeGetSession, supabase }, platform }) => {
 		const { session, user } = await safeGetSession();
 
 		if (!session || !user) {
@@ -497,7 +530,7 @@ export const actions: Actions = {
 
 		try {
 			// Delete from R2
-			await deleteFile(image.r2_key);
+			await deleteFile(image.r2_key, platform);
 
 			// Delete from database (RLS will ensure user can only delete their own images)
 			const { error: deleteError } = await supabase
@@ -518,7 +551,7 @@ export const actions: Actions = {
 		}
 	},
 
-	uploadPhoto: async ({ request, locals: { safeGetSession, supabase }, params }) => {
+	uploadPhoto: async ({ request, locals: { safeGetSession, supabase }, params, platform }) => {
 		console.log('🎯 Server uploadPhoto action called');
 		
 		const { session, user } = await safeGetSession();
@@ -601,7 +634,7 @@ export const actions: Actions = {
 
 			// Upload photo to R2 storage
 			console.log('☁️ Uploading to R2 storage...');
-			await uploadFile(uniqueKey, uint8Array, photo.type);
+			await uploadFile(uniqueKey, uint8Array, photo.type, platform);
 			console.log('✅ R2 upload successful');
 
 			// Save photo details to database
@@ -665,7 +698,7 @@ export const actions: Actions = {
 		}
 	},
 
-	deletePhoto: async ({ request, locals: { safeGetSession, supabase }, params }) => {
+	deletePhoto: async ({ request, locals: { safeGetSession, supabase }, params, platform }) => {
 		const { session, user } = await safeGetSession();
 
 		if (!session || !user) {
@@ -711,7 +744,7 @@ export const actions: Actions = {
 
 		try {
 			// Delete from R2
-			await deleteFile(photo.r2_key);
+			await deleteFile(photo.r2_key, platform);
 
 			// Delete from database
 			const { error: deleteError } = await clientToUse

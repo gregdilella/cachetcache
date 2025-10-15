@@ -5,11 +5,20 @@
 	
 	let mounted = $state(false);
 	let hovered = $state(false);
+	let showButton = $state(false);
 	
 	onMount(() => {
+		// Start logo animation
 		setTimeout(() => {
 			mounted = true;
 		}, 100);
+		
+		// Show button after text animation completes
+		// Words start at 0ms and end at 800ms + 300ms animation = 1100ms
+		// Add buffer time for smooth transition
+		setTimeout(() => {
+			showButton = true;
+		}, 1300); // 100ms (mounted) + 1100ms (last word) + 100ms (buffer)
 	});
 	
 	/**
@@ -32,6 +41,7 @@
 	<meta property="og:type" content="website" />
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:image" content="https://www.cachetcache.com/ChatGPTCCthumbnail.png" />
+	<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
 </svelte:head>
 
 <style>
@@ -126,15 +136,34 @@
 		z-index: 1;
 	}
 	
-	/* Gradient text with shimmer */
+	/* Text container */
 	.entrance-text {
-		font-family: 'Playfair Display', serif;
+		font-family: 'Great Vibes', cursive;
+		line-height: 1.5; /* Give extra space for tall letters */
+		overflow: visible; /* Make sure nothing gets clipped */
+	}
+	
+	/* Word-by-word animation with gradient */
+	.word {
+		display: inline-block;
+		opacity: 0;
+		transform: translateY(10px);
+		animation: word-appear 0.3s ease-out forwards;
 		background: linear-gradient(135deg, #fff4bc 0%, #D58A94 50%, #B1BCA0 100%);
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
 		background-clip: text;
-		animation: shimmer 3s ease-in-out infinite;
 		background-size: 200% 200%;
+		animation: word-appear 0.3s ease-out forwards, shimmer 3s ease-in-out infinite;
+		padding: 0.2em 0; /* Extra padding top/bottom for tall letters */
+		margin: 0.1em 0; /* Small margin for breathing room */
+	}
+	
+	@keyframes word-appear {
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
 	}
 	
 	@keyframes shimmer {
@@ -188,7 +217,7 @@
 	<div class="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-yellow-200/10 to-orange-200/10 rounded-full blur-3xl opacity-30"></div>
 	<div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-r from-pink-200/10 to-red-200/10 rounded-full blur-3xl opacity-30"></div>
 	
-	<div class="relative z-10 flex flex-col items-center gap-12 max-w-4xl mx-auto px-4">
+	<div class="relative z-10 flex flex-col items-center justify-center gap-6 max-w-4xl mx-auto px-4 min-h-screen">
 		<!-- Hero Image with elegant entrance -->
 		<button 
 			onclick={navigateToWelcome}
@@ -201,19 +230,29 @@
 				<img 
 					src="/Frontpageimage.png" 
 					alt="Cachet Caché" 
-					class="w-[280px] md:w-[360px] h-auto object-contain" 
+					class="w-[240px] md:w-[320px] h-auto object-contain" 
 					style="border-radius: 32px;"
 				/>
 			</div>
 		</button>
 		
-		<!-- Elegant subtitle with slower fade -->
-		<p class="entrance-text text-xl md:text-3xl font-light text-center px-4 transition-all duration-[1800ms] delay-700 {mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}">
-			The Speakeasy of Medical Aesthetics
+		<!-- Elegant subtitle with word-by-word animation -->
+		<p class="entrance-text text-3xl md:text-5xl font-light text-center px-4 py-8">
+			{#if mounted}
+				<span class="word" style="animation-delay: 0ms;">The</span>
+				{' '}
+				<span class="word" style="animation-delay: 200ms;">Speakeasy</span>
+				{' '}
+				<span class="word" style="animation-delay: 400ms;">of</span>
+				{' '}
+				<span class="word" style="animation-delay: 600ms;">Medical</span>
+				{' '}
+				<span class="word" style="animation-delay: 800ms;">Aesthetics</span>
+			{/if}
 		</p>
 		
-		<!-- Enter button with healthy glow -->
-		<div class="transition-all duration-[2000ms] delay-[1400ms] {mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}">
+		<!-- Enter button with healthy glow - appears after text animation -->
+		<div class="transition-all duration-1000 {showButton ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}">
 			<button
 				onclick={navigateToWelcome}
 				class="enter-button group relative px-10 py-5 overflow-hidden rounded-full font-bold text-xl

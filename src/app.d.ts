@@ -19,7 +19,14 @@ declare global {
       session: Session | null
     }
     // interface PageState {}
-    // interface Platform {}
+    interface Platform {
+      env?: {
+        R2_BUCKET?: R2Bucket;
+        [key: string]: any;
+      };
+      context?: ExecutionContext;
+      caches?: CacheStorage;
+    }
   }
 }
 export {}
